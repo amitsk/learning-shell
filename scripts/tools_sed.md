@@ -1,4 +1,4 @@
-# Linux Shell Practice: sed, sort, uniq, and More
+# Linux Shell Practice: sed, sort, uniq, awk, and More
 
 [All Linux Cheatsheets](http://www.nixtutor.com/linux/all-the-best-linux-cheat-sheets/)
 
@@ -11,8 +11,11 @@
 ---
 
 ## Download files with `wget` and `curl`
-```
-wget  https://www.digitalocean.com/robots.txt
+
+Download a file using `wget`:
+
+```sh
+wget https://www.digitalocean.com/robots.txt
 ```
 
 ### Check Download and File Attributes
@@ -20,23 +23,24 @@ wget  https://www.digitalocean.com/robots.txt
 1. Use the `ls` command to check if download worked.
 2. Look at file attributes:
 
-  ```sh
-  ls -lrt
-  ```
+   ```sh
+   ls -lrt
+   ```
 
 3. Check file ownership
 
-#### More  References
-* [Wget Tutorial](https://www.digitalocean.com/community/tutorials/how-to-use-wget-to-download-files-and-interact-with-rest-apis)
-* [Curl](https://www.digitalocean.com/community/tutorials/workflow-downloading-files-curl) 
+#### More References
 
-
+- [Wget Tutorial](https://www.digitalocean.com/community/tutorials/how-to-use-wget-to-download-files-and-interact-with-rest-apis)
+- [Curl](https://www.digitalocean.com/community/tutorials/workflow-downloading-files-curl)
 
 ---
 
 ## Working with `banklist.csv`
 
 Refer to `banklist.csv` in the same folder as this file.
+
+---
 
 ## Viewing File Contents
 
@@ -58,6 +62,7 @@ Refer to `banklist.csv` in the same folder as this file.
   ```sh
   tail -2 banklist.csv | head -1
   ```
+
 - **Print specific columns using cut:**
 
   ```sh
@@ -96,7 +101,13 @@ Refer to `banklist.csv` in the same folder as this file.
 - **Sort ascending and descending using the `sort` command.**
 - **Options:**
   - Try ascending and then descending
-  - Try ignoring lowercase/uppercase
+  - Try ignoring lowercase/uppercase (use `sort -f`)
+
+  ```sh
+  sort banklist-scrubbed.csv           # Ascending
+  sort -r banklist-scrubbed.csv        # Descending
+  sort -f banklist-scrubbed.csv        # Ignore case
+  ```
 
 ---
 
@@ -109,7 +120,7 @@ Refer to `banklist.csv` in the same folder as this file.
   tail -5 banklist.csv
   ```
 
-- **Count the number of banks:**
+- **Count the number of banks (lines):**
 
   ```sh
   wc -l banklist.csv
@@ -123,6 +134,8 @@ Refer to `banklist.csv` in the same folder as this file.
   ```
 
 - **Why are counts the same?**
+
+  > If there are no duplicate lines, both counts will match.
 
 ---
 
@@ -152,6 +165,60 @@ Refer to `banklist.csv` in the same folder as this file.
 
 ---
 
+## Combining Tools (Pipes)
+
+- **Count unique states:**
+
+  ```sh
+  cut -d , -f3 banklist-scrubbed.csv | sort | uniq | wc -l
+  ```
+
+- **Find banks with a specific pattern and count:**
+
+  ```sh
+  grep 'SAVINGS' banklist-scrubbed.csv | wc -l
+  ```
+
+---
+
+## AWK Basics (for CSV and Logs)
+
+- **Print the first column (bank name):**
+
+  ```sh
+  awk -F, '{print $1}' banklist-scrubbed.csv
+  ```
+
+- **Print banks in AZ:**
+
+  ```sh
+  awk -F, '$3=="AZ" {print $1}' banklist-scrubbed.csv
+  ```
+
+- **Count banks per state:**
+
+  ```sh
+  awk -F, '{count[$3]++} END {for (s in count) print s, count[s]}' banklist-scrubbed.csv | sort
+  ```
+
+---
+
+## Checking File Encoding and Line Endings
+
+- **Check file encoding:**
+
+  ```sh
+  file banklist.csv
+  ```
+
+- **Check for Windows line endings:**
+
+  ```sh
+  file banklist.csv | grep CRLF
+  ```
+
+---
+
 ## Comparing File Line Counts
 
 - **Compare the count in the 2 files:**
@@ -167,16 +234,20 @@ Refer to `banklist.csv` in the same folder as this file.
 
 Create a script that accepts the 2 files as arguments and prints the difference in the line counts.
 
-### Steps:
+### Steps
 
 1. Store the count of 1st file in a variable
 2. Store count of 2nd file in a variable
-3. Add them using an expression
+3. Print the difference
 
 - The script should error out if arguments are not 2.
 - Call the script `linecount`.
 
 ---
 
-[Linux Journey](https://linuxjourney.com/) – More Linux learning resources
-[Digital Ocean Linux](https://www.digitalocean.com/community/tags/linux-basics)
+## More Resources
+
+- [Linux Journey](https://linuxjourney.com/) – More Linux learning resources
+- [Digital Ocean Linux](https://www.digitalocean.com/community/tags/linux-basics)
+- [AWK One-Liners Explained](https://catonmat.net/awk-one-liners-explained-part-one)
+- [sed One-Liners Explained](https://catonmat.net/sed-one-liners-explained-part-one)
