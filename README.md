@@ -1,0 +1,2 @@
+# learning-shell
+Shell exercises
