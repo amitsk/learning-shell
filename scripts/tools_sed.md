@@ -1,5 +1,7 @@
 # Linux Shell Practice: sed, sort, uniq, awk, and More
 
+[Next: AWK Tutorial →](tools_awk.md)
+
 [All Linux Cheatsheets](http://www.nixtutor.com/linux/all-the-best-linux-cheat-sheets/)
 
 ---
@@ -10,33 +12,7 @@
 
 ---
 
-## Download files with `wget` and `curl`
-
-Download a file using `wget`:
-
-```sh
-wget https://www.digitalocean.com/robots.txt
-```
-
-### Check Download and File Attributes
-
-1. Use the `ls` command to check if download worked.
-2. Look at file attributes:
-
-   ```sh
-   ls -lrt
-   ```
-
-3. Check file ownership
-
-#### More References
-
-- [Wget Tutorial](https://www.digitalocean.com/community/tutorials/how-to-use-wget-to-download-files-and-interact-with-rest-apis)
-- [Curl](https://www.digitalocean.com/community/tutorials/workflow-downloading-files-curl)
-
----
-
-## Working with `banklist.csv`
+## File exploration with `banklist.csv`
 
 Refer to `banklist.csv` in the same folder as this file.
 

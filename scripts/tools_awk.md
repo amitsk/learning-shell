@@ -1,5 +1,8 @@
-
 # AWK Tutorial: Analyzing nginx.log
+
+[Next: HTTP Tools: wget & curl →](tools_http.md)
+
+---
 
 ## What is AWK?
 

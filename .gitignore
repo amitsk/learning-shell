@@ -38,3 +38,10 @@
 
 *.sh~
 *.bash_history
+
+### Scratch ###
+# Scratch files that are not part of the project
+*.scratch
+# Scratch directories
+scratch/*
+!scratch/.gitkeep
