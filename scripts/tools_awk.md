@@ -133,6 +133,58 @@ awk '{count[$9]++} END {for (code in count) print code, count[code]}' nginx.log 
 
 ---
 
+## 13. AWK Built-in Functions
+
+### String Functions
+
+- **substr(string, start, length)** - Extract substring:
+
+  ```sh
+  # Extract first 3 characters of IP address
+  awk '{print substr($1, 1, 3)}' nginx.log
+  ```
+
+- **length(string)** - Get string length:
+
+  ```sh
+  # Print lines where URL is longer than 20 characters
+  awk -F\" 'length($2) > 20 {print $2}' nginx.log
+  ```
+
+- **gsub(regex, replacement, string)** - Global substitution:
+
+  ```sh
+  # Replace all dots in IP addresses with dashes
+  awk '{gsub(/\./, "-", $1); print $1}' nginx.log
+  ```
+
+- **toupper(string)** and **tolower(string)** - Change case:
+
+  ```sh
+  # Convert HTTP method to uppercase
+  awk -F\" '{split($2, a, " "); print toupper(a[1])}' nginx.log
+  ```
+
+### Numeric Functions
+
+- **int(number)** - Convert to integer:
+
+  ```sh
+  # Round down response sizes
+  awk '{print int($10)}' nginx.log
+  ```
+
+### Date/Time Functions
+
+- **strftime(format, timestamp)** - Format timestamps:
+
+  ```sh
+  # Convert timestamp to readable date (if available)
+  awk '{print strftime("%Y-%m-%d %H:%M:%S", $4)}' nginx.log
+  ```
+
+---
+
 # References
 
 - [GNU AWK Manual](https://www.gnu.org/software/gawk/manual/gawk.html)

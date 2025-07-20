@@ -86,6 +86,19 @@ export EDITOR=vim
 export PATH="$HOME/bin:$PATH"
 ```
 
+### Vi Mode
+
+Enable vi-style command line editing in your shell:
+
+```sh
+set -o vi
+```
+
+- This allows you to use vi keybindings for editing commands
+- Press `Esc` to enter command mode, then use vi commands like `h`, `j`, `k`, `l` for navigation
+- Use `i` to return to insert mode
+- Add this to your `~/.bashrc` or `~/.zshrc` to make it permanent
+
 ---
 
 ## 3. Prompt Customization
