@@ -65,7 +65,12 @@ Add shortcuts for common commands in your `~/.bashrc` or `~/.zshrc`:
 ```sh
 alias ll='ls -lFh'
 alias gs='git status'
+alias mv='mv -i'
+alias rm='rm -i'
+alias cp='cp -i'
 ```
+
+- The `-i` flag makes `mv`, `rm`, and `cp` interactive, prompting before overwriting or deleting files. This helps prevent accidental data loss, which is a common risk in Unix systems when using these commands without confirmation.
 
 ### Functions
 
@@ -79,11 +84,54 @@ mkcd() {
 
 ### Environment Variables
 
-Set variables for your session:
+Environment variables are key-value pairs that affect how programs run. Set variables for your session:
 
 ```sh
 export EDITOR=vim
 export PATH="$HOME/bin:$PATH"
+export HISTSIZE=10000
+export HISTFILESIZE=20000
+```
+
+**Common environment variables:**
+- `EDITOR`: Default text editor for command-line programs
+- `PATH`: Directories where the shell looks for executable files
+- `HISTSIZE`: Number of commands to remember in current session
+- `HISTFILESIZE`: Number of commands to save in history file
+- `LANG`: System language and locale settings
+
+**Tips:**
+- Use `export` to make variables available to child processes
+- View all environment variables with `env` or `printenv`
+- View a specific variable with `echo $VARIABLE_NAME`
+
+### Personal Bin Directory
+
+Create a personal `bin` directory for your custom scripts:
+
+```sh
+# Create the directory
+mkdir -p ~/bin
+
+# Add it to your PATH (add this to ~/.bashrc or ~/.zshrc)
+export PATH="$HOME/bin:$PATH"
+```
+
+**Benefits:**
+
+- Keep your custom scripts organized in one place
+- Make scripts executable from anywhere without typing full paths
+- Separate your scripts from system binaries
+- Easy to backup and sync across machines
+
+**Example usage:**
+```sh
+# Create a script
+echo '#!/bin/bash\necho "Hello from my script!"' > ~/bin/myscript
+chmod +x ~/bin/myscript
+
+# Run it from anywhere
+myscript
 ```
 
 ### Vi Mode

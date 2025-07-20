@@ -74,7 +74,7 @@ Shell scripting lets you automate tasks by writing a series of shell commands in
 
 - [starship.rs](https://starship.rs/): A fast, customizable, and minimal prompt for any shell. Works on Linux, macOS, and Windows (including WSL2 and PowerShell).
 - [Windows Terminal](https://aka.ms/terminal): Modern, tabbed terminal for Windows. Supports PowerShell, Command Prompt, WSL, and more.
-- [nano](https://www.nano-editor.org/), [vim](https://www.vim.org/), or [Visual Studio Code](https://code.visualstudio.com/) for editing scripts.
+- [nano](https://www.nano-editor.org/), [vim](https://www.vim.org/), [Microsoft Edit](https://github.com/microsoft/edit)or [Visual Studio Code](https://code.visualstudio.com/) [Helix](https://helix-editor.com/) for editing scripts.
 
 ---
 
@@ -125,6 +125,7 @@ SSH (Secure Shell) allows you to securely connect to a remote Linux or Unix serv
 - [Windows Terminal Documentation](https://learn.microsoft.com/en-us/windows/terminal/)
 - [WSL2 Documentation](https://learn.microsoft.com/en-us/windows/wsl/)
 - [SSH Tutorial for Beginners](https://www.ssh.com/academy/ssh/command)
+- [Linux Cheatsheets](http://www.nixtutor.com/linux/all-the-best-linux-cheat-sheets/)
 
 ---
 Happy scripting!

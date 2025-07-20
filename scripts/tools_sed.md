@@ -1,10 +1,6 @@
 # Linux Shell Practice: sed, sort, uniq, awk, and More
 
 
-[All Linux Cheatsheets](http://www.nixtutor.com/linux/all-the-best-linux-cheat-sheets/)
-
----
-
 ## Commands to Practice
 
 - `pwd`, `cd`, `chmod`, `chown`, `ls` (with flags), `rm`, `mkdir`, `tail`, `head`, `<`, `grep`, `|`
@@ -226,5 +222,7 @@ Create a script that accepts the 2 files as arguments and prints the difference 
 - [Digital Ocean Linux](https://www.digitalocean.com/community/tags/linux-basics)
 - [AWK One-Liners Explained](https://catonmat.net/awk-one-liners-explained-part-one)
 - [sed One-Liners Explained](https://catonmat.net/sed-one-liners-explained-part-one)
+
+---
 
 [Next: AWK Tutorial →](tools_awk.md)
