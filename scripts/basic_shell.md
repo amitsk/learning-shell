@@ -192,6 +192,7 @@ say_hello "Amit"
 
 - [Bash Guide for Beginners](https://tldp.org/LDP/Bash-Beginners-Guide/html/)
 - [Shell Scripting Tutorial](https://www.shellscript.sh/)
+- [Bash tutorial by Free Code Camp](https://www.freecodecamp.org/news/bash-scripting-tutorial-linux-shell-script-and-command-line-for-beginners/)
 - [Bash Reference Manual](https://www.gnu.org/software/bash/manual/bash.html)
 
 [Next: Shell Customization Guide →](shell_customization.md)
