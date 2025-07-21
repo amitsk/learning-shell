@@ -93,12 +93,82 @@ fi
 ### File Permissions: Read, Write, Execute
 
 - Every file and directory has permissions for the owner, group, and others:
-  - `r` = read
-  - `w` = write
-  - `x` = execute
+  - `r` = read (value: 4)
+  - `w` = write (value: 2)
+  - `x` = execute (value: 1)
 - Permissions are shown as a string (e.g., `-rwxr-xr--`) or as a number (e.g., `755`, `777`).
-- Example: `chmod 755 myfile.sh` sets permissions to `rwxr-xr-x`.
-- `777` means read, write, and execute for everyone (not recommended for most files).
+
+### Understanding Numerical Permissions
+
+Permissions use a 3-digit octal system where each digit represents owner, group, and others:
+
+**Single digit values:**
+- `0` = no permissions (---)
+- `1` = execute only (--x)
+- `2` = write only (-w-)
+- `3` = write + execute (-wx) [2+1]
+- `4` = read only (r--)
+- `5` = read + execute (r-x) [4+1]
+- `6` = read + write (rw-) [4+2]
+- `7` = read + write + execute (rwx) [4+2+1]
+
+**Common permission combinations:**
+- `644` = rw-r--r-- (owner: read/write, group: read, others: read) - typical for files
+- `755` = rwxr-xr-x (owner: full, group: read/execute, others: read/execute) - typical for scripts/executables
+- `700` = rwx------ (owner: full, group: none, others: none) - private files
+- `777` = rwxrwxrwx (everyone: full permissions) - **not recommended for security**
+
+**Examples:**
+```sh
+chmod 644 document.txt    # Regular file: owner can edit, others can read
+chmod 755 myscript.sh     # Script: owner can edit/run, others can run
+chmod 700 private.txt     # Private: only owner can access
+chmod 600 ~/.ssh/id_rsa   # SSH private key: only owner can read/write
+```
+
+### Why Scripts Need Execute Permissions
+
+When you create a shell script, it starts as a regular text file without execute permissions. Here's why you need to add them:
+
+**What happens without execute permission:**
+```sh
+# Create a script
+echo '#!/bin/bash\necho "Hello World"' > hello.sh
+
+# Try to run it - this will fail
+./hello.sh
+# Output: bash: ./hello.sh: Permission denied
+```
+
+**The script file exists and is readable, but the system won't execute it because:**
+1. The operating system checks execute permission before running any file
+2. This is a security feature to prevent accidental execution of data files
+3. Only files explicitly marked as executable can be run
+
+**Adding execute permission:**
+```sh
+# Make it executable
+chmod +x hello.sh
+# or
+chmod 755 hello.sh
+
+# Now you can run it
+./hello.sh
+# Output: Hello World
+```
+
+**Alternative ways to run scripts without execute permission:**
+```sh
+# You can still run the script by passing it to the interpreter directly
+bash hello.sh    # Works even without +x permission
+sh hello.sh      # Also works
+```
+
+**Best practices for script permissions:**
+- `755` - Good for scripts others might need to run
+- `750` - Script executable by owner and group only
+- `700` - Private script only you can run
+- Always use `chmod +x` when you create a new script you want to execute directly
 
 ### Viewing Permissions and Hidden Files with `ls`
 
