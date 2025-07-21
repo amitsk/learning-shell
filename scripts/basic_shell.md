@@ -22,6 +22,494 @@ The shell is a command-line interface for interacting with your operating system
 - `cat` — Concatenate and display file contents
 - `echo` — Print text to the terminal
 - `man` — Show manual pages for commands
+- `grep` — Search for patterns in text
+
+### pwd: Print Working Directory
+
+Shows your current location in the file system.
+
+```sh
+# Show current directory
+pwd
+# Output: /home/username/projects
+
+# Useful in scripts to know where you are
+echo "Currently in: $(pwd)"
+```
+
+### ls: List Files and Directories
+
+Display contents of directories with various formatting options.
+
+```sh
+# Basic listing
+ls
+
+# List with details (permissions, owner, size, date)
+ls -l
+
+# List all files including hidden ones (starting with .)
+ls -a
+
+# List with human-readable file sizes
+ls -lh
+
+# List sorted by modification time (newest first)
+ls -lt
+
+# List sorted by modification time (oldest first)
+ls -ltr
+
+# List only directories
+ls -d */
+
+# List specific file types
+ls *.txt        # All .txt files
+ls *.py         # All Python files
+
+# List contents of specific directory
+ls /etc
+ls ~/Documents
+
+# Recursive listing (show subdirectories)
+ls -R
+
+# List with full timestamps
+ls -l --time-style=full-iso
+```
+
+### cd: Change Directory
+
+Navigate through the file system.
+
+```sh
+# Go to home directory
+cd
+cd ~
+
+# Go to specific directory
+cd /usr/local/bin
+cd ~/Documents
+
+# Go to parent directory
+cd ..
+
+# Go back to previous directory
+cd -
+
+# Go to root directory
+cd /
+
+# Navigate using relative paths
+cd ./subfolder
+cd ../other-folder
+
+# Navigate multiple levels
+cd ../../parent-parent-directory
+
+# Use tab completion for paths
+cd Doc<TAB>     # Completes to Documents if it exists
+```
+
+### mkdir: Make Directory
+
+Create new directories.
+
+```sh
+# Create a single directory
+mkdir new-folder
+
+# Create multiple directories
+mkdir folder1 folder2 folder3
+
+# Create nested directories (parent directories created automatically)
+mkdir -p projects/web-app/src/components
+
+# Create directory with specific permissions
+mkdir -m 755 public-folder
+
+# Create directory and show what was created
+mkdir -v new-project
+# Output: mkdir: created directory 'new-project'
+
+# Create directory structure for a project
+mkdir -p myapp/{src,tests,docs,config}
+```
+
+### rm: Remove Files and Directories
+
+Delete files and directories (be careful - this is usually permanent!).
+
+```sh
+# Remove a single file
+rm filename.txt
+
+# Remove multiple files
+rm file1.txt file2.txt file3.txt
+
+# Remove files with pattern matching
+rm *.tmp        # Remove all .tmp files
+rm test_*       # Remove all files starting with "test_"
+
+# Interactive removal (ask before each deletion)
+rm -i important-file.txt
+
+# Remove directory and all contents (recursive)
+rm -r old-project/
+
+# Force removal (no prompts, ignore non-existent files)
+rm -f stubborn-file.txt
+
+# Combine flags: force recursive removal
+rm -rf temporary-folder/
+
+# Verbose output (show what's being removed)
+rm -v *.log
+# Output: removed 'access.log'
+# Output: removed 'error.log'
+
+# Safety tip: Always double-check before using rm -rf
+ls -la before-deleting/  # Check contents first
+rm -rf before-deleting/  # Then delete
+```
+
+### cp: Copy Files and Directories
+
+Copy files and directories to new locations.
+
+```sh
+# Copy a file
+cp source.txt destination.txt
+
+# Copy file to different directory
+cp document.txt ~/backup/
+
+# Copy multiple files to a directory
+cp file1.txt file2.txt file3.txt ~/backup/
+
+# Copy with pattern matching
+cp *.jpg ~/pictures/
+
+# Copy directory and all contents (recursive)
+cp -r project-folder/ project-backup/
+
+# Interactive copy (ask before overwriting)
+cp -i important.txt important-backup.txt
+
+# Preserve file attributes (permissions, timestamps)
+cp -p original.txt copy-with-attributes.txt
+
+# Verbose output
+cp -v source.txt destination.txt
+# Output: 'source.txt' -> 'destination.txt'
+
+# Copy and create destination directories if needed
+cp --parents src/utils/helper.py backup/
+# Creates backup/src/utils/ if it doesn't exist
+
+# Update copy (only copy if source is newer)
+cp -u newer-file.txt existing-file.txt
+```
+
+### mv: Move and Rename Files
+
+Move files to new locations or rename them.
+
+```sh
+# Rename a file
+mv oldname.txt newname.txt
+
+# Move file to different directory
+mv document.txt ~/archive/
+
+# Move multiple files
+mv file1.txt file2.txt file3.txt ~/destination/
+
+# Move with pattern matching
+mv *.log ~/logs/
+
+# Move directory
+mv old-folder/ new-location/
+
+# Interactive move (ask before overwriting)
+mv -i source.txt destination.txt
+
+# Verbose output
+mv -v document.txt ~/backup/
+# Output: 'document.txt' -> '/home/user/backup/document.txt'
+
+# Move and rename simultaneously
+mv ~/downloads/file.txt ~/documents/renamed-file.txt
+
+# Update move (only move if source is newer or destination doesn't exist)
+mv -u source.txt destination.txt
+```
+
+### cat: Display File Contents
+
+Read and display file contents, or concatenate multiple files.
+
+```sh
+# Display file contents
+cat readme.txt
+
+# Display multiple files
+cat file1.txt file2.txt
+
+# Display with line numbers
+cat -n script.py
+
+# Display non-printing characters
+cat -A config.txt
+
+# Display only non-blank lines with numbers
+cat -b document.txt
+
+# Concatenate files into new file
+cat file1.txt file2.txt > combined.txt
+
+# Append to existing file
+cat additional.txt >> existing.txt
+
+# Display file with page breaks
+cat -v document.txt
+
+# Read from stdin (useful in scripts)
+cat > new-file.txt
+# Type content, then Ctrl+D to finish
+
+# Display first few lines (alternative to head)
+cat readme.txt | head -10
+```
+
+### echo: Print Text
+
+Output text to the terminal or files.
+
+```sh
+# Simple text output
+echo "Hello, World!"
+
+# Output without newline
+echo -n "Enter your name: "
+
+# Output with escape sequences
+echo -e "Line 1\nLine 2\nLine 3"
+
+# Output variables
+name="Alice"
+echo "Hello, $name!"
+
+# Output to file
+echo "This is a log entry" > logfile.txt
+
+# Append to file
+echo "Another entry" >> logfile.txt
+
+# Output current date
+echo "Today is $(date)"
+
+# Output with special characters
+echo -e "Tab\there\nNewline here"
+
+# Output multiple arguments
+echo The current directory is $(pwd)
+
+# Output environment variables
+echo "Your home directory is: $HOME"
+echo "Your username is: $USER"
+
+# Create simple files
+echo "#!/bin/bash" > script.sh
+echo "echo 'Hello from script'" >> script.sh
+```
+
+### man: Manual Pages
+
+Access documentation for commands and programs.
+
+```sh
+# View manual for a command
+man ls
+man grep
+man chmod
+
+# Search for commands by keyword
+man -k network
+man -k "copy files"
+
+# View specific section of manual
+man 1 printf    # Section 1: User commands
+man 3 printf    # Section 3: Library functions
+
+# Display short description
+man -f ls
+# or
+whatis ls
+
+# View manual in browser-like interface
+info ls
+
+# Search within a manual page
+# Use / to search forward
+# Use ? to search backward
+# Use n for next match
+# Use N for previous match
+
+# Manual sections:
+# 1: User commands
+# 2: System calls
+# 3: Library functions
+# 4: Device files
+# 5: File formats
+# 6: Games
+# 7: Miscellaneous
+# 8: System administration
+
+# Quick help for built-in commands
+help cd
+help echo
+```
+
+### grep: Search for Patterns in Text
+
+`grep` is one of the most powerful and commonly used commands for searching text patterns in files or command output.
+
+**Basic syntax:**
+```sh
+grep [options] pattern [file...]
+```
+
+### Basic grep Usage
+
+```sh
+# Search for a word in a file
+grep "error" logfile.txt
+
+# Search for a pattern in multiple files
+grep "TODO" *.py
+
+# Search in all files in current directory
+grep "function" *
+
+# Case-insensitive search
+grep -i "error" logfile.txt
+
+# Show line numbers
+grep -n "import" script.py
+```
+
+### Useful grep Options
+
+- `-i` — Case-insensitive search
+- `-n` — Show line numbers
+- `-v` — Invert match (show lines that DON'T match)
+- `-c` — Count matching lines
+- `-l` — Show only filenames that contain matches
+- `-r` or `-R` — Search recursively through directories
+- `-w` — Match whole words only
+- `-A num` — Show num lines after each match
+- `-B num` — Show num lines before each match
+- `-C num` — Show num lines before and after each match
+
+### grep Examples
+
+```sh
+# Find files containing "password" (case-insensitive)
+grep -i "password" *.txt
+
+# Search recursively in all subdirectories
+grep -r "TODO" .
+
+# Count how many times "error" appears
+grep -c "error" logfile.txt
+
+# Find lines that DON'T contain "success"
+grep -v "success" logfile.txt
+
+# Show context around matches (3 lines before and after)
+grep -C 3 "exception" error.log
+
+# Find whole word matches only
+grep -w "cat" animals.txt  # Matches "cat" but not "catch"
+
+# Show only filenames that contain the pattern
+grep -l "main" *.py
+
+# Find empty lines
+grep "^$" file.txt
+
+# Find lines starting with specific text
+grep "^Error" logfile.txt
+
+# Find lines ending with specific text
+grep "failed$" logfile.txt
+```
+
+### Using grep with Pipes
+
+`grep` is extremely powerful when combined with other commands:
+
+```sh
+# Search in command output
+ps aux | grep firefox
+
+# Find specific processes
+ps aux | grep -v grep | grep python
+
+# Search in file listings
+ls -la | grep "\.py$"  # Find Python files
+
+# Filter log entries by date
+cat /var/log/syslog | grep "Jan 15"
+
+# Count error messages
+journalctl | grep -c "error"
+```
+
+### Basic Regular Expressions with grep
+
+```sh
+# Match any single character (.)
+grep "c.t" file.txt  # Matches cat, cut, cot
+
+# Match beginning of line (^)
+grep "^Error" logfile.txt
+
+# Match end of line ($)
+grep "done$" logfile.txt
+
+# Match any of the characters in brackets
+grep "[Ee]rror" logfile.txt  # Matches Error or error
+
+# Match a range of characters
+grep "[0-9]" file.txt  # Matches any digit
+
+# Match one or more of the preceding character (+)
+grep -E "colou?r" file.txt  # Matches color or colour
+```
+
+### Practical grep Examples
+
+```sh
+# Find configuration files
+find /etc -name "*.conf" | xargs grep -l "ssh"
+
+# Search for IP addresses
+grep -E "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b" logfile.txt
+
+# Find shell scripts
+find . -name "*.sh" | xargs grep -l "#!/bin/bash"
+
+# Filter out comments and empty lines
+grep -v "^#" config.file | grep -v "^$"
+
+# Find functions in Python files
+grep -n "def " *.py
+
+# Search for email addresses
+grep -E "\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b" file.txt
+```
 
 ---
 
