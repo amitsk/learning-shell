@@ -12,6 +12,7 @@ A collection of practical shell exercises, scripts, and cheatsheets for learning
   - [Getting Started with Shell Scripting](#getting-started-with-shell-scripting)
   - [Bash Shell & Scripting Basics](#bash-shell--scripting-basics)
   - [Shell Customization](#shell-customization-guide)
+  - [Build Systems: Make and Ninja](#build-systems-make-and-ninja)
   - [Text Processing with sed, awk, sort, uniq](#text-processing-with-sed-awk-sort-uniq)
   - [AWK Tutorial](#awk-tutorial-practical-shell-data-processing)
   - [HTTP Tools: wget & curl](#http-tools-wget--curl-basics)
@@ -58,6 +59,14 @@ This project is designed to help you practice and understand essential Linux she
 
 - How to customize your shell prompt and environment in [scripts/shell_customization.md](scripts/shell_customization.md)
 - Covers rc/profile files, aliases, functions, environment variables, prompt customization, and identifying your shell
+
+### Build Systems: Make and Ninja
+
+- Comprehensive guide to build systems in [scripts/build_systems.md](scripts/build_systems.md)
+- Installing make with binutils, C and Rust build examples
+- Compilation, linking, and linting workflows
+- Ninja build system comparison and usage
+- Best practices and performance optimization
 
 ### Text Processing with sed, awk, sort, uniq
 
