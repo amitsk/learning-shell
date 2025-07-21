@@ -25,6 +25,69 @@ The shell is a command-line interface for interacting with your operating system
 
 ---
 
+## Exit Status and $?
+
+Every command in Unix returns an exit status when it completes. Understanding exit status is crucial for writing reliable scripts and chaining commands.
+
+### What is Exit Status?
+
+- Exit status is a number between 0 and 255 that indicates whether a command succeeded or failed
+- `0` means success
+- Any non-zero value (1-255) indicates an error or failure
+- The special variable `$?` contains the exit status of the last command executed
+
+### Using $?
+
+```sh
+# Run a command and check its exit status
+ls /home
+echo $?    # Will print 0 if ls succeeded
+
+# Try a command that will fail
+ls /nonexistent-directory
+echo $?    # Will print a non-zero number (usually 2)
+
+# Check if a file exists
+test -f myfile.txt
+if [ $? -eq 0 ]; then
+    echo "File exists"
+else
+    echo "File does not exist"
+fi
+```
+
+### Common Exit Codes
+
+- `0` — Success
+- `1` — General error
+- `2` — Misuse of shell command
+- `126` — Command cannot execute (permission denied)
+- `127` — Command not found
+- `130` — Script terminated by Ctrl+C
+
+### Practical Examples
+
+```sh
+# Backup a file and check if it worked
+cp important.txt important.txt.backup
+if [ $? -eq 0 ]; then
+    echo "Backup successful"
+    rm important.txt
+else
+    echo "Backup failed, keeping original file"
+fi
+
+# Check if a service is running
+systemctl is-active nginx > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+    echo "Nginx is running"
+else
+    echo "Nginx is not running"
+fi
+```
+
+---
+
 ## File Permissions and Listing Files
 
 ### File Permissions: Read, Write, Execute
@@ -87,6 +150,82 @@ drwxr-xr-x 10 root root  4096 Jun 21 09:00 ..
 echo "Hello" > hello.txt      # Write to file
 cat hello.txt | grep H         # Pipe to grep
 ```
+
+---
+
+## Command Chaining with && and ||
+
+You can chain commands together based on whether the previous command succeeded or failed using `&&` (AND) and `||` (OR) operators.
+
+### The && Operator (AND)
+
+- `command1 && command2` — Run command2 only if command1 succeeds (exit status 0)
+- Useful for conditional execution
+
+```sh
+# Only create backup if the copy succeeds
+cp file.txt file.backup && echo "Backup created successfully"
+
+# Chain multiple commands - each runs only if the previous succeeds
+mkdir project && cd project && touch README.md && echo "Project setup complete"
+
+# Install package and then start service (only if install succeeds)
+sudo apt install nginx && sudo systemctl start nginx
+```
+
+### The || Operator (OR)
+
+- `command1 || command2` — Run command2 only if command1 fails (non-zero exit status)
+- Useful for error handling and fallbacks
+
+```sh
+# Try to use vim, fall back to nano if vim is not available
+vim myfile.txt || nano myfile.txt
+
+# Create directory or warn if it fails
+mkdir /tmp/mydir || echo "Failed to create directory"
+
+# Check if file exists, create it if it doesn't
+test -f config.txt || touch config.txt
+```
+
+### Combining && and ||
+
+You can combine both operators for more complex logic:
+
+```sh
+# Try to compile, and either celebrate success or handle failure
+make && echo "Build successful!" || echo "Build failed!"
+
+# Backup file, and either confirm success or exit with error
+cp important.txt backup/ && echo "Backup done" || { echo "Backup failed!"; exit 1; }
+
+# Check if service is running, start it if not, or report error
+systemctl is-active nginx || systemctl start nginx || echo "Failed to start nginx"
+```
+
+### Command Chaining Examples
+
+```sh
+# Safe file operations
+[ -d backup ] || mkdir backup && cp *.txt backup/
+
+# Update system packages safely
+sudo apt update && sudo apt upgrade || echo "Update failed"
+
+# Git workflow
+git add . && git commit -m "Update" && git push || echo "Git operation failed"
+
+# Download and extract archive
+wget https://example.com/file.tar.gz && tar -xzf file.tar.gz || echo "Download or extraction failed"
+```
+
+### Best Practices
+
+- Use parentheses or braces `{}` to group commands when needed
+- Be careful with complex chains - sometimes explicit `if` statements are clearer
+- Test your command chains thoroughly, especially in scripts
+- Remember that `&&` and `||` have left-to-right associativity
 
 ---
 
