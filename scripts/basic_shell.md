@@ -397,6 +397,150 @@ say_hello "Amit"
 
 ---
 
+## Process Management with ps
+
+The `ps` command shows information about running processes on your system. Understanding processes is essential for system monitoring and troubleshooting.
+
+### Basic ps Usage
+
+```sh
+# Show processes for current user
+ps
+
+# Show all processes with detailed information
+ps aux
+
+# Show processes in a tree format (shows parent-child relationships)
+ps -ef --forest
+# or
+pstree
+```
+
+### Understanding ps Output
+
+**Basic `ps` output:**
+```text
+  PID TTY          TIME CMD
+ 1234 pts/0    00:00:01 bash
+ 5678 pts/0    00:00:00 ps
+```
+
+**Detailed `ps aux` output:**
+```text
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+amit      1234  0.1  0.5  21616  5432 pts/0    Ss   10:30   0:01 -bash
+amit      5678  0.0  0.1   8892   912 pts/0    R+   10:45   0:00 ps aux
+```
+
+**Column meanings:**
+- **PID**: Process ID (unique identifier)
+- **USER**: Username that owns the process
+- **%CPU**: Percentage of CPU usage
+- **%MEM**: Percentage of memory usage
+- **VSZ**: Virtual memory size (KB)
+- **RSS**: Resident Set Size - physical memory currently used (KB)
+- **TTY**: Terminal associated with the process
+- **STAT**: Process state (R=running, S=sleeping, Z=zombie, etc.)
+- **START**: When the process started
+- **TIME**: Total CPU time used
+- **COMMAND**: The command that started the process
+
+### Useful ps Options
+
+```sh
+# Show processes for a specific user
+ps -u username
+
+# Show processes by name (grep pattern)
+ps aux | grep firefox
+
+# Show process hierarchy
+ps -ejH
+
+# Show processes with custom columns
+ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%cpu
+
+# Monitor processes continuously (like top, but with ps)
+watch -n 1 'ps aux --sort=-%cpu | head -20'
+```
+
+### Process States
+
+Common process states you'll see in the STAT column:
+
+- **R**: Running or runnable
+- **S**: Sleeping (waiting for an event)
+- **D**: Uninterruptible sleep (usually I/O)
+- **T**: Stopped (by job control signal)
+- **Z**: Zombie (terminated but not reaped by parent)
+- **<**: High priority process
+- **+**: Foreground process group
+
+### Practical Examples
+
+```sh
+# Find memory-hungry processes
+ps aux --sort=-%mem | head -10
+
+# Find CPU-intensive processes
+ps aux --sort=-%cpu | head -10
+
+# Check if a specific service is running
+ps aux | grep nginx
+
+# Find processes by name and kill them
+ps aux | grep "python script.py"
+# Then use kill command with the PID
+
+# Show process tree to understand relationships
+ps -ef --forest | grep -A 5 -B 5 nginx
+
+# Monitor a specific user's processes
+watch -n 2 'ps -u amit -o pid,cmd,%cpu,%mem --sort=-%cpu'
+```
+
+### Related Commands
+
+```sh
+# Real-time process viewer
+top
+htop    # Enhanced version (may need to install)
+
+# Kill processes
+kill PID              # Terminate process by PID
+killall process_name  # Kill all processes by name
+pkill pattern         # Kill processes matching pattern
+
+# Job control
+jobs        # Show background jobs
+fg %1       # Bring job 1 to foreground
+bg %1       # Send job 1 to background
+nohup cmd & # Run command immune to hangups
+```
+
+### Process Management in Scripts
+
+```sh
+#!/bin/bash
+# Check if a process is running
+if ps aux | grep -q "[n]ginx"; then
+    echo "Nginx is running"
+else
+    echo "Nginx is not running"
+fi
+
+# Start a background process and save its PID
+my_command &
+PID=$!
+echo "Started process with PID: $PID"
+
+# Wait for a specific process to finish
+wait $PID
+echo "Process $PID has finished"
+```
+
+---
+
 ## Resources
 
 - [Bash Guide for Beginners](https://tldp.org/LDP/Bash-Beginners-Guide/html/)

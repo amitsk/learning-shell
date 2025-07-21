@@ -113,3 +113,5 @@ This guide covers the basics of user and group management, including important s
 - [man useradd](https://man7.org/linux/man-pages/man8/useradd.8.html)
 - [man groupadd](https://man7.org/linux/man-pages/man8/groupadd.8.html)
 - [man usermod](https://man7.org/linux/man-pages/man8/usermod.8.html)
+
+[Next: Build Systems: Make and Ninja →](build_systems.md)
