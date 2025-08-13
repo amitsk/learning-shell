@@ -1029,11 +1029,91 @@ echo "Process $PID has finished"
 
 ---
 
+---
+
+## Debugging Shell Scripts
+
+Debugging is an essential skill for writing complex scripts. Here are a few techniques to help you find and fix errors in your Bash scripts.
+
+### Tracing with `set -x`
+
+- The `set -x` command enables a mode where the shell prints each command and its arguments as it executes. This is extremely useful for seeing the flow of your script and the values of variables at each step.
+- You can turn it off with `set +x`.
+
+```sh
+#!/bin/bash
+
+set -x  # Start tracing
+
+name="Amit"
+echo "Hello, $name"
+
+set +x  # Stop tracing
+
+echo "Tracing is now off."
+```
+
+**Output:**
+```
++ name=Amit
++ echo 'Hello, Amit'
+Hello, Amit
++ set +x
+Tracing is now off.
+```
+
+### Exiting on Error with `set -e`
+
+- The `set -e` command causes the script to exit immediately if any command fails (returns a non-zero exit status).
+- This helps prevent unexpected behavior where a script continues to run after a critical command has failed.
+
+```sh
+#!/bin/bash
+
+set -e
+
+# This command will fail
+ls /nonexistent-directory
+
+# This command will never be reached
+echo "This will not be printed."
+```
+
+### Using a Linter: `shellcheck`
+
+- `shellcheck` is a static analysis tool that gives warnings and suggestions for your shell scripts. It can help you avoid common pitfalls and write more robust scripts.
+- You may need to install it first (`sudo apt install shellcheck` on Debian/Ubuntu).
+
+**Example:**
+```sh
+# script.sh
+name="Amit"
+echo "Hello, $name" # Shellcheck will warn about quoting
+```
+
+**Running shellcheck:**
+```sh
+shellcheck script.sh
+```
+
+**Output:**
+```
+In script.sh line 2:
+echo "Hello, $name"
+              ^-- SC2086: Double quote to prevent globbing and word splitting.
+
+Did you mean:
+echo "Hello, "$name""
+```
+
+---
+
 ## Resources
 
 - [Bash Guide for Beginners](https://tldp.org/LDP/Bash-Beginners-Guide/html/)
 - [Shell Scripting Tutorial](https://www.shellscript.sh/)
 - [Bash tutorial by Free Code Camp](https://www.freecodecamp.org/news/bash-scripting-tutorial-linux-shell-script-and-command-line-for-beginners/)
 - [Bash Reference Manual](https://www.gnu.org/software/bash/manual/bash.html)
+- [ShellCheck Website](https://www.shellcheck.net/)
 
 [Next: Shell Customization Guide →](shell_customization.md)
