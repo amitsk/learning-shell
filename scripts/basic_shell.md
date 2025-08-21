@@ -78,6 +78,63 @@ ls -R
 ls -l --time-style=full-iso
 ```
 
+### eza: A Modern `ls` Alternative
+
+`eza` is a modern and feature-rich replacement for the traditional `ls` command. It provides a more colorful, informative, and user-friendly output by default.
+
+**Key Features:**
+
+- **Better Defaults:** Sensible defaults provide more information without needing extra flags.
+- **Colors:** Uses colors to distinguish between file types, permissions, and metadata.
+- **Tree View:** Includes a built-in tree view (`eza --tree`).
+- **Git Integration:** Displays the Git status of files and directories.
+- **Icons:** Can display file-specific icons if a Nerd Font is installed and enabled.
+
+**Installation:**
+
+You may need to install `eza` first. You can find installation instructions on the [official eza website](https://eza.rocks/#installation). For many package managers, it's as simple as:
+
+```sh
+# Using Homebrew (macOS/Linux)
+brew install eza
+
+# Using apt (Debian/Ubuntu)
+sudo apt install eza
+```
+
+**Common Usage:**
+
+```sh
+# A modern replacement for `ls`
+eza
+
+# A better `ls -l`
+eza -l
+
+# Show hidden files
+eza -a
+
+# Long view with icons and Git status
+eza -l --icons --git
+
+# Tree view
+eza --tree
+
+# Tree view with Git status and icons
+eza --tree --long --git --icons
+```
+
+**Alias for `ls`:**
+
+To make `eza` your default file lister, you can add an alias to your shell's configuration file (e.g., `~/.bashrc` or `~/.zshrc`):
+
+```sh
+alias ls='eza'
+alias l='eza -l'
+alias la='eza -la'
+alias lt='eza --tree'
+```
+
 ### cd: Change Directory
 
 Navigate through the file system.
