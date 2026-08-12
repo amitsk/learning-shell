@@ -82,7 +82,7 @@ This project is designed to help you practice and understand essential Linux she
 ### Build Systems: Make and Ninja
 
 - Comprehensive guide to build systems in [scripts/build_systems.md](scripts/build_systems.md)
-- Installing make with binutils, C and Rust build examples
+- Installing Make, C and Rust build examples
 - Compilation, linking, and linting workflows
 - Ninja build system comparison and usage
 - Best practices and performance optimization

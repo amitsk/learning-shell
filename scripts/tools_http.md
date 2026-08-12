@@ -41,13 +41,13 @@ wget --recursive --no-parent https://example.com/
 ### Download a File
 
 ```sh
-curl -O https://example.com/file.txt
+curl --fail --location --remote-name https://example.com/file.txt
 ```
 
 ### Download and Save with a Custom Name
 
 ```sh
-curl -o myfile.txt https://example.com/file.txt
+curl --fail --location --output myfile.txt https://example.com/file.txt
 ```
 
 ### Fetch HTTP Headers Only
@@ -59,14 +59,16 @@ curl -I https://example.com
 ### Make a POST Request
 
 ```sh
-curl -X POST -d "name=amit&age=30" https://example.com/api
+curl --fail --location --data 'name=amit&age=30' https://example.com/api
 ```
 
 ### Send Custom Headers
 
 ```sh
-curl -H "Authorization: Bearer TOKEN" https://example.com/protected
+curl --fail --header "Authorization: Bearer TOKEN" https://example.com/protected
 ```
+
+For scripts, consider adding a timeout such as `--connect-timeout 10 --max-time 60` and retries for transient failures. `curl` does not treat an HTTP 4xx or 5xx response as a command failure unless you use `--fail` or `--fail-with-body`.
 
 ---
 

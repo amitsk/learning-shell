@@ -128,7 +128,7 @@ awk -F\" '$0 ~ / 404 / {split($2, a, " "); print $1, a[2]}' nginx.log
 ## 12. AWK One-Liner to Summarize All Status Codes
 
 ```sh
-awk '{count[$9]++} END {for (code in count) print code, count[code]}' nginx.log | sort -nr
+awk '{count[$9]++} END {for (code in count) print code, count[code]}' nginx.log | sort -k2,2nr
 ```
 
 ---
@@ -179,8 +179,9 @@ awk '{count[$9]++} END {for (code in count) print code, count[code]}' nginx.log 
 - **strftime(format, timestamp)** - Format timestamps:
 
   ```sh
-  # Convert timestamp to readable date (if available)
-  awk '{print strftime("%Y-%m-%d %H:%M:%S", $4)}' nginx.log
+  # Nginx $4 is a formatted string, not a Unix timestamp. Parse it first
+  # with gawk's mktime(), or use the original timestamp as text.
+  awk -F'[][]' '{gsub("/", " ", $2); print $2}' nginx.log
   ```
 
 ---
