@@ -9,7 +9,7 @@ This guide covers the fundamental concepts of Bash scripting, including variable
 Every shell script should begin with a "shebang" line, which tells the system what interpreter to use. For Bash scripts, this is:
 
 ```sh
-#!/bin/bash
+#!/usr/bin/env bash
 ```
 
 ---
@@ -63,9 +63,9 @@ else
 fi
 
 # if-elif-else
-if [ $age -gt 18 ]; then
+if [ "$age" -gt 18 ]; then
   echo "You are an adult."
-elif [ $age -eq 18 ]; then
+elif [ "$age" -eq 18 ]; then
   echo "You are exactly 18."
 else
   echo "You are a minor."
@@ -136,7 +136,7 @@ done
 
 ```sh
 counter=1
-while [ $counter -le 5 ]; do
+while [ "$counter" -le 5 ]; do
   echo "Counter: $counter"
   ((counter++))
 done
@@ -210,7 +210,7 @@ Use the `read` command to get input from the user.
 
 ```sh
 echo "Please enter your name:"
-read user_name
+IFS= read -r -p "Name: " user_name
 echo "Hello, $user_name!"
 ```
 

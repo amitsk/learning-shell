@@ -33,7 +33,7 @@ Build systems automate the process of compiling source code into executable prog
 sudo apt update
 sudo apt install build-essential
 
-# Or install just make (part of binutils)
+# Or install just make (a separate package)
 sudo apt install make
 
 # Verify installation
@@ -43,12 +43,11 @@ make --version
 ### Other Systems
 
 ```sh
-# CentOS/RHEL/Fedora
-sudo yum install make
-# or
+# Fedora and current RHEL-based systems
 sudo dnf install make
+# `yum` may still be available as a compatibility command on older systems.
 
-# macOS (with Homebrew)
+# macOS (with Homebrew; the GNU executable may be named `gmake`)
 brew install make
 
 # Arch Linux
@@ -241,7 +240,7 @@ clean:
 install:
 	$(CARGO) install --path .
 
-# Check for outdated dependencies
+# Update the lockfile's dependency selections; this changes project state.
 update:
 	$(CARGO) update
 

@@ -64,8 +64,8 @@ ls -ltr
 ls -d */
 
 # List specific file types
-ls *.txt        # All .txt files
-ls *.py         # All Python files
+printf '%s\n' *.txt  # All .txt files (if any match)
+printf '%s\n' *.py   # All Python files (if any match)
 
 # List contents of specific directory
 ls /etc
@@ -477,12 +477,15 @@ One of the most powerful features of `find` is the `-exec` option, which allows 
 
 ```sh
 # Find all .log files in the current directory and its subdirectories,
-# and then use `rm` to delete them.
+# Preview matching regular files before deciding whether to delete them.
 # The {} is a placeholder for the found file path,
 # and the command must end with a semicolon, which needs to be escaped (\\;).
-find . -name "*.log" -exec rm {} \;
+find . -type f -name "*.log" -print
+# After reviewing the list, delete regular files interactively:
+find . -type f -name "*.log" -ok rm -- {} \;
 
 # Find all files owned by the user 'amit' and change their ownership to 'root'.
+# This requires elevated privileges and should only be used when intentional.
 find . -user amit -exec chown root {} \;
 ```
 
@@ -506,7 +509,10 @@ You can pipe any list of items to `fzf` to start the interactive finder.
 find . -type f | fzf
 
 # Interactively select a file to open in vim
-vim $(find . -type f | fzf)
+selected_file=$(find . -type f -print0 | fzf --read0)
+if [ -n "$selected_file" ]; then
+  vim -- "$selected_file"
+fi
 
 # Search through your command history
 history | fzf
@@ -656,7 +662,7 @@ grep -v "^#" config.file | grep -v "^$"
 grep -n "def " *.py
 
 # Search for email addresses
-grep -E "\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b" file.txt
+grep -E '\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b' file.txt
 ```
 
 ### ripgrep: A Modern `grep` Alternative
@@ -887,8 +893,8 @@ drwxr-xr-x 10 root root  4096 Jun 21 09:00 ..
 **Examples:**
 
 ```sh
-echo "Hello" > hello.txt      # Write to file
-cat hello.txt | grep H         # Pipe to grep
+printf '%s\n' "Hello" > hello.txt  # Write to file
+grep H hello.txt                    # Search the file directly
 ```
 
 ---
@@ -934,8 +940,12 @@ test -f config.txt || touch config.txt
 You can combine both operators for more complex logic:
 
 ```sh
-# Try to compile, and either celebrate success or handle failure
-make && echo "Build successful!" || echo "Build failed!"
+# Prefer an explicit conditional for multi-step error handling
+if make; then
+  echo "Build successful!"
+else
+  echo "Build failed!" >&2
+fi
 
 # Backup file, and either confirm success or exit with error
 cp important.txt backup/ && echo "Backup done" || { echo "Backup failed!"; exit 1; }
@@ -948,10 +958,18 @@ systemctl is-active nginx || systemctl start nginx || echo "Failed to start ngin
 
 ```sh
 # Safe file operations
-[ -d backup ] || mkdir backup && cp *.txt backup/
+if [ ! -d backup ]; then
+  mkdir backup || exit 1
+fi
+cp -- *.txt backup/
 
-# Update system packages safely
-sudo apt update && sudo apt upgrade || echo "Update failed"
+# Update system packages and preserve the failure status
+if sudo apt update && sudo apt upgrade; then
+  echo "Update complete"
+else
+  echo "Update failed" >&2
+  exit 1
+fi
 
 # Git workflow
 git add . && git commit -m "Update" && git push || echo "Git operation failed"
@@ -1228,14 +1246,14 @@ Debugging is an essential skill for writing complex scripts. Here are a few tech
 set -x  # Start tracing
 
 name="Amit"
-echo "Hello, $name"
+echo Hello, $name
 
 set +x  # Stop tracing
 
 echo "Tracing is now off."
 ```
 
-**Output:**
+**Example warning output:**
 ```
 + name=Amit
 + echo 'Hello, Amit'
@@ -1246,11 +1264,11 @@ Tracing is now off.
 
 ### Exiting on Error with `set -e`
 
-- The `set -e` command causes the script to exit immediately if any command fails (returns a non-zero exit status).
+- `set -e` (also called `errexit`) exits in many—but not all—failure cases. Failures used as tests in `if`, `while`, `&&`, or `||`, and several pipeline/command-substitution cases are exceptions. Do not treat it as a substitute for checking important commands explicitly.
 - This helps prevent unexpected behavior where a script continues to run after a critical command has failed.
 
 ```sh
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -e
 
@@ -1261,6 +1279,8 @@ ls /nonexistent-directory
 echo "This will not be printed."
 ```
 
+For scripts that need a stricter baseline, commonly start with `set -Eeuo pipefail`, then use explicit checks where failure handling matters. `-u` rejects unset variables and `pipefail` makes a pipeline fail when a command other than the last one fails; test these options with your script before relying on them.
+
 ### Using a Linter: `shellcheck`
 
 - `shellcheck` is a static analysis tool that gives warnings and suggestions for your shell scripts. It can help you avoid common pitfalls and write more robust scripts.
@@ -1270,7 +1290,7 @@ echo "This will not be printed."
 ```sh
 # script.sh
 name="Amit"
-echo "Hello, $name" # Shellcheck will warn about quoting
+echo "Hello, $name"
 ```
 
 **Running shellcheck:**
@@ -1281,11 +1301,11 @@ shellcheck script.sh
 **Output:**
 ```
 In script.sh line 2:
-echo "Hello, $name"
-              ^-- SC2086: Double quote to prevent globbing and word splitting.
+echo Hello, $name
+     ^-- SC2086: Double quote to prevent globbing and word splitting.
 
 Did you mean:
-echo "Hello, "$name""
+echo "Hello, $name"
 ```
 
 ---

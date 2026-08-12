@@ -273,10 +273,12 @@ export PROMPT="%n@%m:%~$ "
 
 [starship.rs](https://starship.rs/) is a fast, customizable, and minimal prompt for any shell.
 
-- Install with:
+- Prefer your operating system's package manager when available. If you use the installer below, download and review it first rather than piping a remote script directly to a shell:
 
   ```sh
-  curl -sS https://starship.rs/install.sh | sh
+  curl -fsSLo /tmp/starship-install.sh https://starship.rs/install.sh
+  less /tmp/starship-install.sh
+  sh /tmp/starship-install.sh
   ```
 
 - Add to your `~/.bashrc` or `~/.zshrc`:

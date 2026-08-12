@@ -26,14 +26,15 @@ The Unix shell is a command-line interface that allows you to interact with your
 
 ### macOS
 
-- The default shell is Zsh (as of macOS Catalina), but Bash is also available.
+- Current macOS installations use Zsh by default. Bash is also available, although the system Bash version may be older than the current upstream release.
 - Open Terminal (Cmd+Space, type "Terminal").
 
 ### Windows
 
-- **Recommended:** Use [Windows Terminal](https://aka.ms/terminal) for a modern terminal experience.
+- **Recommended:** Use [Windows Terminal](https://aka.ms/terminal) with WSL for a Linux-compatible environment.
 - **WSL2 (Windows Subsystem for Linux):**
-  - Install [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) to run a real Linux environment on Windows.
+  - In an elevated PowerShell, run `wsl --install`, restart if prompted, and launch the installed distribution.
+  - Use `wsl --list --online` to see distributions and `wsl -l -v` to check their WSL version.
   - You can use Ubuntu or other distributions from the Microsoft Store.
   - Access your Linux files and run Bash scripts just like on a real Linux machine.
 - **Git Bash:** A lightweight Bash environment included with [Git for Windows](https://gitforwindows.org/).
@@ -75,7 +76,7 @@ The Unix shell is a command-line interface that allows you to interact with your
 
 - [starship.rs](https://starship.rs/): A fast, customizable, and minimal prompt for any shell. Works on Linux, macOS, and Windows (including WSL2 and PowerShell).
 - [Windows Terminal](https://aka.ms/terminal): Modern, tabbed terminal for Windows. Supports PowerShell, Command Prompt, WSL, and more.
-- [nano](https://www.nano-editor.org/), [vim](https://www.vim.org/), [Microsoft Edit](https://github.com/microsoft/edit)or [Visual Studio Code](https://code.visualstudio.com/) [Helix](https://helix-editor.com/) for editing scripts.
+- [nano](https://www.nano-editor.org/), [vim](https://www.vim.org/), [Microsoft Edit](https://github.com/microsoft/edit), [Visual Studio Code](https://code.visualstudio.com/), or [Helix](https://helix-editor.com/) for editing scripts.
 
 ---
 
@@ -132,4 +133,3 @@ SSH (Secure Shell) allows you to securely connect to a remote Linux or Unix serv
 Happy scripting!
 
 [Next: Bash Shell & Scripting Basics →](basic_shell.md)
-

@@ -10,7 +10,7 @@ This guide covers the basics of user and group management, including important s
 
 - `/etc/passwd` — Stores user account information (username, UID, GID, home directory, shell, etc.)
 - `/etc/group` — Stores group information (group name, GID, group members)
-- `/etc/shadow` — Stores encrypted user passwords (usually only accessible by root)
+- `/etc/shadow` — Stores password hashes and related aging information (usually only accessible by root)
 
 ---
 
@@ -103,7 +103,7 @@ This guide covers the basics of user and group management, including important s
 
 - Changes to group membership may require the user to log out and back in to take effect.
 - You can view the contents of `/etc/passwd` and `/etc/group` with `cat`, `less`, or `grep`.
-- System users (for services) usually have UIDs below 1000.
+- System users (for services) often have low UIDs, but the exact threshold is distribution- and configuration-dependent.
 
 ---
 
