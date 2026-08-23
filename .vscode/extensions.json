@@ -1,6 +1,5 @@
 {
   "recommendations": [
-    "github.vscode-pull-request-github",
-    "github.vscode-github-actions"
+    "github.vscode-pull-request-github"
   ]
 }

@@ -42,7 +42,9 @@ If you remember one editor for emergencies, make it nano. The shortcuts are list
 nano hello.sh
 ```
 
-Useful keys (the `^` means Ctrl):
+The cheat sheet is the two lines at the **bottom of the screen**. Trust those over memory: Debian nano, Homebrew nano, and nano 8+ do not all bind the same keys.
+
+Classic GNU nano (what most Linux servers still ship):
 
 | Key | What it does |
 | --- | --- |
@@ -50,8 +52,10 @@ Useful keys (the `^` means Ctrl):
 | `Ctrl+O` then Enter | Save ("Write Out") |
 | `Ctrl+X` | Exit (it will ask to save) |
 | `Ctrl+K` / `Ctrl+U` | Cut / paste a line |
-| `Ctrl+W` | Search |
+| `Ctrl+W` | Search ("Where Is") |
 | `Ctrl+\` | Search and replace |
+
+Newer nano (8+) moved some of those to `Ctrl+S` (save), `Ctrl+F` (find), and `Alt+R` (replace). If a shortcut does nothing, look at the footer — it is labeled on purpose.
 
 That is enough coverage. Nano is the editor you use when you want to *finish the task*, not when you want a personality.
 
@@ -126,7 +130,7 @@ Ctrl+r       redo
 :set number  show line numbers
 ```
 
-Practice without risk:
+Practice without risk (needs the full `vim` package, not the tiny `vi` some distros ship):
 
 ```sh
 vimtutor
@@ -232,7 +236,7 @@ brew install emacs
 
 ## 6. Newer editors: Helix and Microsoft Edit
 
-You asked for the classics. The neighborhood has new shops too.
+The classics still matter. A few newer terminal editors are worth knowing by name.
 
 ### Helix
 
@@ -255,11 +259,14 @@ Helix still has modes, still uses `Esc`, and still has a learning curve — but 
 ```sh
 # Windows
 winget install Microsoft.Edit
-
 edit filename
+
+# macOS (Homebrew); Linux builds often use the same name
+brew install msedit
+msedit filename
 ```
 
-It also runs on Linux and macOS; see the [GitHub repo](https://github.com/microsoft/edit) for those builds. Microsoft's docs: [Edit command-line editor](https://learn.microsoft.com/en-us/windows/edit/).
+On Linux, `edit` is frequently a *different* program. Prefer `msedit` unless you know the `edit` on your `$PATH` is Microsoft Edit. Install notes for every OS: [microsoft/edit](https://github.com/microsoft/edit). Microsoft's docs: [Edit command-line editor](https://learn.microsoft.com/en-us/windows/edit/).
 
 If nano is "please just let me edit this file" for Unix, Edit is that same energy for Windows terminals — and a nice option anywhere you want VS Code muscle memory without starting VS Code.
 
@@ -325,6 +332,8 @@ git config --global core.editor nvim
 vim_mode_default = true
 ```
 
+With that set, the composer **starts in Normal mode**, not Insert. Hit `i` to type a prompt, `Esc` for commands. If keys seem to "do nothing" or eat characters, you are in Normal mode — same joke as Vim, smaller box.
+
 Docs: [Codex slash commands](https://developers.openai.com/codex/cli/slash-commands) (`/vim`) · [Codex config](https://developers.openai.com/codex/config-reference)
 
 The default composer is closer to ordinary (Emacs/readline-style) text editing. `/vim` is for people who want `Esc` / `hjkl` while writing prompts.
@@ -335,7 +344,7 @@ The default composer is closer to ordinary (Emacs/readline-style) text editing. 
 
 | Setting | Where it lives | What it changes |
 | --- | --- | --- |
-| `[ui] simple_mode` | prompt (the composer) | `true` (default) = readline-style editing; `false` = Vim modal editing in the prompt |
+| `[ui] simple_mode` | prompt (the composer) | `true` (default) = readline-style editing; `false` = **experimental** Vim modal editing in the prompt |
 | `[ui] vim_mode` | scrollback | `false` (default) = arrows to move; `true` = `j`/`k`/`h`/`l`/`g`/`G` in the log |
 
 ```toml
@@ -387,7 +396,7 @@ Editors
 
 Shell and agents
 
-- [Bash readline / `set -o`](https://www.gnu.org/software/bash/manual/html_node/Readline-Init-File.html)
+- [Bash command-line editing (`set -o vi` / `emacs`)](https://www.gnu.org/software/bash/manual/html_node/Command-Line-Editing.html)
 - [Zsh line editor](https://zsh.sourceforge.io/Doc/Release/Zsh-Line-Editor.html)
 - [Codex CLI](https://github.com/openai/codex) · [`/vim` slash command](https://developers.openai.com/codex/cli/slash-commands)
 - [Grok Build](https://docs.x.ai/build/overview) · [`/vim-mode`](https://docs.x.ai/build/modes-and-commands)

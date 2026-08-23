@@ -103,7 +103,7 @@ SSH (Secure Shell) allows you to securely connect to a remote Linux or Unix serv
   ssh amit@192.168.1.100
   ```
 
-- **First time connecting:** You may be asked to confirm the server's fingerprint. Type `yes` to continue.
+- **First time connecting:** You may be asked to confirm the server's fingerprint. Compare it with a value from the host admin (or the cloud console) before typing `yes`.
 
 ### Key-based authentication (preferred)
 
@@ -117,13 +117,13 @@ Password logins work, but they are easy to phish, tedious to type, and often dis
 
    Press Enter to accept the default path (`~/.ssh/id_ed25519`). Set a passphrase. A key without a passphrase is convenient; a key *with* one is safer if the laptop is stolen.
 
-2. **Install the public key on the server.** The easy way:
+2. **Install the public key on the server.** This first hop still uses the **account password**. Pin the key you just made:
 
    ```sh
-   ssh-copy-id username@remote_host
+   ssh-copy-id -i ~/.ssh/id_ed25519.pub username@remote_host
    ```
 
-   If `ssh-copy-id` is missing (common on macOS unless you install it), copy it by hand:
+   If `ssh-copy-id` is missing (common on macOS unless you install it), copy the **public** key by hand (you will type the server password once):
 
    ```sh
    cat ~/.ssh/id_ed25519.pub | ssh username@remote_host "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
@@ -151,7 +151,7 @@ Password logins work, but they are easy to phish, tedious to type, and often dis
      IdentityFile ~/.ssh/id_ed25519
    ```
 
-**Do not share or commit the private key.** `chmod 600 ~/.ssh/id_ed25519` and `chmod 644 ~/.ssh/id_ed25519.pub` are the usual permissions. The public key (`*.pub`) is what goes on servers; the private key never does.
+**Do not share or commit the private key.** Keep `~/.ssh` at `700`, the private key at `600`, and the public key at `644`. The public key (`*.pub`) is what goes on servers; the private key never does. Do not disable password login on the server until a second key-based login has worked.
 
 ### Copying files
 
