@@ -10,6 +10,7 @@ A collection of practical shell exercises, scripts, and cheatsheets for learning
 - [Getting Started](#getting-started)
 - [Contents](#contents)
   - [Getting Started with Shell Scripting](#getting-started-with-shell-scripting)
+  - [Text Editors on the Command Line](#text-editors-on-the-command-line)
   - [Bash Shell & Scripting Basics](#bash-shell--scripting-basics)
   - [Shell Customization](#shell-customization-guide)
   - [Text Processing with sed, awk, sort, uniq](#text-processing-with-sed-awk-sort-uniq)
@@ -48,6 +49,14 @@ This project is designed to help you practice and understand essential Linux she
 
 - Cross-platform setup and tips in [scripts/getting_started.md](scripts/getting_started.md)
 - WSL2, Windows Terminal, starship.rs, and scratch directory notes
+- SSH to remote servers, including **key-based authentication** (`ssh-keygen`, `ssh-copy-id`, `ssh-agent`)
+
+### Text Editors on the Command Line
+
+- Terminal editors in [scripts/text_editors.md](scripts/text_editors.md)
+- nano/pico, Vim (including how to exit), Neovim, Emacs
+- Newer editors: Helix and Microsoft Edit
+- Vim/Emacs keybindings in the shell, Codex CLI, and Grok Build
 
 ### Bash Shell & Scripting Basics
 
@@ -97,6 +106,7 @@ This project is designed to help you practice and understand essential Linux she
 - [CSAIL's Missing Semester Series](https://missing.csail.mit.edu/)
 - [Linux Cheatsheets](http://www.nixtutor.com/linux/all-the-best-linux-cheat-sheets/)
 - [Helix: A Modern Text Editor](https://helix-editor.com/)
+- [Microsoft Edit](https://github.com/microsoft/edit)
 - [NeoVim - hyperextensible Vim-based text editor](https://neovim.io/)
 - [starship.rs - X Shell Prompt](https://starship.rs/)
 - [Lots of Fonts](https://www.nerdfonts.com/)
@@ -106,3 +116,19 @@ This project is designed to help you practice and understand essential Linux she
 ## Contributing
 
 Contributions, suggestions, and improvements are welcome! Feel free to open issues or submit pull requests.
+
+### Reviewing changes in VS Code
+
+Pull requests are the review surface for this repo. In [Visual Studio Code](https://code.visualstudio.com/) (or [VS Code for the Web](https://vscode.dev/)):
+
+1. Install the recommended [GitHub Pull Requests](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github) extension (see `.vscode/extensions.json`).
+2. Sign in to GitHub from the Accounts menu.
+3. Open the **GitHub Pull Requests** view, pick the PR, and comment on the diff.
+
+You can also open a PR in the browser editor:
+
+```text
+https://github.dev/amitsk/learning-shell/pull/<number>
+```
+
+From a local checkout: Command Palette → **GitHub Pull Requests: Review Pull Request**.

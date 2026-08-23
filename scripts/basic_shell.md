@@ -2,6 +2,8 @@
 
 This guide introduces the basics of using the Bash shell and writing shell scripts on Linux.
 
+[← Back: Text Editors](text_editors.md) | [Next: Shell Customization Guide →](shell_customization.md)
+
 ---
 
 ## What is the Shell?

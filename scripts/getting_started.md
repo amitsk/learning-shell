@@ -2,7 +2,7 @@
 
 This guide will help you get started with using the Unix shell, command-line tools, and shell scripting on Linux, macOS, and Windows. It covers basic setup, recommended tools, and useful tips for all platforms to master both interactive shell usage and automation through scripting.
 
-[Next: Bash Shell & Scripting Basics →](basic_shell.md)
+[Next: Text Editors on the Command Line →](text_editors.md)
 
 ---
 
@@ -103,19 +103,68 @@ SSH (Secure Shell) allows you to securely connect to a remote Linux or Unix serv
   ssh amit@192.168.1.100
   ```
 
-- **First time connecting:** You may be asked to confirm the server's fingerprint. Type `yes` to continue.
-- **Copying files to/from a remote server:**
+- **First time connecting:** You may be asked to confirm the server's fingerprint. Compare it with a value from the host admin (or the cloud console) before typing `yes`.
 
-  ```sh
-  # Copy a file to the remote server
-  scp localfile.txt username@remote_host:/path/to/destination/
+### Key-based authentication (preferred)
 
-  # Copy a file from the remote server
-  scp username@remote_host:/path/to/file.txt ./
-  ```
+Password logins work, but they are easy to phish, tedious to type, and often disabled on real servers. **SSH keys** use a key pair: a private key that stays on your machine, and a public key you install on the server.
+
+1. **Generate a key** (Ed25519 is the modern default):
+
+   ```sh
+   ssh-keygen -t ed25519 -C "you@example.com"
+   ```
+
+   Press Enter to accept the default path (`~/.ssh/id_ed25519`). Set a passphrase. A key without a passphrase is convenient; a key *with* one is safer if the laptop is stolen.
+
+2. **Install the public key on the server.** This first hop still uses the **account password**. Pin the key you just made:
+
+   ```sh
+   ssh-copy-id -i ~/.ssh/id_ed25519.pub username@remote_host
+   ```
+
+   If `ssh-copy-id` is missing (common on macOS unless you install it), copy the **public** key by hand (you will type the server password once):
+
+   ```sh
+   cat ~/.ssh/id_ed25519.pub | ssh username@remote_host "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+   ```
+
+3. **Log in without a password** (you may still type the *key* passphrase):
+
+   ```sh
+   ssh username@remote_host
+   ```
+
+4. **Optional: ssh-agent** so you type the passphrase once per session:
+
+   ```sh
+   eval "$(ssh-agent -s)"
+   ssh-add ~/.ssh/id_ed25519
+   ```
+
+5. **Optional: `~/.ssh/config`** so you can type `ssh myserver` instead of a long command:
+
+   ```text
+   Host myserver
+     HostName 192.168.1.100
+     User amit
+     IdentityFile ~/.ssh/id_ed25519
+   ```
+
+**Do not share or commit the private key.** Keep `~/.ssh` at `700`, the private key at `600`, and the public key at `644`. The public key (`*.pub`) is what goes on servers; the private key never does. Do not disable password login on the server until a second key-based login has worked.
+
+### Copying files
+
+```sh
+# Copy a file to the remote server
+scp localfile.txt username@remote_host:/path/to/destination/
+
+# Copy a file from the remote server
+scp username@remote_host:/path/to/file.txt ./
+```
 
 - **More info:** [SSH Tutorial for Beginners](https://www.ssh.com/academy/ssh/command)
-- **SSH Keys Explained:**[SSH Keys](https://www.sectigo.com/resource-library/what-is-an-ssh-key)
+- **SSH keys:** [OpenSSH keys (ssh.com)](https://www.ssh.com/academy/ssh/key) · [GitHub: connecting with SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh)
 
 ---
 
@@ -127,9 +176,11 @@ SSH (Secure Shell) allows you to securely connect to a remote Linux or Unix serv
 - [Windows Terminal Documentation](https://learn.microsoft.com/en-us/windows/terminal/)
 - [WSL2 Documentation](https://learn.microsoft.com/en-us/windows/wsl/)
 - [SSH Tutorial for Beginners](https://www.ssh.com/academy/ssh/command)
+- [OpenSSH keys](https://www.ssh.com/academy/ssh/key)
 - [Linux Cheatsheets](http://www.nixtutor.com/linux/all-the-best-linux-cheat-sheets/)
+- [Text Editors on the Command Line](text_editors.md)
 
 ---
 Happy scripting!
 
-[Next: Bash Shell & Scripting Basics →](basic_shell.md)
+[Next: Text Editors on the Command Line →](text_editors.md)
