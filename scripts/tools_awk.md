@@ -1,10 +1,12 @@
 # AWK Tutorial: Analyzing nginx.log
 
----
+AWK is the "I have a log file and twenty minutes" language. It is not pretty. Logs do not care about pretty. It reads line by line, splits into fields, and lets you count, filter, and summarize without opening Excel or writing Python.
 
-## What is AWK?
+The file `nginx.log` is in this folder. Print a line first. Count the fields. Then write the one-liner.
 
-AWK is a powerful text-processing language ideal for working with columnar data, such as logs and CSV files. It processes input line by line, splitting each line into fields (by default, whitespace).
+> **In the age of AI:** Models guess `$9` because they have seen Combined Log Format. They also guess wrong when the log is slightly different, quoted, or behind a proxy that stuffed an extra field in. Ask the agent for a draft; `awk '{print $9}'` on *this* file is the review. Incident work is the same loop: narrow with AWK, paste the summary into the chat, not the entire access log.
+
+[← Back: sed, sort, uniq](tools_sed.md) | [Next: HTTP Tools →](tools_http.md)
 
 ---
 

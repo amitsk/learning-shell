@@ -1,7 +1,10 @@
 # Shell Customization Guide
 
-This guide covers how to customize your shell environment, including configuration files and prompt customization.
+[← Back: Bash Scripting Basics](tools_bash.md) | [Next: sed, sort, uniq, and More →](tools_sed.md)
 
+Your prompt is not a personality. It is a way to see `user@host:directory` before you type `rm`. This chapter is rc files, aliases, `PATH`, `sudo`, and a prompt that tells the truth.
+
+> **In the age of AI:** Agents inherit your aliases and your `PATH`. An `alias rm='rm -i'` that saves *you* will hang a non-interactive script that expected GNU `rm` to just delete. Keep surprise aliases for your interactive shell; keep generated scripts boring. And never `curl | sh` an installer you have not read — including the one that customizes this prompt.
 
 ---
 
@@ -42,14 +45,13 @@ This guide covers how to customize your shell environment, including configurati
 
 ## 1. Understanding sudo (Superuser Do)
 
-The `sudo` command allows you to run commands with elevated privileges (as another user, typically root). It's essential for system administration tasks while maintaining security.
+`sudo` is not a spicy prefix. It is "run this as someone who can break the machine." Prefer it over logging in as root; still read the command.
 
 ### What is sudo?
 
 - `sudo` stands for "superuser do" or "substitute user do"
-- It allows permitted users to execute commands as the security policy permits
-- Much safer than logging in as root directly
-- Provides audit trails of administrative actions
+- It lets permitted users run a command as root (or another user) without staying root
+- Safer than a root login, and it leaves an audit trail — which is cold comfort after `sudo rm`, but better than no trail
 
 ### Basic Usage
 
@@ -113,7 +115,7 @@ sudo mount /dev/sdb1 /mnt/usb
 - Your password is cached for 15 minutes by default (configurable)
 - Use `sudo -k` to clear the password cache immediately
 - Use `sudo -l` to see what commands you're allowed to run
-- Never run untrusted scripts with sudo
+- Never run untrusted scripts with sudo, including scripts a model wrote and you only skimmed
 
 ### Example: Installing Software
 
@@ -311,4 +313,4 @@ source ~/.zshrc
 - [starship.rs Documentation](https://starship.rs/)
 - [Zsh Guide](https://zsh.sourceforge.io/Guide/zshguide.html)
 
-[Next: sed, sort, uniq, and More →](tools_sed.md)
+[← Back: Bash Scripting Basics](tools_bash.md) | [Next: sed, sort, uniq, and More →](tools_sed.md)

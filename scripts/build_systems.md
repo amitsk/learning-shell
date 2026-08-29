@@ -1,12 +1,16 @@
 # Build Systems: Make and Ninja
 
-This guide covers build systems, focusing on `make` and `ninja`, which are essential tools for compiling and managing software projects.
+Typing `gcc` by hand is a personality. Doing it the same way tomorrow is a build system. `make` is the one you can read. `ninja` is the one a generator writes when the project gets large. Neither will forgive a recipe indented with spaces.
+
+> **In the age of AI:** Agents write Makefiles that look right in the editor and then die with `*** missing separator`. That error means "those leading spaces should have been a tab." They also invent targets, skip `.PHONY`, and `$(RM)` files you still wanted. Generate the draft; run `make -n` (dry run) before `make`. If the recipe would `rm -rf` the source tree, the tab character is not the interesting bug.
+
+[← Back: User and Group Management](users_groups.md)
 
 ---
 
 ## What are Build Systems?
 
-Build systems automate the process of compiling source code into executable programs. They:
+Build systems turn "compile these files in this order" into a file you can re-run. They:
 
 - Track dependencies between files
 - Only rebuild what has changed (incremental builds)
@@ -68,9 +72,7 @@ target: dependencies
 	command
 ```
 
-**Important**: Commands must be indented with a **TAB** character, not spaces.
-
-> **Note**: The Makefile examples below use hard tabs as required by Make. While this triggers Markdown linting warnings, tabs are mandatory for Make to function correctly.
+**Important**: Recipe lines must start with a real **TAB**, not spaces. This has ended more friendships than the editor war it came from. Markdown linters will complain about the tabs in the examples below. Make will complain if you "fix" them.
 
 ### Simple Example
 

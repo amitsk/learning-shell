@@ -1,5 +1,12 @@
 # Linux Shell Practice: sed, sort, uniq, awk, and More
 
+Spreadsheets are for people with a mouse. This chapter is a workout on `banklist.csv`: failed US banks, one row at a time. You will cut columns, drop junk, sort, uniq, and pipe until a number comes out. The commands at the top are the ones you already met; the point is combining them.
+
+> **In the age of AI:** You can paste the CSV into a chat and ask "how many banks failed in Arizona?" You should still be able to `grep ',AZ,'` and get the same answer — including noticing whether the header row got counted. When the model's count and `wc -l` disagree, `wc -l` is not the one hallucinating. Generate the one-liner if you want; run it on the file you have.
+
+[← Back: Shell Customization](shell_customization.md) | [Next: AWK Tutorial →](tools_awk.md)
+
+---
 
 ## Commands to Practice
 
@@ -9,7 +16,7 @@
 
 ## File exploration with `banklist.csv`
 
-Refer to `banklist.csv` in the same folder as this file.
+The file `banklist.csv` sits in this folder. It is real FDIC failure data, which is either grim or excellent practice, depending on your relationship with banking. Open it with `head` before you `sed` it; columns lie if you have not looked.
 
 ---
 
@@ -106,7 +113,7 @@ Refer to `banklist.csv` in the same folder as this file.
 
 - **Why are counts the same?**
 
-  > If there are no duplicate lines, both counts will match.
+  > If there are no duplicate lines, both counts will match. Also: `uniq` only collapses *adjacent* duplicates. Without `sort` first, it will lie to you with a straight face. Models forget that too.
 
 ---
 
@@ -203,7 +210,7 @@ Refer to `banklist.csv` in the same folder as this file.
 
 ## Bash Script: Line Count Difference
 
-Create a script that accepts the 2 files as arguments and prints the difference in the line counts.
+Create a script that accepts the 2 files as arguments and prints the difference in the line counts. This is the whole job, in miniature: two numbers, a check that you got two arguments, and no AI-generated CSV parser required.
 
 ### Steps
 

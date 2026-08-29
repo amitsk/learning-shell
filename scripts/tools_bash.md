@@ -1,6 +1,14 @@
 # Bash Scripting Basics
 
-This guide covers the fundamental concepts of Bash scripting, including variables, conditionals, loops, and functions.
+[← Back: Bash Shell & Scripting Basics](basic_shell.md) | [Next: Shell Customization →](shell_customization.md)
+
+Variables, `if`, loops, functions, arrays. The bits that turn a list of commands into a program you can run twice.
+
+Bash will not yell about the spaces around `=` until it has already done the wrong thing. Quote `"$file"`. Then quote it again. Unquoted expansions are how `My Documents` becomes two arguments and a surprise.
+
+> **In the age of AI:** Models write plausible Bash. They also skip `set -euo pipefail`, forget quotes, and treat `$*` like `$@`. Run `shellcheck` on the generated file before you run the file. If the agent cannot explain why `[ "$name" = "Alice" ]` needs those quotes, do not ship it.
+
+The everyday commands (`ls`, `rm`, pipes, permissions) are in [Bash Shell & Scripting Basics](basic_shell.md).
 
 ---
 
@@ -215,4 +223,4 @@ echo "Hello, $user_name!"
 ```
 
 ---
-[← Back: Getting Started](getting_started.md) | [Next: Shell Customization →](shell_customization.md)
+[← Back: Bash Shell & Scripting Basics](basic_shell.md) | [Next: Shell Customization →](shell_customization.md)

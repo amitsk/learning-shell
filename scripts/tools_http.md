@@ -1,12 +1,16 @@
 # HTTP Tools: wget & curl Basics
 
-This guide introduces the basics of using `wget` and `curl` for downloading files and interacting with web servers from the command line.
+The browser is a fine client until you need a header, a POST body, or a file on a headless box. `wget` downloads. `curl` is a Swiss Army knife that also happens to download, which is why people argue about them on the internet instead of at work. `scp` and `sftp` move files over SSH.
+
+> **In the age of AI:** Agents are fluent in `curl` and slightly too fluent in `curl | sh`. Read the URL. Look at `-H "Authorization: ..."`. Do not commit the token the model helpfully inlined, and do not pipe an installer you have not opened. `--fail` is how a script notices the server said 404 instead of treating an error page as a successful download.
+
+[← Back: AWK Tutorial](tools_awk.md) | [Next: User and Group Management →](users_groups.md)
 
 ---
 
 ## wget Basics
 
-`wget` is a command-line utility for downloading files from the web.
+`wget` is a command-line utility for downloading files from the web. Good at recursive fetches and "get this file and wait."
 
 ### Download a Single File
 
@@ -27,6 +31,8 @@ wget -b https://example.com/largefile.zip
 ```
 
 ### Download an Entire Website (recursive)
+
+This will fetch a lot of files. Confirm you meant a mirror, and that the remote host is fine with it.
 
 ```sh
 wget --recursive --no-parent https://example.com/

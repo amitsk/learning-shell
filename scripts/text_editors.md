@@ -17,6 +17,8 @@ GUIs are great until they are gone. Terminal editors show up when you:
 - run `crontab -e` or `sudo visudo`
 - fix a config in a container or recovery shell
 
+> **In the age of AI:** Models write the patch. `$EDITOR` still opens for `git rebase -i`, `crontab -e`, `visudo`, and the config file on a box with no VS Code. If you can save and quit, you can finish the job the agent started.
+
 Set a default so Git and other tools stop guessing:
 
 ```sh

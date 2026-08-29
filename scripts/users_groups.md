@@ -1,8 +1,10 @@
 # User and Group Management in Linux
 
-[End of Flow]
+UID 0 is root. Treat it like a live wire. This chapter is `/etc/passwd`, `/etc/group`, and the commands that add or remove people from a machine — which is ordinary on a laptop and a change-control event on a server.
 
-This guide covers the basics of user and group management, including important system files and common commands.
+> **In the age of AI:** A model will happily draft `userdel`, `usermod -aG sudo`, or a `chown -R`. Read it. `useradd` without `-m` is a user with no home. `usermod -aG` without the `-a` is a user whose other groups you just erased. Do not paste account changes onto a box you like until you can explain the flags.
+
+[← Back: HTTP Tools](tools_http.md) | [Next: Build Systems →](build_systems.md)
 
 ---
 

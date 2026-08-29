@@ -1,12 +1,13 @@
 # learning-shell
 
-A collection of practical shell exercises, scripts, and cheatsheets for learning and mastering Linux command-line tools.
+A collection of practical shell exercises, scripts, and cheatsheets for learning Linux command-line tools. The goal is not to memorize flags. It is to read, check, and finish the command a coding agent just wrote.
 
 [Start Here: Getting Started with Shell Scripting →](scripts/getting_started.md)
 
 ## Table of Contents
 
 - [Overview](#overview)
+- [Why the shell still matters (especially with AI)](#why-the-shell-still-matters-especially-with-ai)
 - [Getting Started](#getting-started)
 - [Contents](#contents)
   - [Getting Started with Shell Scripting](#getting-started-with-shell-scripting)
@@ -25,13 +26,30 @@ A collection of practical shell exercises, scripts, and cheatsheets for learning
 
 ## Overview
 
-This project is designed to help you practice and understand essential Linux shell commands and text processing tools. It includes hands-on exercises, sample data files, and ready-to-use scripts for:
+Hands-on exercises, sample data (`banklist.csv`, `nginx.log`), and cheatsheets for:
 
-- Navigating the filesystem
-- Manipulating file permissions and ownership
-- Processing CSV data
-- Filtering and transforming text with `sed`, `awk`, `sort`, and `uniq`
-- Analyzing log files
+- Navigating the filesystem without guessing
+- Permissions, ownership, users, and groups
+- Processing CSV and log files with `sed`, `awk`, `sort`, and `uniq`
+- HTTP from the prompt (`curl`, `wget`) instead of a GUI
+- Build files you can read (`make`, `ninja`)
+
+Each chapter has a short **In the age of AI** note: not "skip this, the model knows," but "here is what you still have to check after the model types it."
+
+---
+
+## Why the shell still matters (especially with AI)
+
+Coding agents are fluent in `bash`. They are also fluent in imaginary flags, unquoted variables, and `chmod 777` "just to make it work." The shell is how you **see** a command before it runs, **check** that it did what you meant, and **glue** small tools together on a machine the chatbot cannot click.
+
+These pages are literacy for that loop:
+
+1. **Read** what an agent is about to run — especially `rm`, `chmod`, `curl | sh`, and anything with `sudo`.
+2. **Verify** the output against the file in front of you. If `awk` counted the CSV header as a US state, the model will not be the first to notice.
+3. **Narrow the problem** with `rg`, `find`, `fzf`, and logs so you paste evidence into the agent, not the whole disk.
+4. **Finish the job** on a remote box: SSH, a terminal editor, a pipeline, a Makefile. Agents draft; you press Enter.
+
+You do not need to out-type autocomplete. You need to know when `$9` is the HTTP status, when it is not, and when `:q!` is the correct emotional response.
 
 ---
 
@@ -61,9 +79,9 @@ This project is designed to help you practice and understand essential Linux she
 
 ### Bash Shell & Scripting Basics
 
-- Beginner's guide to Bash shell and scripting in [scripts/basic_shell.md](scripts/basic_shell.md) and [scripts/tools_bash.md](scripts/tools_bash.md)
-- Variables, conditionals, loops, functions, and more
-- Dotfiles, file permissions, and `ls` options
+- Walkthrough of the filesystem in [scripts/basic_shell.md](scripts/basic_shell.md): a `scratch/` playground, then `ls`/`rm`/pipes/permissions
+- Scripting (variables, loops, functions) in [scripts/tools_bash.md](scripts/tools_bash.md)
+- Notes on reading agent-generated commands (`rm`, `chmod 777`, `shellcheck`)
 
 ### Shell Customization Guide
 

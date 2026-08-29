@@ -4,6 +4,8 @@ This is the "open a terminal without panic" chapter. It works on Linux, macOS, a
 
 Need a Linux *desktop* first — distro, install, SSH server, editors? That is a different tutorial: [amitsk/learning-linux](https://github.com/amitsk/learning-linux). This one assumes you already have a prompt you can type into.
 
+> **In the age of AI:** Coding agents write scripts. You still open a terminal, run them, and live with the result. A real Bash, SSH keys you control, and a `scratch/` directory are how you keep the experiments off production — and off the repo your teammates clone.
+
 [Next: Text Editors on the Command Line →](text_editors.md)
 
 ---
@@ -100,7 +102,7 @@ Open Terminal (`Cmd+Space`, type "Terminal"). You will land in **zsh**. Install 
 
 ## 3. Writing Your First Script
 
-A script is a text file the shell agrees to treat as a program. The first line (`#!/bin/bash`) is a shebang: it names the interpreter. Without it, you are hoping today's default shell is in a generous mood.
+A script is a text file the shell agrees to treat as a program. The first line (`#!/bin/bash`) is a shebang: it names the interpreter. Without it, you are hoping today's default shell is in a generous mood. Agents forget the shebang and `chmod +x` with some regularity. The error messages (`Permission denied`, or the script running under `sh` and choking on `[[`) are how you notice.
 
 1. Open your terminal.
 2. Create a new file:
@@ -211,6 +213,8 @@ Password logins work, but they are easy to phish, tedious to type, and often dis
    ```
 
 **Do not share or commit the private key.** Keep `~/.ssh` at `700`, the private key at `600`, and the public key at `644`. The public key (`*.pub`) is what goes on servers; the private key never does. Do not disable password login on the server until a second key-based login has worked.
+
+Paste a host fingerprint or a public key into a chat if you must. Never paste the private key, and never let an agent "helpfully" write one into the repo. SSH is how you reach machines the model cannot click; the key is how those machines decide you are you.
 
 ### Copying files
 
