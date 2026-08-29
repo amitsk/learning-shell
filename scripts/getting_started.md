@@ -1,19 +1,76 @@
 # Getting Started with the Unix Shell and Scripting
 
-This guide will help you get started with using the Unix shell, command-line tools, and shell scripting on Linux, macOS, and Windows. It covers basic setup, recommended tools, and useful tips for all platforms to master both interactive shell usage and automation through scripting.
+This is the "open a terminal without panic" chapter. It works on Linux, macOS, and Windows (via WSL). You get setup, a first script, and SSH. The rest of the repo is practice.
+
+Need a Linux *desktop* first — distro, install, SSH server, editors? That is a different tutorial: [amitsk/learning-linux](https://github.com/amitsk/learning-linux). This one assumes you already have a prompt you can type into.
 
 [Next: Text Editors on the Command Line →](text_editors.md)
 
 ---
 
-## 1. What is the Unix Shell and Shell Scripting?
+## 1. What is a shell?
 
-The Unix shell is a command-line interface that allows you to interact with your operating system using text commands. Shell scripting takes this a step further by letting you automate tasks by writing a series of shell commands in a file (a script). Together, they provide powerful capabilities for:
+The operating system kernel talks to hardware. You do not talk to the kernel. You talk to a **shell**: a program that reads what you type, runs commands, and prints the result.
 
-- Interactive system management and file operations
-- Automating repetitive tasks
-- Processing files and data efficiently
-- Managing system operations and workflows
+The window that shows this is a **terminal** (Terminal.app, GNOME Terminal, Windows Terminal, that black rectangle in your IDE). The terminal is the stage. The shell is the actor. Mixing the two names up is a rite of passage; mixing them up in a job interview is optional.
+
+**Shell scripting** is the same conversation, written down. A script is a file of commands the shell runs in order so you do not have to type them every Tuesday.
+
+A shell is good at:
+
+- Moving around the filesystem and wrangling files
+- Gluing small tools together (`grep`, `sort`, pipes)
+- Automating the boring stuff
+- Talking to remote machines over SSH
+
+It is a poor spreadsheet, a worse word processor, and will not forgive a typo the way a GUI "are you sure?" box would.
+
+### Common shells
+
+You only need one. These names show up anyway:
+
+| Shell | In one or two lines |
+| --- | --- |
+| **bash** (Bourne Again SHell) | Default on most Linux distros, WSL, CI images, and Dockerfiles. The lingua franca of "paste this into a terminal." |
+| **zsh** (Z shell) | Default login shell on **macOS** since Catalina. Fancy completion and plugins; most bash you type still works. |
+| **ksh** (KornShell) | Older professional Unix shell. Still appears on AIX, Solaris, and in enterprise scripts that have outlived their authors. |
+| **csh** / **tcsh** (C shell) | C-like syntax from BSD. Historic; do not write new scripts in it. The industry had a meeting about this and then never scheduled a second one. |
+| **fish** (Friendly Interactive Shell) | Pleasant to live in, *not* POSIX-compatible. Great interactive UX; a bad place to paste this tutorial's examples. |
+
+### macOS: zsh is the default, Bash 3.2 is a museum piece
+
+Apple's Terminal starts **zsh**. That is fine for daily use.
+
+macOS also ships `/bin/bash`, but it is **Bash 3.2** — frozen because of GPL licensing, not because 3.2 was the pinnacle of human achievement. This tutorial's examples assume a current Bash (5.x). Install one with [Homebrew](https://brew.sh/):
+
+```sh
+brew install bash
+$(brew --prefix)/bin/bash --version   # want 5.x, not 3.2
+```
+
+Optional: make Homebrew's Bash your login shell (so new Terminal windows start there):
+
+```sh
+echo "$(brew --prefix)/bin/bash" | sudo tee -a /etc/shells
+chsh -s "$(brew --prefix)/bin/bash"
+```
+
+Apple Silicon lands at `/opt/homebrew/bin/bash`; Intel at `/usr/local/bin/bash`. `brew --prefix` saves you from memorizing that.
+
+You do **not** have to switch your login shell. Running `bash` (or the Homebrew path) when you follow this tutorial is enough.
+
+### We will use Bash
+
+zsh, fish, and ksh are allowed hobbies. **Every explanation and script in this tutorial is Bash**, unless a page says otherwise. Bash is what Linux servers, autograders, and "works on my machine" Dockerfiles speak. A file that starts with `#!/bin/bash` is the one your future teammate will assume.
+
+If your prompt is zsh, start a Bash session for the exercises:
+
+```sh
+bash
+echo "$BASH_VERSION"
+```
+
+Do not paste `[[` tests into fish and then blame the tutorial. fish is allowed to be different; this document is not going to chase it.
 
 ---
 
@@ -21,27 +78,29 @@ The Unix shell is a command-line interface that allows you to interact with your
 
 ### Linux
 
-- Most distributions come with Bash pre-installed.
-- Open your terminal (Ctrl+Alt+T or search for "Terminal").
+Bash is already there on Mint, Ubuntu, Fedora, and friends. Open a terminal (`Ctrl+Alt+T`, or search for "Terminal") and you are in it.
+
+If you still need to *install* Linux, follow [amitsk/learning-linux](https://github.com/amitsk/learning-linux) first, then come back.
 
 ### macOS
 
-- Current macOS installations use Zsh by default. Bash is also available, although the system Bash version may be older than the current upstream release.
-- Open Terminal (Cmd+Space, type "Terminal").
+Open Terminal (`Cmd+Space`, type "Terminal"). You will land in **zsh**. Install a modern Bash as in [section 1](#macos-zsh-is-the-default-bash-32-is-a-museum-piece), then either `chsh` or just type `bash` when you work through these pages.
 
 ### Windows
 
-- **Recommended:** Use [Windows Terminal](https://aka.ms/terminal) with WSL for a Linux-compatible environment.
+- **Recommended:** [Windows Terminal](https://aka.ms/terminal) plus **WSL** — a real Linux userland, not a costume.
 - **WSL2 (Windows Subsystem for Linux):**
   - In an elevated PowerShell, run `wsl --install`, restart if prompted, and launch the installed distribution.
   - Use `wsl --list --online` to see distributions and `wsl -l -v` to check their WSL version.
-  - You can use Ubuntu or other distributions from the Microsoft Store.
-  - Access your Linux files and run Bash scripts just like on a real Linux machine.
-- **Git Bash:** A lightweight Bash environment included with [Git for Windows](https://gitforwindows.org/).
+  - Ubuntu from the Microsoft Store is the boring, correct choice.
+  - Inside WSL you have Bash, the same as a Linux box. Git Bash is the backup plan, not the lifestyle.
+- **Git Bash:** a lightweight Bash included with [Git for Windows](https://gitforwindows.org/). Fine for `git` and a few scripts; WSL is closer to the real thing.
 
 ---
 
 ## 3. Writing Your First Script
+
+A script is a text file the shell agrees to treat as a program. The first line (`#!/bin/bash`) is a shebang: it names the interpreter. Without it, you are hoping today's default shell is in a generous mood.
 
 1. Open your terminal.
 2. Create a new file:
@@ -82,7 +141,7 @@ The Unix shell is a command-line interface that allows you to interact with your
 
 ## 5. Notes on the `scratch` Directory
 
-- Any files you create in the `scratch` directory are ignored by Git and will not show up as changes. Use this directory for experiments and temporary files.
+Files under `scratch/` are gitignored. Break things there. That is the point. The rest of the repo would rather not see your `hello2-final-FINAL.sh`.
 
 ---
 

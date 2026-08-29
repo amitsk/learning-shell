@@ -8,7 +8,7 @@ This guide introduces the basics of using the Bash shell and writing shell scrip
 
 ## What is the Shell?
 
-The shell is a command-line interface for interacting with your operating system. Bash (Bourne Again SHell) is the most common shell on Linux.
+Short version: the **terminal** is the window; the **shell** is the program that reads your commands. This tutorial uses **Bash**. Full tour of bash vs zsh vs fish, and installing Bash on a Mac: [Getting started](getting_started.md#1-what-is-a-shell).
 
 ---
 

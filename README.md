@@ -48,6 +48,7 @@ This project is designed to help you practice and understand essential Linux she
 ### Getting Started with Shell Scripting
 
 - Cross-platform setup and tips in [scripts/getting_started.md](scripts/getting_started.md)
+- What a shell is, bash/zsh/ksh/csh/fish in brief, and why these pages use Bash
 - WSL2, Windows Terminal, starship.rs, and scratch directory notes
 - SSH to remote servers, including **key-based authentication** (`ssh-keygen`, `ssh-copy-id`, `ssh-agent`)
 
