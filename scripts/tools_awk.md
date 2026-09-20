@@ -12,6 +12,8 @@ The file `nginx.log` is in this folder. Print a line first. Count the fields. Th
 
 ## 1. Print the Whole Log
 
+Hello, world. This is `cat` with extra steps, and it proves the file opens.
+
 ```sh
 awk '{print}' nginx.log
 ```
@@ -21,11 +23,13 @@ This simply prints every line (like `cat`).
 
 ## 2. Print Only the IP Addresses
 
-The IP address is the **first field** in each line.
+By default, fields are whitespace-separated. `$1` is the left edge. On a Combined Log Format line, that is the client IP.
 
 ```sh
 awk '{print $1}' nginx.log
 ```
+
+Print one raw line with `head -1 nginx.log` and count the fields if your log looks different. AWK is not psychic; it is just numbered.
 
 ---
 
@@ -38,15 +42,19 @@ awk '{print $1}' nginx.log | sort | uniq | wc -l
 - `sort | uniq` finds unique IPs.
 - `wc -l` counts them.
 
+`uniq` only collapses *adjacent* duplicates. Without `sort` first, it will lie to you with a straight face. Same joke as in the sed chapter; it is worth repeating.
+
 ---
 
 ## 4. Print Only the HTTP Status Codes
 
-The status code is the **9th field**.
+The status code is the **9th field** — on *this* log. That is a Combined Log Format habit, not a law of nature.
 
 ```sh
 awk '{print $9}' nginx.log
 ```
+
+If you see URLs or dashes where you expected `200`, you counted wrong. Go back to section 2.
 
 ---
 
@@ -55,11 +63,13 @@ awk '{print $9}' nginx.log
 ```sh
 awk '{print $9}' nginx.log | sort | uniq -c | sort -nr
 ```
-This shows how many times each status code appears.
+`uniq -c` counts; `sort -nr` puts the popular codes on top. This is the classic "how was today?" histogram.
 
 ---
 
 ## 6. Show Only 404 Errors
+
+A pattern before the block is a filter. No `{print}` needed: AWK prints the whole line by default.
 
 ```sh
 awk '$9 == 404' nginx.log
@@ -74,6 +84,8 @@ Prints lines where the status code is 404.
 awk '$9 == 404' nginx.log | wc -l
 ```
 
+Same filter, then count. If the number is huge, you have a missing page. If it is zero, either the site is fine or `$9` is not the status.
+
 ---
 
 ## 8. Print Requested URLs
@@ -83,7 +95,7 @@ The URL is the **7th field** (inside the quotes, so you may need to tweak the fi
 ```sh
 awk '{print $7}' nginx.log
 ```
-But in your log, the request is in quotes, so use a custom field separator:
+Quotes in the log are why `$7` is a polite lie. Cut on `"` instead:
 
 ```sh
 awk -F\" '{print $2}' nginx.log
@@ -96,6 +108,8 @@ To get just the path:
 awk -F\" '{split($2, a, " "); print a[2]}' nginx.log
 ```
 
+Ugly? Yes. Faster than opening Python to split one quoted string? Also yes.
+
 ---
 
 ## 9. Top Requested URLs
@@ -104,9 +118,13 @@ awk -F\" '{split($2, a, " "); print a[2]}' nginx.log
 awk -F\" '{split($2, a, " "); print a[2]}' nginx.log | sort | uniq -c | sort -nr | head
 ```
 
+Same histogram as the status codes, now for paths. `head` keeps you from listing the entire internet.
+
 ---
 
 ## 10. Combine Filters: 404s by URL
+
+Which missing pages? First form is quick; the quote-splitting one is fussier and more accurate.
 
 ```sh
 awk '$9 == 404 {print $7}' nginx.log | sort | uniq -c | sort -nr
@@ -121,6 +139,8 @@ awk -F\" '$0 ~ / 404 / {split($2, a, " "); print a[2]}' nginx.log | sort | uniq 
 
 ## 11. Print IP and URL for 404s
 
+Who asked for the missing page?
+
 ```sh
 awk -F\" '$0 ~ / 404 / {split($2, a, " "); print $1, a[2]}' nginx.log
 ```
@@ -129,6 +149,8 @@ awk -F\" '$0 ~ / 404 / {split($2, a, " "); print $1, a[2]}' nginx.log
 
 ## 12. AWK One-Liner to Summarize All Status Codes
 
+You can skip the `sort | uniq -c` pipeline and let AWK count. `END` runs once, after the last line — the closing credits.
+
 ```sh
 awk '{count[$9]++} END {for (code in count) print code, count[code]}' nginx.log | sort -k2,2nr
 ```
@@ -136,6 +158,8 @@ awk '{count[$9]++} END {for (code in count) print code, count[code]}' nginx.log 
 ---
 
 ## 13. AWK Built-in Functions
+
+The "I refuse to open Python for this" toolkit. You do not need all of them. You need to know they exist.
 
 ### String Functions
 
@@ -185,6 +209,8 @@ awk '{count[$9]++} END {for (code in count) print code, count[code]}' nginx.log 
   # with gawk's mktime(), or use the original timestamp as text.
   awk -F'[][]' '{gsub("/", " ", $2); print $2}' nginx.log
   ```
+
+This file writes `[17/May/2015:08:05:32 +0000]`, not a Unix epoch. `strftime` wants a number. The snippet above peels the brackets off and leaves the date as text, which is usually what you wanted anyway.
 
 ---
 

@@ -12,34 +12,31 @@ Your prompt is not a personality. It is a way to see `user@host:directory` befor
 
 ### What is the Home Directory?
 
-- Your home directory is your personal space for files and configuration on Unix-like systems.
-- The path is usually `/home/username` (Linux) or `/Users/username` (macOS).
-- Shortcut: `~` always refers to your home directory.
-- To go to your home directory:
+`~` is the shortest path you will type all day. It is your personal space for files and config: `/home/username` on Linux, `/Users/username` on macOS. `cd` with no arguments is a homing pigeon.
 
-  ```sh
-  cd ~
-  # or simply
-  cd
-  ```
+```sh
+cd ~
+# or simply
+cd
+```
 
 ### Who Am I? (Finding Your Username)
 
-- Use the `whoami` command to print your current username:
+For when you have too many terminals and have lost the plot:
 
-  ```sh
-  whoami
-  ```
+```sh
+whoami
+```
 
 ### Identifying Your Current Shell
 
-- To see which shell you are currently using:
+`$SHELL` is your *login* shell — a polite fiction if you typed `bash` after zsh started. `ps -p $$` is who is actually answering.
 
-  ```sh
-  echo $SHELL
-  # or
-  ps -p $$
-  ```
+```sh
+echo $SHELL
+# or
+ps -p $$
+```
 
 ---
 
@@ -73,6 +70,8 @@ sudo ls -la /root
 sudo -u username command
 ```
 
+`sudo -u` is "do this as them," not "do this as god." Useful, less exciting.
+
 ### Common sudo Tasks
 
 **File operations requiring elevated privileges:**
@@ -103,19 +102,21 @@ sudo tail -f /var/log/syslog
 sudo mount /dev/sdb1 /mnt/usb
 ```
 
+`tail -f` is a live tail. `Ctrl+C` when you have seen enough drama.
+
 ### Best Practices
 
-- **Use sudo instead of su**: Avoid switching to root user permanently
-- **Be specific**: Only use sudo for commands that actually need elevated privileges
-- **Double-check commands**: Always verify what you're about to run with sudo
-- **Use visudo**: Edit `/etc/sudoers` only with `sudo visudo` to prevent syntax errors
+- **Use sudo instead of su**: `su` is a root shell you then have to remember to leave. `sudo` is one command and done.
+- **Be specific**: Only `sudo` the command that needs it. `htop` does not.
+- **Read it twice**: especially anything with `rm`, `chmod`, or a path starting at `/`
+- **Use visudo**: Edit `/etc/sudoers` only with `sudo visudo`. It checks syntax before it lets you lock yourself out.
 
 ### Security Tips
 
-- Your password is cached for 15 minutes by default (configurable)
-- Use `sudo -k` to clear the password cache immediately
-- Use `sudo -l` to see what commands you're allowed to run
-- Never run untrusted scripts with sudo, including scripts a model wrote and you only skimmed
+- Your password is cached for about 15 minutes. That is convenience, not magic.
+- `sudo -k` forgets the cache now.
+- `sudo -l` lists what you are actually allowed to run.
+- Never run an untrusted script with sudo, including one a model wrote and you only skimmed.
 
 ### Example: Installing Software
 
@@ -133,6 +134,8 @@ htop
 ---
 
 ## 2. Shell Configuration Files
+
+Interactive settings (aliases, prompt, `set -o vi`) go in the `*rc` file. Login-once settings (environment, `PATH`) go in the profile. The difference has confused everyone once. When in doubt, put it in `~/.bashrc` (or `~/.zshrc`) and [reload](#6-reloading-your-config).
 
 ### Bash
 
@@ -152,7 +155,7 @@ htop
 
 ### Aliases
 
-Add shortcuts for common commands in your `~/.bashrc` or `~/.zshrc`:
+Shortcuts for *your* fingers. Put them in `~/.bashrc` or `~/.zshrc`. The `-i` flag is a seatbelt on `mv` / `rm` / `cp`: they ask before clobbering. That saves interactive you. It will hang a script waiting for a prompt nobody will type.
 
 ```sh
 alias ll='ls -lFh'
@@ -162,11 +165,9 @@ alias rm='rm -i'
 alias cp='cp -i'
 ```
 
-- The `-i` flag makes `mv`, `rm`, and `cp` interactive, prompting before overwriting or deleting files. This helps prevent accidental data loss, which is a common risk in Unix systems when using these commands without confirmation.
-
 ### Functions
 
-Define your own shell functions:
+A tiny program you keep in the rc file. `mkcd` is the one everyone writes eventually: make the directory, then go there.
 
 ```sh
 mkcd() {
@@ -176,7 +177,7 @@ mkcd() {
 
 ### Environment Variables
 
-Environment variables are key-value pairs that affect how programs run. Set variables for your session:
+Key-value pairs that child processes can see — once you `export` them. `PATH` is a scavenger hunt: first match wins. Put `~/bin` at the front if you want *your* `hello` to beat `/usr/bin/hello`.
 
 ```sh
 export EDITOR=vim
@@ -193,13 +194,13 @@ export HISTFILESIZE=20000
 - `LANG`: System language and locale settings
 
 **Tips:**
-- Use `export` to make variables available to child processes
-- View all environment variables with `env` or `printenv`
-- View a specific variable with `echo $VARIABLE_NAME`
+- `export` makes the variable available to child processes
+- `env` or `printenv` lists them all
+- `echo $VARIABLE_NAME` prints one
 
 ### Personal Bin Directory
 
-Create a personal `bin` directory for your custom scripts:
+Your scripts, your `PATH`, no `sudo` required. This is the grown-up version of "I keep a file on the Desktop named `run this.sh`."
 
 ```sh
 # Create the directory
@@ -228,24 +229,23 @@ myscript
 
 ### Vi Mode
 
-Enable vi-style command line editing in your shell:
+Same joke as Vim, smaller box. `Esc` then `hjkl` on the command line. Full tour is in [Text editors](text_editors.md#7-vim-and-emacs-modes-in-the-shell-and-in-coding-agents).
 
 ```sh
 set -o vi
 ```
 
-- This allows you to use vi keybindings for editing commands
-- Press `Esc` to enter command mode, then use vi commands like `h`, `j`, `k`, `l` for navigation
-- Use `i` to return to insert mode
-- Add this to your `~/.bashrc` or `~/.zshrc` to make it permanent
+- Press `Esc` for command mode, then `h` `j` `k` `l` to move
+- `i` returns to insert mode
+- Add this to `~/.bashrc` or `~/.zshrc` to keep it
 
 ---
 
 ## 4. Prompt Customization
 
-### Bash Prompt (PS1)
+Those backslash codes are not regex. They are prompt hieroglyphs. The `\[ \]` around colors is how Bash knows those characters are zero-width for line wrapping. Skip them and wrapping gets drunk.
 
-Customize your prompt by setting the `PS1` variable in `~/.bashrc`:
+### Bash Prompt (PS1)
 
 ```sh
 export PS1="\u@\h:\w$ "
@@ -263,17 +263,25 @@ export PS1="\[\e[32m\]\u@\h\[\e[0m\]:\[\e[34m\]\w\[\e[0m\]$ "
 
 ### Zsh Prompt
 
-Zsh uses the `PROMPT` variable:
+Zsh uses `PROMPT` instead of `PS1`. Different letters, same idea.
 
 ```sh
 export PROMPT="%n@%m:%~$ "
 ```
 
+When the hieroglyphs stop being fun, skip to starship or Oh My Posh below.
+
 ---
 
-## 5. Advanced Prompt: starship.rs
+## 5. Advanced Prompt: starship.rs and Oh My Posh
 
-[starship.rs](https://starship.rs/) is a fast, customizable, and minimal prompt for any shell.
+`PS1` is enough until you want git branch, language version, and command duration without writing a novel of escape codes. [starship.rs](https://starship.rs/) and [Oh My Posh](https://ohmyposh.dev/) are both fast, cross-shell prompt engines. Pick **one**. Putting both `eval` lines in the same rc file means they fight over the prompt.
+
+Both look best with a [Nerd Font](https://www.nerdfonts.com/) set in the terminal. Both ship installers that people `curl | sh` without reading. Don't.
+
+### starship.rs
+
+[starship.rs](https://starship.rs/) is a fast, customizable, and minimal prompt for any shell. One TOML file configures every shell you init.
 
 - Prefer your operating system's package manager when available. If you use the installer below, download and review it first rather than piping a remote script directly to a shell:
 
@@ -293,11 +301,67 @@ export PROMPT="%n@%m:%~$ "
 
 - Configure with `~/.config/starship.toml`
 
+### Oh My Posh
+
+[Oh My Posh](https://ohmyposh.dev/) is a prompt theme engine for any shell (bash, zsh, PowerShell, fish, and more). It ships a large set of themes and configures in JSON, YAML, or TOML. On WSL, install the Linux binary, not the Windows one.
+
+- Prefer a package manager when you have one:
+
+  ```sh
+  # macOS / Linux (Homebrew)
+  brew install jandedobbeleer/oh-my-posh/oh-my-posh
+
+  # Windows
+  winget install JanDeDobbeleer.OhMyPosh --source winget
+  ```
+
+- On Linux without Homebrew, download and review the installer first. It needs `curl`, `unzip`, `realpath`, and `dirname`. The script installs to `~/bin` or `~/.local/bin` (see [Personal Bin Directory](#personal-bin-directory) — that directory must be on `PATH`):
+
+  ```sh
+  curl -fsSLo /tmp/oh-my-posh-install.sh https://ohmyposh.dev/install.sh
+  less /tmp/oh-my-posh-install.sh
+  bash /tmp/oh-my-posh-install.sh
+  ```
+
+- Add as the last line of your `~/.bashrc` or `~/.zshrc`:
+
+  ```sh
+  eval "$(oh-my-posh init bash)"
+  # or for zsh:
+  eval "$(oh-my-posh init zsh)"
+  ```
+
+  PowerShell (`$PROFILE`):
+
+  ```powershell
+  oh-my-posh init pwsh | Invoke-Expression
+  ```
+
+  Unsure which shell you are in: `oh-my-posh get shell`.
+
+- Themes: pass `--config` with a theme name, a local file, or a URL. A local file is faster than a name or URL (those download on first use):
+
+  ```sh
+  eval "$(oh-my-posh init bash --config ~/.mytheme.omp.json)"
+  ```
+
+  Export the current theme to tweak it:
+
+  ```sh
+  oh-my-posh config export --output ~/.mytheme.omp.json
+  ```
+
+  Preview without restarting the shell:
+
+  ```sh
+  oh-my-posh print preview
+  ```
+
 ---
 
 ## 6. Reloading Your Config
 
-After editing your rc/profile files, reload them with:
+Editing the rc file does nothing to the shell that is already open. `source` is "read this file again." Or open a new terminal, which is the same idea with more ceremony.
 
 ```sh
 source ~/.bashrc
@@ -311,6 +375,7 @@ source ~/.zshrc
 
 - [Bash Prompt HOWTO](https://tldp.org/HOWTO/Bash-Prompt-HOWTO/)
 - [starship.rs Documentation](https://starship.rs/)
+- [Oh My Posh Documentation](https://ohmyposh.dev/)
 - [Zsh Guide](https://zsh.sourceforge.io/Guide/zshguide.html)
 
 [← Back: Bash Scripting Basics](tools_bash.md) | [Next: sed, sort, uniq, and More →](tools_sed.md)

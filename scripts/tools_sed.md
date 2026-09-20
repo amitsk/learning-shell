@@ -10,6 +10,8 @@ Spreadsheets are for people with a mouse. This chapter is a workout on `banklist
 
 ## Commands to Practice
 
+You already met these. Today they work as a band.
+
 - `pwd`, `cd`, `chmod`, `chown`, `ls` (with flags), `rm`, `mkdir`, `tail`, `head`, `<`, `grep`, `|`
 
 ---
@@ -21,6 +23,8 @@ The file `banklist.csv` sits in this folder. It is real FDIC failure data, which
 ---
 
 ## Viewing File Contents
+
+`head` and `tail` take a filename. `cat file | head` works; `head file` is the same walk with fewer steps. Try both, then keep the shorter one.
 
 - **Print first 5 lines:**
 
@@ -41,6 +45,8 @@ The file `banklist.csv` sits in this folder. It is real FDIC failure data, which
   tail -2 banklist.csv | head -1
   ```
 
+  `tail -2` is the last two lines; `head -1` keeps the first of those. Unix does not have `tail --second-to-last`. It has pipes.
+
 - **Print specific columns using cut:**
 
   ```sh
@@ -48,9 +54,13 @@ The file `banklist.csv` sits in this folder. It is real FDIC failure data, which
   # Print the first column of a comma delimited file
   ```
 
+  `-d ,` is the delimiter. Count the commas in `head -1` if field 1 is not the bank name you expected.
+
 ---
 
 ## Removing Lines with Leading Quotes Using `sed`
+
+`sed` is a stream editor. It reads a line, maybe changes it, prints it. It does not open nano and hope. Some rows in this CSV start with a stray `"`. Those are junk. The scrubbed file is the one you sort.
 
 - [sed one-liners reference](http://sed.sourceforge.net/sed1line.txt)
 - **Print only lines which do NOT match regexp (emulates `grep -v`):**
@@ -66,15 +76,21 @@ The file `banklist.csv` sits in this folder. It is real FDIC failure data, which
     sed '/regexp/d'
     ```
 
+  `!p` is "print if it does *not* match." `d` is "delete that line from the stream" (the file on disk is fine unless you used `-i`).
+
 - **Remove all lines with leading quotes (`^"`):**
 
   ```sh
   sed -n '/^"/!p' < banklist.csv > banklist-scrubbed.csv
   ```
 
+  `^` means start of line. The output file is new; the original stays. Look at both with `head` before you trust the scrub.
+
 ---
 
 ## Sorting Bank Names
+
+`sort` thinks in lines, not in "bank names" as a concept. `-f` is "Bank" and "bank" are the same argument.
 
 - **Sort ascending and descending using the `sort` command.**
 - **Options:**
@@ -104,6 +120,8 @@ The file `banklist.csv` sits in this folder. It is real FDIC failure data, which
   wc -l banklist.csv
   ```
 
+  That count includes the header. The header is not a bank. Subtract one in your head, or notice it on purpose.
+
 - **Remove duplicates and count:**
 
   ```sh
@@ -119,6 +137,8 @@ The file `banklist.csv` sits in this folder. It is real FDIC failure data, which
 
 ## States List and Sorting
 
+Column 3 is the state — on *this* CSV. Count the commas with `head -1` if you do not believe me.
+
 - **Print out the list of all States (unique, sorted):**
 
   ```sh
@@ -128,6 +148,8 @@ The file `banklist.csv` sits in this folder. It is real FDIC failure data, which
 ---
 
 ## Filtering and Counting by State
+
+The commas around `AZ` keep you from matching a bank in BLAZING-whatever. CSV is not a database; it is a polite agreement about commas.
 
 - **Get the list of all banks in AZ:**
 
@@ -145,6 +167,8 @@ The file `banklist.csv` sits in this folder. It is real FDIC failure data, which
 
 ## Combining Tools (Pipes)
 
+This is the whole chapter in one line: cut a column, sort it, collapse duplicates, count.
+
 - **Count unique states:**
 
   ```sh
@@ -160,6 +184,8 @@ The file `banklist.csv` sits in this folder. It is real FDIC failure data, which
 ---
 
 ## AWK Basics (for CSV and Logs)
+
+A preview of the next chapter. `-F,` tells AWK the comma is the field separator, not whitespace. `$1` is the bank, `$3` is the state — same columns you just `cut`.
 
 - **Print the first column (bank name):**
 
@@ -179,9 +205,13 @@ The file `banklist.csv` sits in this folder. It is real FDIC failure data, which
   awk -F, '{count[$3]++} END {for (s in count) print s, count[s]}' banklist-scrubbed.csv | sort
   ```
 
+  `END` runs once, after the last line. The next chapter lives here.
+
 ---
 
 ## Checking File Encoding and Line Endings
+
+Windows leftover `CRLF` makes `$` in a regex miss the end of the line, and makes you question your life choices. `file` tells on it.
 
 - **Check file encoding:**
 
@@ -199,6 +229,8 @@ The file `banklist.csv` sits in this folder. It is real FDIC failure data, which
 
 ## Comparing File Line Counts
 
+The scrubbed file should be shorter if you actually dropped lines. If the counts match, either there were no leading quotes or the redirect wrote the same file twice. Look.
+
 - **Compare the count in the 2 files:**
 
   ```sh
@@ -210,7 +242,7 @@ The file `banklist.csv` sits in this folder. It is real FDIC failure data, which
 
 ## Bash Script: Line Count Difference
 
-Create a script that accepts the 2 files as arguments and prints the difference in the line counts. This is the whole job, in miniature: two numbers, a check that you got two arguments, and no AI-generated CSV parser required.
+Create a script that accepts the 2 files as arguments and prints the difference in the line counts. This is the whole job, in miniature: two numbers, a check that you got two arguments, and no AI-generated CSV parser required. Put it in `scratch/` if you like; that folder is gitignored on purpose.
 
 ### Steps
 

@@ -10,13 +10,19 @@ UID 0 is root. Treat it like a live wire. This chapter is `/etc/passwd`, `/etc/g
 
 ## 1. Key System Files
 
-- `/etc/passwd` — Stores user account information (username, UID, GID, home directory, shell, etc.)
-- `/etc/group` — Stores group information (group name, GID, group members)
-- `/etc/shadow` — Stores password hashes and related aging information (usually only accessible by root)
+These three files are the phone book. They are ordinary text. `less` them before you edit them.
+
+- `/etc/passwd` — User accounts: username, UID, GID, home directory, shell. Despite the name, the passwords do not live here anymore. That would have been too exciting.
+- `/etc/group` — Groups: name, GID, members.
+- `/etc/shadow` — Password hashes and aging. Root can read it; you usually cannot, which is the point.
+
+Fields are colon-separated. `cut -d:` is how you pick a column without inventing a parser.
 
 ---
 
 ## 2. Viewing Users and Groups
+
+Look first. Adding a user is easy; noticing you already have one named `newuser` is easier if you look.
 
 - List all users:
 
@@ -30,7 +36,7 @@ UID 0 is root. Treat it like a live wire. This chapter is `/etc/passwd`, `/etc/g
   cut -d: -f1 /etc/group
   ```
 
-- Show your current user:
+- Show your current user (for when you have lost the plot):
 
   ```sh
   whoami
@@ -42,15 +48,19 @@ UID 0 is root. Treat it like a live wire. This chapter is `/etc/passwd`, `/etc/g
   groups
   ```
 
-- Show details for a specific user:
+- Show details for a specific user — UID, GID, and every group. This is the useful one:
 
   ```sh
   id username
   ```
 
+`id` with no name is you. Try it.
+
 ---
 
 ## 3. Adding and Managing Users
+
+Practice on a throwaway account or a VM, not the login you are using. `useradd` without `-m` creates a user with no home directory, which is a sad way to exist. Use `-m` unless you meant a system account.
 
 - Add a new user:
 
@@ -71,9 +81,13 @@ UID 0 is root. Treat it like a live wire. This chapter is `/etc/passwd`, `/etc/g
   sudo userdel newuser
   ```
 
+`userdel` leaves the home directory behind unless you pass `-r`. That is a kindness when you meant to keep the files, and a surprise disk-full when you did not.
+
 ---
 
 ## 4. Adding and Managing Groups
+
+A group is a nametag you put on people so they can share files. `sudo` is a group on many distros. That is why the next flag matters.
 
 - Add a new group:
 
@@ -87,7 +101,7 @@ UID 0 is root. Treat it like a live wire. This chapter is `/etc/passwd`, `/etc/g
   sudo groupdel newgroup
   ```
 
-- Add a user to a group:
+- Add a user to a group. The `-a` is "append." Without it, `usermod -G` *replaces* their groups with just this one — a surprisingly effective way to drop someone from `sudo`:
 
   ```sh
   sudo usermod -aG groupname username
@@ -103,9 +117,9 @@ UID 0 is root. Treat it like a live wire. This chapter is `/etc/passwd`, `/etc/g
 
 ## 5. Useful Tips
 
-- Changes to group membership may require the user to log out and back in to take effect.
-- You can view the contents of `/etc/passwd` and `/etc/group` with `cat`, `less`, or `grep`.
-- System users (for services) often have low UIDs, but the exact threshold is distribution- and configuration-dependent.
+- Group membership often waits until the next login. A new terminal (or `newgrp`) is faster than rebooting out of superstition.
+- Read `/etc/passwd` and `/etc/group` with `cat`, `less`, or `grep`. They are text. Treat them that way.
+- System users (for services like `www-data`) usually have low UIDs. The exact cutoff depends on the distro, so do not memorize a number — look at the file.
 
 ---
 

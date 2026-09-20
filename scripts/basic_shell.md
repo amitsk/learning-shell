@@ -42,7 +42,7 @@ cat notes/hello.txt
 
 You just created a tree, wrote a file, copied it, listed it, and read it. The rest of this chapter is those five moves, with better manners and a few sharp edges.
 
-Sample data for later lives next to this file: `banklist.csv` and `nginx.log`. From `scratch/playground` they are at `../../scripts/banklist.csv`. From the repo root they are `scripts/banklist.csv`. Either works. `cd` with Tab if you get lost — the shell is better at paths than you are, and it is not even close.
+Sample data for later lives next to this file: `banklist.csv` and `nginx.log`. From `scratch/playground` they are at `../../scripts/banklist.csv`. From the repo root they are `scripts/banklist.csv`. Either works. `cd` with Tab if you get lost — that is how you avoid typoing `Docments` and then wondering why the computer "doesn't work."
 
 ---
 
@@ -141,7 +141,7 @@ rm -r old-project/               # directory and everything under it
 rm -rf temporary-folder/         # force, recursive. Look first.
 ```
 
-Unix will not move the file to Trash and then send you a recap email. `rm` is usually permanent. `rm -rf` is how people explain to their manager that the backup was, in hindsight, a good idea.
+Unix will not move the file to Trash and then send you a recap email. `rm` is usually permanent. `rm -rf` is how directories vanish. Look first, then delete.
 
 **Look, then delete:**
 

@@ -72,7 +72,7 @@ bash
 echo "$BASH_VERSION"
 ```
 
-Do not paste `[[` tests into fish and then blame the tutorial. fish is allowed to be different; this document is not going to chase it.
+If you paste `[[` tests into fish, fish will complain, and it will be right. fish is allowed to be different; this document is not going to chase it.
 
 ---
 
@@ -80,7 +80,7 @@ Do not paste `[[` tests into fish and then blame the tutorial. fish is allowed t
 
 ### Linux
 
-Bash is already there on Mint, Ubuntu, Fedora, and friends. Open a terminal (`Ctrl+Alt+T`, or search for "Terminal") and you are in it.
+Bash is already there on Mint, Ubuntu, Fedora, and friends. Open a terminal (`Ctrl+Alt+T`, or search for "Terminal"). If a window appears and a prompt blinks, you are done with this section.
 
 If you still need to *install* Linux, follow [amitsk/learning-linux](https://github.com/amitsk/learning-linux) first, then come back.
 
@@ -131,12 +131,14 @@ A script is a text file the shell agrees to treat as a program. The first line (
    ./hello.sh
    ```
 
+If you see `Hello, world!`, you have a script. If you see `Permission denied`, you skipped `chmod +x`. If you see `command not found`, you forgot the `./` — the shell does not hunt the current directory unless you ask.
+
 ---
 
 ## 4. Recommended Tools
 
-- [starship.rs](https://starship.rs/): A fast, customizable, and minimal prompt for any shell. Works on Linux, macOS, and Windows (including WSL2 and PowerShell).
-- [Windows Terminal](https://aka.ms/terminal): Modern, tabbed terminal for Windows. Supports PowerShell, Command Prompt, WSL, and more.
+- [starship.rs](https://starship.rs/) or [Oh My Posh](https://ohmyposh.dev/): Fast, customizable prompts for any shell. Both work on Linux, macOS, and Windows (including WSL2 and PowerShell). Pick **one** — they fight if you enable both. Setup is in [Shell customization](shell_customization.md).
+- [Windows Terminal](https://aka.ms/terminal): Tabs, Unicode, WSL, PowerShell — the window Windows should have shipped the first time.
 - [nano](https://www.nano-editor.org/), [vim](https://www.vim.org/), [Microsoft Edit](https://github.com/microsoft/edit), [Visual Studio Code](https://code.visualstudio.com/), or [Helix](https://helix-editor.com/) for editing scripts.
 
 ---
@@ -149,14 +151,14 @@ Files under `scratch/` are gitignored. Break things there. That is the point. Th
 
 ## 6. Using SSH to Connect to a Remote Server
 
-SSH (Secure Shell) allows you to securely connect to a remote Linux or Unix server from your terminal.
+SSH is how you sit down at a computer that is not in the room. Encrypted, remote, same prompt. The command is almost too short for how much it does.
 
 - **Basic usage:**
 
   ```sh
   ssh username@remote_host
   ```
-  - Replace `username` with your remote username and `remote_host` with the server's IP address or hostname.
+  Replace `username` with your remote username and `remote_host` with the server's IP address or hostname.
 
 - **Example:**
 
@@ -164,11 +166,11 @@ SSH (Secure Shell) allows you to securely connect to a remote Linux or Unix serv
   ssh amit@192.168.1.100
   ```
 
-- **First time connecting:** You may be asked to confirm the server's fingerprint. Compare it with a value from the host admin (or the cloud console) before typing `yes`.
+- **First time connecting:** The server shows a fingerprint and asks if you trust it. Compare that value with the host admin or the cloud console *before* typing `yes`. SSH is good at secrecy. It is not psychic about who owns the box.
 
 ### Key-based authentication (preferred)
 
-Password logins work, but they are easy to phish, tedious to type, and often disabled on real servers. **SSH keys** use a key pair: a private key that stays on your machine, and a public key you install on the server.
+Password logins work, but they are easy to phish, tedious to type, and often disabled on real servers. **SSH keys** are a pair: a private key that stays on your machine, and a public key you install on the server. The public one is a nametag. The private one is the house key.
 
 1. **Generate a key** (Ed25519 is the modern default):
 
@@ -218,6 +220,8 @@ Paste a host fingerprint or a public key into a chat if you must. Never paste th
 
 ### Copying files
 
+`scp` is `cp` over SSH. The colon is load-bearing: forget it and you copy to a weird local filename.
+
 ```sh
 # Copy a file to the remote server
 scp localfile.txt username@remote_host:/path/to/destination/
@@ -236,6 +240,7 @@ scp username@remote_host:/path/to/file.txt ./
 - [Bash Guide for Beginners](https://tldp.org/LDP/Bash-Beginners-Guide/html/)
 - [Shell Scripting Tutorial](https://www.shellscript.sh/)
 - [starship.rs Documentation](https://starship.rs/)
+- [Oh My Posh Documentation](https://ohmyposh.dev/)
 - [Windows Terminal Documentation](https://learn.microsoft.com/en-us/windows/terminal/)
 - [WSL2 Documentation](https://learn.microsoft.com/en-us/windows/wsl/)
 - [SSH Tutorial for Beginners](https://www.ssh.com/academy/ssh/command)

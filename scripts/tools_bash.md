@@ -8,23 +8,25 @@ Bash will not yell about the spaces around `=` until it has already done the wro
 
 > **In the age of AI:** Models write plausible Bash. They also skip `set -euo pipefail`, forget quotes, and treat `$*` like `$@`. Run `shellcheck` on the generated file before you run the file. If the agent cannot explain why `[ "$name" = "Alice" ]` needs those quotes, do not ship it.
 
-The everyday commands (`ls`, `rm`, pipes, permissions) are in [Bash Shell & Scripting Basics](basic_shell.md).
+The everyday commands (`ls`, `rm`, pipes, permissions) are in [Bash Shell & Scripting Basics](basic_shell.md). Try these snippets in `scratch/`. A script that prints the wrong fruit is a better teacher than a script you only read.
 
 ---
 
 ## 1. Shebang
 
-Every shell script should begin with a "shebang" line, which tells the system what interpreter to use. For Bash scripts, this is:
+The first line is not a comment. It is a pointer: "run me with this interpreter." Skip it and you are hoping today's default shell is in a generous mood.
 
 ```sh
 #!/usr/bin/env bash
 ```
 
+`env` finds `bash` on `PATH`, so you are not married to `/bin/bash`. On macOS that matters: Apple's `/bin/bash` is still 3.2. Make the file executable (`chmod +x`) or call it with `bash script.sh`.
+
 ---
 
 ## 2. Variables
 
-Variables store data. In Bash, you define them without spaces around the `=` sign.
+No spaces around `=`. `name = "Alice"` is Bash trying to run a command called `name`. The error message will not say "you typed a space." It will say `command not found`.
 
 ```sh
 # Assigning a string
@@ -41,10 +43,11 @@ current_date=$(date +%Y-%m-%d)
 echo "Today is $current_date"
 ```
 
+`$(...)` runs a command and stuffs the output into the variable. Quote it when the output might contain spaces. Quote it even when you think it cannot.
+
 ### Environment vs. Local Variables
 
-- **Local variables** are only available within the current script or shell session.
-- **Environment variables** are available to the script and any child processes it starts. You create them using `export`.
+A variable is a secret the current shell keeps to itself until you `export` it. Child processes only hear the exported ones.
 
 ```sh
 # Local variable
@@ -60,7 +63,7 @@ export ENV_VAR="I am available everywhere"
 
 ### `if` Statements
 
-`if` statements let you execute code based on a condition.
+`[` is a command, not decoration. The spaces inside the brackets are load-bearing. `fi` is `if` backwards; that is not a joke, it is the syntax.
 
 ```sh
 # Basic if-else
@@ -80,6 +83,8 @@ else
 fi
 ```
 
+Quote `"$name"`. Unquoted, a name with a space becomes extra arguments and the test falls over. Numbers use `-eq` / `-gt`; strings use `=` / `!=`. Mixing them is a classic "it worked on 5" bug.
+
 **Common Comparison Operators:**
 
 - `-eq`: equal
@@ -97,7 +102,7 @@ fi
 
 ### `case` Statements
 
-`case` statements are useful for matching a variable against multiple patterns.
+`case` is `if`/`elif` when you have a list of patterns instead of a chain of tests. The `;;` looks like a typo. It is not. Forget it and Bash will sulk.
 
 ```sh
 case "$name" in
@@ -113,13 +118,15 @@ case "$name" in
 esac
 ```
 
+`*)` is the default branch: "none of the above." `esac` is `case` backwards. Bash is consistent about that bit.
+
 ---
 
 ## 4. Loops
 
 ### `for` Loops
 
-`for` loops iterate over a list of items.
+`for` walks a list. Brace expansion `{1..5}` happens *before* the loop starts, which is why it is handy and also why it is not a substitute for reading a file line by line.
 
 ```sh
 # Looping through a list of strings
@@ -138,9 +145,11 @@ for (( c=1; c<=5; c++ )); do
 done
 ```
 
+The C-style form is there if you miss C. Most of the time the list form is the one you wanted.
+
 ### `while` Loops
 
-`while` loops continue as long as a condition is true.
+`while` keeps going until the test fails. It is great for "until the file appears" and also how you write an infinite loop by accident. `Ctrl+C` is the eject button.
 
 ```sh
 counter=1
@@ -154,7 +163,7 @@ done
 
 ## 5. Functions
 
-Functions help you organize your code into reusable blocks.
+A function is a named snippet you can call twice. `$1` is the first argument, not a movie sequel.
 
 ```sh
 # Define a function
@@ -174,6 +183,8 @@ greet "World"
 - `$*`: All arguments as a single string
 - `$@`: All arguments as separate strings
 
+Use `"$@"` when you loop. `$*` mashes everything into one string, which is how `"Green Apple"` becomes two fruits.
+
 ```sh
 print_args() {
   echo "Number of arguments: $#"
@@ -189,7 +200,7 @@ print_args "one" "two" "three"
 
 ## 6. Arrays
 
-Bash supports one-dimensional arrays.
+Bash arrays are zero-indexed, because of course they are. `"${fruits[@]}"` is the quoted form that keeps `Green Apple` as one item.
 
 ```sh
 # Define an array
@@ -210,17 +221,21 @@ for fruit in "${fruits[@]}"; do
 done
 ```
 
+The curly braces are not optional here. `$fruits[0]` is a different, worse program.
+
 ---
 
 ## 7. Reading User Input
 
-Use the `read` command to get input from the user.
+`read` waits for a line. `IFS= read -r` is the grown-up form: keep leading spaces, keep backslashes. Without `-r`, a `\` in the name is a disappearing act.
 
 ```sh
 echo "Please enter your name:"
 IFS= read -r -p "Name: " user_name
 echo "Hello, $user_name!"
 ```
+
+`-p` prints the prompt on the same line. Practice in the terminal; a script that `read`s with no prompt looks hung.
 
 ---
 [← Back: Bash Shell & Scripting Basics](basic_shell.md) | [Next: Shell Customization →](shell_customization.md)

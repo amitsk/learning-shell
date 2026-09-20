@@ -55,9 +55,9 @@ You do not need to out-type autocomplete. You need to know when `$9` is the HTTP
 
 ## Getting Started
 
-1. Clone this repository or download the files.
-2. Open the `scripts/` directory to find exercises, data files, and cheatsheets.
-3. Use the provided commands and scripts in your terminal to practice.
+1. Clone this repository (or download the files if git is still on tomorrow's list).
+2. Open `scripts/` — exercises, sample data, and cheatsheets live there.
+3. Type the commands. Reading them is how you stay polite to the terminal; running them is how you learn.
 
 ---
 
@@ -67,15 +67,15 @@ You do not need to out-type autocomplete. You need to know when `$9` is the HTTP
 
 - Cross-platform setup and tips in [scripts/getting_started.md](scripts/getting_started.md)
 - What a shell is, bash/zsh/ksh/csh/fish in brief, and why these pages use Bash
-- WSL2, Windows Terminal, starship.rs, and scratch directory notes
+- WSL2, Windows Terminal, starship.rs / Oh My Posh, and scratch directory notes
 - SSH to remote servers, including **key-based authentication** (`ssh-keygen`, `ssh-copy-id`, `ssh-agent`)
 
 ### Text Editors on the Command Line
 
 - Terminal editors in [scripts/text_editors.md](scripts/text_editors.md)
-- nano/pico, Vim (including how to exit), Neovim, Emacs
+- nano/pico, Vim (including how to leave), Neovim, Emacs
 - Newer editors: Helix and Microsoft Edit
-- Vim/Emacs keybindings in the shell, Codex CLI, and Grok Build
+- Vim/Emacs keybindings in the shell, Codex CLI, and Grok Build — same joke, smaller box
 
 ### Bash Shell & Scripting Basics
 
@@ -85,35 +85,34 @@ You do not need to out-type autocomplete. You need to know when `$9` is the HTTP
 
 ### Shell Customization Guide
 
-- How to customize your shell prompt and environment in [scripts/shell_customization.md](scripts/shell_customization.md)
-- Covers rc/profile files, aliases, functions, environment variables, prompt customization, and identifying your shell
+- rc files, aliases, `PATH`, and a prompt that tells the truth in [scripts/shell_customization.md](scripts/shell_customization.md)
+- `sudo` is not a spicy prefix; starship.rs or Oh My Posh — pick one, they fight if you enable both
 
 ### Text Processing with sed, awk, sort, uniq
 
-- Cheatsheets and one-liners in [scripts/tools_sed.md](scripts/tools_sed.md)
-- Removing lines, extracting columns, counting unique values
+- A workout on a real CSV of failed banks in [scripts/tools_sed.md](scripts/tools_sed.md)
+- Cut columns, drop junk, `sort | uniq`, notice when the header got counted
 - AWK basics for CSV and log analysis
 
 ### AWK Tutorial: Practical Shell Data Processing
 
-- Hands-on AWK examples and log analysis in [scripts/tools_awk.md](scripts/tools_awk.md)
+- Twenty minutes with `nginx.log` in [scripts/tools_awk.md](scripts/tools_awk.md): `$9` is the status, until it isn't
 
 ### HTTP Tools: wget & curl Basics
 
-- Simple tutorials for downloading files and making HTTP requests with `wget` and `curl` in [scripts/tools_http.md](scripts/tools_http.md)
+- Download a file, POST a form, copy over SSH in [scripts/tools_http.md](scripts/tools_http.md)
+- `wget` is the download button; `curl` is the Swiss Army knife; neither is `curl | sh`
 
 ### User and Group Management in Linux
 
-- Managing users and groups in [scripts/users_groups.md](scripts/users_groups.md)
-- Covers `/etc/passwd`, `/etc/group`, adding/removing users and groups
+- `/etc/passwd` is a phone book (the passwords moved) in [scripts/users_groups.md](scripts/users_groups.md)
+- `useradd -m`, `usermod -aG`, and the flags that do not wipe `sudo`
 
 ### Build Systems: Make and Ninja
 
-- Comprehensive guide to build systems in [scripts/build_systems.md](scripts/build_systems.md)
-- Installing Make, C and Rust build examples
-- Compilation, linking, and linting workflows
-- Ninja build system comparison and usage
-- Best practices and performance optimization
+- `make` you can read, `ninja` a generator writes, in [scripts/build_systems.md](scripts/build_systems.md)
+- Tabs, not spaces. `.PHONY`. `make -n` before `make`
+- C and Rust examples, then when to let CMake write the Ninja file
 
 ### Useful Resources
 
@@ -128,13 +127,14 @@ You do not need to out-type autocomplete. You need to know when `$9` is the HTTP
 - [Microsoft Edit](https://github.com/microsoft/edit)
 - [NeoVim - hyperextensible Vim-based text editor](https://neovim.io/)
 - [starship.rs - X Shell Prompt](https://starship.rs/)
+- [Oh My Posh - Cross-shell Prompt Theme Engine](https://ohmyposh.dev/)
 - [Lots of Fonts](https://www.nerdfonts.com/)
 
 ---
 
 ## Contributing
 
-Contributions, suggestions, and improvements are welcome! Feel free to open issues or submit pull requests.
+Contributions, suggestions, and improvements are welcome — including better jokes, if you can find them. Open an issue or a pull request.
 
 ### Reviewing changes in VS Code
 

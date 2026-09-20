@@ -10,7 +10,7 @@ You do not need to join a decades-old editor war. You *do* need a way to edit a 
 
 ## 1. Why bother with a terminal editor?
 
-GUIs are great until they are gone. Terminal editors show up when you:
+You do not need a favorite yet. You need an exit key. GUIs are great until they are gone. Terminal editors show up when you:
 
 - edit a file on a remote server
 - write a commit message (`git` often launches `$EDITOR`)
@@ -342,7 +342,7 @@ The default composer is closer to ordinary (Emacs/readline-style) text editing. 
 
 ### Grok Build
 
-[Grok Build](https://docs.x.ai/build/overview) (the `grok` TUI) splits the idea in two, which is easy to mix up:
+[Grok Build](https://docs.x.ai/build/overview) (the `grok` TUI) splits the idea in two, which is easy to mix up. The names do not help. The table does:
 
 | Setting | Where it lives | What it changes |
 | --- | --- | --- |
