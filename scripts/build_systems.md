@@ -4,7 +4,7 @@ Typing `gcc` by hand is a personality. Doing it the same way tomorrow is a build
 
 > **In the age of AI:** Agents write Makefiles that look right in the editor and then die with `*** missing separator`. That error means "those leading spaces should have been a tab." They also invent targets, skip `.PHONY`, and `$(RM)` files you still wanted. Generate the draft; run `make -n` (dry run) before `make`. If the recipe would `rm -rf` the source tree, the tab character is not the interesting bug.
 
-[← Back: User and Group Management](users_groups.md)
+[← Back: User and Group Management](users_groups.md) | [Next: Modern Replacements for Unix Utilities →](modern_tools.md)
 
 ---
 
@@ -466,4 +466,4 @@ After `make` stops feeling like a spell:
 - **Container builds** (Docker, Podman)
 - **Cross-compilation** techniques
 
-[← Back: User and Group Management](users_groups.md)
+[← Back: User and Group Management](users_groups.md) | [Next: Modern Replacements for Unix Utilities →](modern_tools.md)

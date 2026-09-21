@@ -19,6 +19,7 @@ A collection of practical shell exercises, scripts, and cheatsheets for learning
   - [HTTP Tools: wget & curl](#http-tools-wget--curl-basics)
   - [User and Group Management](#user-and-group-management-in-linux)
   - [Build Systems: Make and Ninja](#build-systems-make-and-ninja)
+  - [Modern Replacements for Unix Utilities](#modern-replacements-for-unix-utilities)
   - [Useful Resources](#useful-resources)
 - [Contributing](#contributing)
 
@@ -33,6 +34,7 @@ Hands-on exercises, sample data (`banklist.csv`, `nginx.log`), and cheatsheets f
 - Processing CSV and log files with `sed`, `awk`, `sort`, and `uniq`
 - HTTP from the prompt (`curl`, `wget`) instead of a GUI
 - Build files you can read (`make`, `ninja`)
+- Modern CLI replacements for classic Unix utilities (`bat`, `eza`, `ripgrep`, `fd`, `zoxide`)
 
 Each chapter has a short **In the age of AI** note: not "skip this, the model knows," but "here is what you still have to check after the model types it."
 
@@ -114,6 +116,12 @@ You do not need to out-type autocomplete. You need to know when `$9` is the HTTP
 - Tabs, not spaces. `.PHONY`. `make -n` before `make`
 - C and Rust examples, then when to let CMake write the Ninja file
 
+### Modern Replacements for Unix Utilities
+
+- Interactive upgrades for a workstation prompt in [scripts/modern_tools.md](scripts/modern_tools.md)
+- `bat`, `eza`, `ripgrep`, `fd`, `zoxide`, `delta` — nicer defaults at the glass; POSIX in scripts
+- Safe aliasing, Debian `batcat`/`fdfind` traps, and why Dockerfiles still need `cat`/`grep`/`find`
+
 ### Useful Resources
 
 - Curated list of Linux and shell learning resources
@@ -129,6 +137,12 @@ You do not need to out-type autocomplete. You need to know when `$9` is the HTTP
 - [starship.rs - X Shell Prompt](https://starship.rs/)
 - [Oh My Posh - Cross-shell Prompt Theme Engine](https://ohmyposh.dev/)
 - [Lots of Fonts](https://www.nerdfonts.com/)
+- [bat: A cat clone with syntax highlighting and Git integration](https://github.com/sharkdp/bat)
+- [eza: A modern, maintained replacement for ls](https://eza.rocks/)
+- [ripgrep: A line-oriented search tool that respects gitignore](https://github.com/BurntSushi/ripgrep)
+- [fd: A simple, fast and user-friendly alternative to find](https://github.com/sharkdp/fd)
+- [zoxide: A smarter cd command](https://github.com/ajeetdsouza/zoxide)
+- [fzf: General-purpose command-line fuzzy finder](https://github.com/junegunn/fzf)
 
 ---
 

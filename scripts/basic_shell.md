@@ -1,6 +1,6 @@
 # Bash Shell & Scripting Basics
 
-This is the "walk around the filesystem without setting it on fire" chapter. `ls`, `cd`, `rm`, pipes, permissions, and a few modern upgrades (`eza`, `bat`, `rg`, `fzf`). You will not memorize every flag. You will learn which commands are reversible and which ones are a conversation with your backups.
+This is the "walk around the filesystem without setting it on fire" chapter. `ls`, `cd`, `rm`, pipes, permissions, and a few modern upgrades (`eza`, `bat`, `rg`, `fzf` — see the full chapter on [Modern Replacements for Unix Utilities](modern_tools.md)). You will not memorize every flag. You will learn which commands are reversible and which ones are a conversation with your backups.
 
 Variables, loops, and functions live in the next chapter: [Bash scripting basics](tools_bash.md). Setup and "what *is* a shell" live in [Getting started](getting_started.md#1-what-is-a-shell).
 
