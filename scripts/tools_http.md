@@ -1,12 +1,10 @@
 # HTTP Tools: wget & curl Basics
 
-The browser is a fine client until you need a header, a POST body, or a file on a headless box. `wget` downloads. `curl` is a Swiss Army knife that also happens to download, which is why people argue about them on the internet instead of at work. `scp` and `sftp` move files over SSH.
+`wget` downloads. `curl` downloads and also speaks HTTP. `scp` and `sftp` move files over SSH.
 
-> **In the age of AI:** Agents are fluent in `curl` and slightly too fluent in `curl | sh`. Read the URL. Look at `-H "Authorization: ..."`. Do not commit the token the model helpfully inlined, and do not pipe an installer you have not opened. `--fail` is how a script notices the server said 404 instead of treating an error page as a successful download.
+**About 30 minutes. Open this when you have a URL.** Done when you have downloaded one file and read one response header.
 
-[← Back: AWK Tutorial](tools_awk.md) | [Next: User and Group Management →](users_groups.md)
-
-No HTTP assignment yet? The workstation chapter's REST-client section links back here when you need it. [Users and groups](users_groups.md) is the page the Mint setup uses next.
+[← Two-hour path](../README.md#if-you-are-new) | [Users and groups, when you need them](users_groups.md)
 
 ---
 
@@ -19,6 +17,8 @@ No HTTP assignment yet? The workstation chapter's REST-client section links back
 ```sh
 wget https://example.com/file.txt
 ```
+
+Read the URL before you run it. A token in `-H "Authorization: ..."` does not belong in a repo, and `curl | sh` is an installer you have not opened yet.
 
 The filename is whatever the URL's last component is. Sometimes that is `file.txt`. Sometimes it is `download.php?id=12` and your directory looks haunted.
 

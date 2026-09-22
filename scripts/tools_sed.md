@@ -1,10 +1,10 @@
 # Linux Shell Practice: sed, sort, uniq, awk, and More
 
-Spreadsheets are for people with a mouse. This chapter is a workout on `banklist.csv`: failed US banks, one row at a time. You will cut columns, drop junk, sort, uniq, and pipe until a number comes out. The commands at the top are the ones you already met; the point is combining them.
+Spreadsheets are for people with a mouse. This chapter is a workout on `banklist.csv`: failed US banks, one row at a time. You will cut columns, drop junk, sort, uniq, and pipe until a number comes out.
 
-> **In the age of AI:** You can paste the CSV into a chat and ask "how many banks failed in Arizona?" You should still be able to `grep ',AZ,'` and get the same answer — including noticing whether the header row got counted. When the model's count and `wc -l` disagree, `wc -l` is not the one hallucinating. Generate the one-liner if you want; run it on the file you have.
+**About 45 minutes. Open this when you have a CSV.** Done when a pipeline prints a count you can check with your eyes.
 
-[← Back: Shell Customization](shell_customization.md) | [Next: AWK Tutorial →](tools_awk.md)
+[← Two-hour path](../README.md#if-you-are-new) | [Next, if you have a log: awk →](tools_awk.md)
 
 ---
 
@@ -32,6 +32,8 @@ The file `banklist.csv` sits in this folder. It is real FDIC failure data, which
   head -5 < banklist.csv
   cat banklist.csv | head -5
   ```
+
+If a chat window counted the banks, run the same filter here. When the two numbers disagree, believe `wc -l`, and check whether the header got counted.
 
 - **Print last 5 lines:**
 

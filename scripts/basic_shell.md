@@ -1,10 +1,10 @@
 # Bash Shell & Scripting Basics
 
-This is the "walk around the filesystem without setting it on fire" chapter. `ls`, `cd`, `rm`, pipes, permissions, and a few modern upgrades (`eza`, `bat`, `rg`, `fzf` — see the full chapter on [Modern Replacements for Unix Utilities](modern_tools.md)). You will not memorize every flag. You will learn which commands are reversible and which ones are a conversation with your backups.
+This is the "walk around the filesystem without setting it on fire" chapter. Sections 1–4 are the visit. The rest is the shelf: man pages, find, permissions, pipes, debugging.
 
-Variables, loops, and functions live in the next chapter: [Bash scripting basics](tools_bash.md). Setup and "what *is* a shell" live in [Getting started](getting_started.md#1-what-is-a-shell).
+**About 45 minutes for sections 1–4. Done when** you have made a file in `scratch/` and read it with `cat` or `less`.
 
-[← Back: Text Editors](text_editors.md) | [Next: Bash Scripting Basics →](tools_bash.md)
+[← How to leave Vim](text_editors.md#you-can-close-this-tab) | [Light path ends at section 4](#the-light-path-ends-here)
 
 ---
 
@@ -14,6 +14,7 @@ Variables, loops, and functions live in the next chapter: [Bash scripting basics
 - [2. Where am I?](#2-where-am-i)
 - [3. Making, copying, renaming, deleting](#3-making-copying-renaming-deleting)
 - [4. Looking at files](#4-looking-at-files)
+- [The light path ends here](#the-light-path-ends-here)
 - [5. When you forget](#5-when-you-forget)
 - [6. Finding files and text](#6-finding-files-and-text)
 - [7. Did it work?](#7-did-it-work)
@@ -21,8 +22,6 @@ Variables, loops, and functions live in the next chapter: [Bash scripting basics
 - [9. Pipes and redirection](#9-pipes-and-redirection)
 - [10. Dotfiles, the keyboard, and "is it running?"](#10-dotfiles-the-keyboard-and-is-it-running)
 - [11. Debugging](#11-debugging)
-
-> **In the age of AI:** A model can emit `find . -name '*.log' -delete` in the same breath as `ls`. Your job is not to type faster than the agent. It is to read the command, know that `-delete` does not ask politely, and prefer `-print` until you have seen the list.
 
 ---
 
@@ -40,7 +39,7 @@ ls -l notes
 cat notes/hello.txt
 ```
 
-You just created a tree, wrote a file, copied it, listed it, and read it. The rest of this chapter is those five moves, with better manners and a few sharp edges.
+You just created a tree, wrote a file, copied it, listed it, and read it. Sections 2–4 are those five moves with better manners. If a command in front of you contains `-delete`, read it before you run it.
 
 Sample data for later lives next to this file: `banklist.csv` and `nginx.log`. From `scratch/playground` they are at `../../scripts/banklist.csv`. From the repo root they are `scripts/banklist.csv`. Either works. `cd` with Tab if you get lost — that is how you avoid typoing `Docments` and then wondering why the computer "doesn't work."
 
@@ -213,6 +212,18 @@ sudo apt install bat     # or: brew install bat
 bat scripts/getting_started.md
 bat -n notes/hello.txt
 ```
+
+---
+
+## The light path ends here
+
+You made a directory, put a file in it, and read it back. Close the tab. The [two-hour path](../README.md#if-you-are-new) is complete.
+
+Optional, if the afternoon is still young: [aliases](shell_customization.md#aliases) (20 minutes) or the [modern tools table](modern_tools.md) (15 minutes).
+
+## Keep going
+
+Sections 5–11 are here when you need them: the manual, finding files, permissions, pipes, debugging. [Scripting](tools_bash.md) is the chapter for variables and loops, the week a course asks for a script.
 
 ---
 
@@ -676,6 +687,6 @@ It will also catch a `cd` that never checked whether it succeeded, a missing she
 - [ShellCheck](https://www.shellcheck.net/)
 - [explainshell](https://explainshell.com/) — paste a command, see the flags (still read `man` when it matters)
 
-When you can move around, not delete the wrong tree, and pipe `cut | sort | uniq` at a CSV, you are ready for programs that do it twice: [Bash scripting basics](tools_bash.md).
+When you can move around and pipe `cut | sort | uniq` at a CSV, you are ready for programs that do it twice: [Bash scripting basics](tools_bash.md).
 
-[← Back: Text Editors](text_editors.md) | [Next: Bash Scripting Basics →](tools_bash.md)
+[← Two-hour path](../README.md#if-you-are-new) | [Next, when you need it: scripting →](tools_bash.md)

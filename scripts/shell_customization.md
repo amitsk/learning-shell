@@ -1,10 +1,12 @@
 # Shell Customization Guide
 
-[← Back: Bash Scripting Basics](tools_bash.md) | [Next: sed, sort, uniq, and More →](tools_sed.md)
+[← The light path](basic_shell.md#the-light-path-ends-here) | [Next: aliases →](#aliases)
 
-Your prompt is not a personality. It is a way to see `user@host:directory` before you type `rm`. This chapter is rc files, aliases, `PATH`, `sudo`, and a prompt that tells the truth.
+Your prompt is a way to see `user@host:directory` before you type `rm`. This file is also rc files, `PATH`, `sudo`, and two prompt themes.
 
-> **In the age of AI:** Agents inherit your aliases and your `PATH`. An `alias rm='rm -i'` that saves *you* will hang a non-interactive script that expected GNU `rm` to just delete. Keep surprise aliases for your interactive shell; keep generated scripts boring. And never `curl | sh` an installer you have not read — including the one that customizes this prompt.
+**About 20 minutes. Done when** you have added an alias, seen it with `alias`, and reloaded the shell.
+
+The visit is [Aliases](#aliases) and [Reloading](#6-reloading-your-config). [sudo](#1-understanding-sudo-superuser-do), a hand-built prompt, Starship, and Oh My Posh are optional pages in this same file.
 
 ---
 
@@ -42,7 +44,9 @@ ps -p $$
 
 ## 1. Understanding sudo (Superuser Do)
 
-`sudo` is not a spicy prefix. It is "run this as someone who can break the machine." Prefer it over logging in as root; still read the command.
+Optional page. The 20-minute visit is [aliases](#aliases).
+
+`sudo` is "run this as someone who can break the machine." Prefer it over logging in as root; still read the command.
 
 ### What is sudo?
 
@@ -159,7 +163,7 @@ An alias is a nickname. You type a short word; the interactive shell swaps in a 
 
 ```sh
 alias ll='ls -lFh'
-alias gs='git status'
+alias gstatus='git status'
 alias mv='mv -i'
 alias rm='rm -i'
 alias cp='cp -i'
@@ -167,7 +171,9 @@ alias cp='cp -i'
 
 The `-i` flag is a seatbelt on `mv` / `rm` / `cp`: they ask before clobbering. That saves interactive you. It will hang a script waiting for a prompt nobody will type.
 
-`gs` is a shell nickname for `git status`. The shell only expands it when `gs` is the command itself. `git gs` asks git for a *git* alias named `gs`, which is a different list (`git config --global alias.st status`, then you type `git st`). [Modern tools](modern_tools.md#3-aliases-for-these-tools) has the nicknames for `eza`, `bat`, and `fd`, and it repeats this trap so it stays a trap you have met twice.
+`gstatus` is a shell nickname for `git status`. The shell expands it when `gstatus` is the command. `git gstatus` asks git for a git alias of that name, which is a different list (`git config --global alias.st status`, then you type `git st`). `gs` is a bad nickname here: on many Linux machines it is Ghostscript, and the alias hides it. [Modern tools](modern_tools.md#3-aliases-for-these-tools) has the nicknames for `eza`, `bat`, and `fd`.
+
+An alias a script inherits can surprise it. `alias rm='rm -i'` waits for a `y` that a non-interactive run will never type. Keep the seatbelts in `~/.bashrc`. Keep generated scripts boring.
 
 #### See them, drop one, bypass one
 
@@ -280,6 +286,8 @@ set -o vi
 ---
 
 ## 4. Prompt Customization
+
+Optional page. Aliases and a reload were the visit. A custom prompt is a hobby you can start when the default one feels rude.
 
 Those backslash codes are not regex. They are prompt hieroglyphs. The `\[ \]` around colors is how Bash knows those characters are zero-width for line wrapping. Skip them and wrapping gets drunk.
 
@@ -416,4 +424,4 @@ source ~/.zshrc
 - [Oh My Posh Documentation](https://ohmyposh.dev/)
 - [Zsh Guide](https://zsh.sourceforge.io/Guide/zshguide.html)
 
-[← Back: Bash Scripting Basics](tools_bash.md) | [Next: sed, sort, uniq, and More →](tools_sed.md)
+[← Two-hour path](../README.md#if-you-are-new) | [Modern tools table →](modern_tools.md)

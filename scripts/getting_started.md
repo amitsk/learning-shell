@@ -1,12 +1,12 @@
 # Getting Started with the Unix Shell and Scripting
 
-This is the "open a terminal without panic" chapter. It works on Linux, macOS, and Windows (via WSL). You get setup, a first script, and SSH. The rest of the repo is practice.
+This is the "open a terminal without panic" chapter. It works on Linux, macOS, and Windows (via WSL).
 
-Need a Linux *desktop* first — distro, install, SSH server, editors? That is a different tutorial: [amitsk/learning-linux](https://github.com/amitsk/learning-linux). This one assumes you already have a prompt you can type into.
+**About 30 minutes. Done when** `./hello.sh` prints `Hello, world!`.
 
-> **In the age of AI:** Coding agents write scripts. You still open a terminal, run them, and live with the result. A real Bash, SSH keys you control, and a `scratch/` directory are how you keep the experiments off production — and off the repo your teammates clone.
+Need a Linux desktop first? That is [amitsk/learning-linux](https://github.com/amitsk/learning-linux). This page assumes a prompt you can type into.
 
-[Next: Text Editors on the Command Line →](text_editors.md)
+[Next: nano, and how to leave Vim →](text_editors.md#2-nano-and-pico-the-friendly-ones)
 
 ---
 
@@ -139,6 +139,12 @@ A script is a text file the shell agrees to treat as a program. The first line (
    ```
 
 If you see `Hello, world!`, you have a script. If you see `Permission denied`, you skipped `chmod +x`. If you see `command not found`, you forgot the `./` — the shell does not hunt the current directory unless you ask.
+
+An agent can write the next script. You still run it, in `scratch/`, and you still read it first.
+
+## The light path continues
+
+Next is [nano, and how to leave Vim](text_editors.md#2-nano-and-pico-the-friendly-ones). The sections below are for later: a nicer prompt, and SSH when you have a server.
 
 ---
 

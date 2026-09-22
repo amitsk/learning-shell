@@ -1,14 +1,14 @@
 # Bash Scripting Basics
 
-[← Back: Bash Shell & Scripting Basics](basic_shell.md) | [Next: Shell Customization →](shell_customization.md)
+[← Two-hour path](../README.md#if-you-are-new) | [Everyday commands](basic_shell.md#the-light-path-ends-here)
 
 Variables, `if`, loops, functions, arrays. The bits that turn a list of commands into a program you can run twice.
 
-Bash will not yell about the spaces around `=` until it has already done the wrong thing. Quote `"$file"`. Then quote it again. Unquoted expansions are how `My Documents` becomes two arguments and a surprise.
+**About 45 minutes. Open this when a course asks for a script.** Done when you can write a file with a variable, a quote, and an `if`, and run it from `scratch/`.
 
-> **In the age of AI:** Models write plausible Bash. They also skip `set -euo pipefail`, forget quotes, and treat `$*` like `$@`. Run `shellcheck` on the generated file before you run the file. If the agent cannot explain why `[ "$name" = "Alice" ]` needs those quotes, do not ship it.
+Bash will not yell about the spaces around `=` until it has already done the wrong thing. Quote `"$file"`. Unquoted expansions are how `My Documents` becomes two arguments.
 
-The everyday commands (`ls`, `rm`, pipes, permissions) are in [Bash Shell & Scripting Basics](basic_shell.md). Try these snippets in `scratch/`. A script that prints the wrong fruit is a better teacher than a script you only read.
+The everyday commands (`ls`, `rm`, pipes, permissions) are in [Bash basics](basic_shell.md). Try these snippets in `scratch/`.
 
 ---
 
@@ -21,6 +21,8 @@ The first line is not a comment. It is a pointer: "run me with this interpreter.
 ```
 
 `env` finds `bash` on `PATH`, so you are not married to `/bin/bash`. On macOS that matters: Apple's `/bin/bash` is still 3.2. Make the file executable (`chmod +x`) or call it with `bash script.sh`.
+
+Run `shellcheck` on anything an agent just wrote, before you run the file. Quotes are the usual miss.
 
 ---
 
@@ -238,4 +240,4 @@ echo "Hello, $user_name!"
 `-p` prints the prompt on the same line. Practice in the terminal; a script that `read`s with no prompt looks hung.
 
 ---
-[← Back: Bash Shell & Scripting Basics](basic_shell.md) | [Next: Shell Customization →](shell_customization.md)
+[← Two-hour path](../README.md#if-you-are-new) | [Aliases, if you want them →](shell_customization.md#aliases)

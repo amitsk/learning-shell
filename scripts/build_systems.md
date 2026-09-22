@@ -1,12 +1,10 @@
 # Build Systems: Make and Ninja
 
-Typing `gcc` by hand is a personality. Doing it the same way tomorrow is a build system. `make` is the one you can read. `ninja` is the one a generator writes when the project gets large. Neither will forgive a recipe indented with spaces.
+`make` is the build file you can read. `ninja` is the one a generator writes when the project gets large. A recipe is indented with a tab.
 
-> **In the age of AI:** Agents write Makefiles that look right in the editor and then die with `*** missing separator`. That error means "those leading spaces should have been a tab." They also invent targets, skip `.PHONY`, and `$(RM)` files you still wanted. Generate the draft; run `make -n` (dry run) before `make`. If the recipe would `rm -rf` the source tree, the tab character is not the interesting bug.
+**About an evening. Open this when a course says `make`.** Done when `make -n` prints the commands and `make` builds the example.
 
-[← Back: User and Group Management](users_groups.md) | [Next: Modern Replacements for Unix Utilities →](modern_tools.md)
-
-First week on a new Linux install, and nobody has asked you to compile C? Skip to [Modern tools](modern_tools.md) — read the [install-three section](modern_tools.md#0-if-you-are-new-install-three-tools) and the [alias list](modern_tools.md#3-aliases-for-these-tools) before you paste anything into `~/.bashrc`. Come back when a course says `make`.
+[← Two-hour path](../README.md#if-you-are-new) | [Modern tools, 15 minutes](modern_tools.md)
 
 ---
 
@@ -42,6 +40,8 @@ sudo apt install make
 # Verify installation
 make --version
 ```
+
+`*** missing separator` means those leading spaces were supposed to be a tab. Run `make -n` (dry run) before `make`.
 
 ### Other Systems
 
@@ -468,4 +468,4 @@ After `make` stops feeling like a spell:
 - **Container builds** (Docker, Podman)
 - **Cross-compilation** techniques
 
-[← Back: User and Group Management](users_groups.md) | [Next: Modern Replacements for Unix Utilities →](modern_tools.md)
+[← Two-hour path](../README.md#if-you-are-new) | [Modern tools table →](modern_tools.md)

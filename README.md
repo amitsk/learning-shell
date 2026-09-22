@@ -6,17 +6,33 @@ A collection of practical shell exercises, scripts, and cheatsheets for learning
 
 ### If you are new
 
-A first weekend:
+Two hours, then close the tab. Each stop says when you are done.
 
-1. [Getting started](scripts/getting_started.md) — open a terminal, write `hello.sh` inside `scratch/`.
-2. [Text editors](scripts/text_editors.md) — nano is enough to live; learn how to leave Vim before a `git commit` traps you there.
-3. [Bash basics](scripts/basic_shell.md) — `ls`, `cd`, `rm`, pipes, permissions, in `scratch/`.
-4. [Shell customization](scripts/shell_customization.md) — what an alias is, where `~/.bashrc` fits, a prompt you can read.
-5. Setting up Linux Mint from the companion tutorial? [Users and groups](scripts/users_groups.md) is the chapter that setup uses next.
-6. [Modern tools](scripts/modern_tools.md) when the prompt should feel better. Install three (`fzf`, `rg`, `bat`), then read [aliases](scripts/modern_tools.md#3-aliases-for-these-tools) before pasting them into `~/.bashrc`. `delta` is the git pager. `sd` is find-and-replace, and it rewrites files.
-7. [sed](scripts/tools_sed.md), [awk](scripts/tools_awk.md), [HTTP](scripts/tools_http.md), and [Make](scripts/build_systems.md) when a course hands you a CSV, a log, a URL, or a compile.
+1. **30 minutes.** [What a shell is](scripts/getting_started.md#1-what-is-a-shell) and [hello.sh](scripts/getting_started.md#3-writing-your-first-script). Done when it prints `Hello, world!`. SSH in that file is for a later day.
+2. **20 minutes.** [nano](scripts/text_editors.md#2-nano-and-pico-the-friendly-ones) and [how to leave Vim](scripts/text_editors.md#3-vim-basics-and-the-joke-about-never-leaving). Stop at [you can close this tab](scripts/text_editors.md#you-can-close-this-tab).
+3. **45 minutes.** [Bash basics, sections 1–4](scripts/basic_shell.md#1-five-minutes-in-scratch): scratch directory, where you are, files, looking at a file. Stop at [the light path ends here](scripts/basic_shell.md#the-light-path-ends-here).
 
-The "In the age of AI" notes are for the day a model writes the command. The commands themselves are the lesson either way.
+Same afternoon, if you still feel like it:
+
+- **20 minutes.** [Aliases](scripts/shell_customization.md#aliases) and [reload](scripts/shell_customization.md#6-reloading-your-config). `gs` is Ghostscript; the nickname in this tutorial is `gstatus`.
+- **15 minutes.** [Modern tools](scripts/modern_tools.md): one install line, the table, the traps, the alias block.
+
+### When a course names the tool
+
+Open that chapter and ignore the rest. Each one tells you how long it is.
+
+| You were handed… | Open | About |
+| --- | --- | --- |
+| "Learn the shell" and you finished the list above | You are done | — |
+| A script to write | [Bash scripting](scripts/tools_bash.md) | 45 min |
+| Permissions, find, or pipes | [the rest of Bash basics](scripts/basic_shell.md#5-when-you-forget) | an evening |
+| A CSV | [sed, sort, uniq](scripts/tools_sed.md) | 45 min |
+| A log file | [awk](scripts/tools_awk.md) | 30 min |
+| A URL | [curl and wget](scripts/tools_http.md) | 30 min |
+| Users on a Linux box | [users and groups](scripts/users_groups.md) | 30 min |
+| `make` | [Make and Ninja](scripts/build_systems.md) | an evening |
+| A prompt or sudo | [the rest of shell customization](scripts/shell_customization.md#1-understanding-sudo-superuser-do) | optional |
+| An editor you want to live in | [the rest of text editors](scripts/text_editors.md#4-neovim-vims-hyperextensible-cousin) | optional |
 
 ## Table of Contents
 
@@ -51,11 +67,13 @@ Hands-on exercises, sample data (`banklist.csv`, `nginx.log`), and cheatsheets f
 - Build files you can read (`make`, `ninja`)
 - Modern CLI replacements for classic Unix utilities (`bat`, `eza`, `ripgrep`, `fd`, `sd`, `zoxide`, `delta`) and the aliases that keep them out of scripts
 
-Each chapter has a short **In the age of AI** note: not "skip this, the model knows," but "here is what you still have to check after the model types it."
+A sentence here and there says what to check when a model typed the command. The commands themselves are the lesson.
 
 ---
 
 ## Why the shell still matters (especially with AI)
+
+The [two-hour path](#if-you-are-new) does not depend on this section. Read it when you want the reason, then go type `hello.sh`.
 
 Coding agents are fluent in `bash`. They are also fluent in imaginary flags, unquoted variables, and `chmod 777` "just to make it work." The shell is how you **see** a command before it runs, **check** that it did what you meant, and **glue** small tools together on a machine the chatbot cannot click.
 
@@ -133,9 +151,7 @@ You do not need to out-type autocomplete. You need to know when `$9` is the HTTP
 
 ### Modern Replacements for Unix Utilities
 
-- Interactive upgrades for a workstation prompt in [scripts/modern_tools.md](scripts/modern_tools.md)
-- Start with `fzf`, `ripgrep`, and `bat`. Add `delta` for git diffs and `sd` for find-and-replace
-- [Alias list](scripts/modern_tools.md#3-aliases-for-these-tools): Debian `batcat`/`fdfind` traps, and why Dockerfiles still need `cat`/`grep`/`find`/`sed`
+- A 15-minute page in [scripts/modern_tools.md](scripts/modern_tools.md): one install line, a table, the traps (`batcat`, `sd -p`, delta's git config), and the [alias block](scripts/modern_tools.md#3-aliases-for-these-tools)
 
 ### Useful Resources
 

@@ -1,14 +1,12 @@
 # AWK Tutorial: Analyzing nginx.log
 
-AWK is the "I have a log file and twenty minutes" language. It is not pretty. Logs do not care about pretty. It reads line by line, splits into fields, and lets you count, filter, and summarize without opening Excel or writing Python.
+AWK reads a log line by line, splits it into fields, and lets you count. The file `nginx.log` is in this folder.
 
-The file `nginx.log` is in this folder. Print a line first. Count the fields. Then write the one-liner.
+**About 30 minutes. Open this when you have a log.** Done when you can print one field and a count from `nginx.log`.
 
-Here from the workstation tutorial with no log file in the assignment yet? Skip to [Users and groups](users_groups.md) and come back when you have one. The sample `nginx.log` next to this page is enough if you want the twenty minutes now.
+No log in the assignment yet? Come back later. The sample file next to this page is enough for the half hour.
 
-> **In the age of AI:** Models guess `$9` because they have seen Combined Log Format. They also guess wrong when the log is slightly different, quoted, or behind a proxy that stuffed an extra field in. Ask the agent for a draft; `awk '{print $9}'` on *this* file is the review. Incident work is the same loop: narrow with AWK, paste the summary into the chat, not the entire access log.
-
-[← Back: sed, sort, uniq](tools_sed.md) | [Next: HTTP Tools →](tools_http.md)
+[← Two-hour path](../README.md#if-you-are-new) | [sed, if you have a CSV](tools_sed.md)
 
 ---
 
@@ -19,7 +17,8 @@ Hello, world. This is `cat` with extra steps, and it proves the file opens.
 ```sh
 awk '{print}' nginx.log
 ```
-This simply prints every line (like `cat`).
+
+This prints every line, the way `cat` would. `$9` is the status code on *this* file. Confirm with `head -1` before you trust a field number from a chat window.
 
 ---
 

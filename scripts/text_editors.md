@@ -1,10 +1,10 @@
 # Text Editors on the Command Line
 
-Sooner or later you will `ssh` into a box with no GUI, no mouse, and a `git commit` that just opened **Vim**. This chapter is how you survive that moment, laugh about it later, and pick an editor you can actually live with.
+Sooner or later a `git commit` opens **Vim**. This chapter is how you survive that, and how you pick an editor the day you want one.
 
-You do not need to join a decades-old editor war. You *do* need a way to edit a file over SSH, write a shell script, and get out again.
+**About 20 minutes. Done when** you can edit a file in nano and leave Vim with `:q!`.
 
-[← Back: Getting Started](getting_started.md) | [Next: Bash Shell & Scripting Basics →](basic_shell.md)
+[← hello.sh](getting_started.md#3-writing-your-first-script) | [Next: five minutes in scratch/ →](basic_shell.md#1-five-minutes-in-scratch)
 
 ---
 
@@ -16,8 +16,6 @@ You do not need a favorite yet. You need an exit key. GUIs are great until they 
 - write a commit message (`git` often launches `$EDITOR`)
 - run `crontab -e` or `sudo visudo`
 - fix a config in a container or recovery shell
-
-> **In the age of AI:** Models write the patch. `$EDITOR` still opens for `git rebase -i`, `crontab -e`, `visudo`, and the config file on a box with no VS Code. If you can save and quit, you can finish the job the agent started.
 
 Set a default so Git and other tools stop guessing:
 
@@ -31,6 +29,8 @@ Put those in your shell rc file (`~/.bashrc` or `~/.zshrc`). Git can be more spe
 ```sh
 git config --global core.editor nano
 ```
+
+`git commit`, `crontab -e`, and `visudo` will open that editor. Saving and quitting is the whole skill they require.
 
 ---
 
@@ -102,6 +102,14 @@ ZZ           save and quit, without the colon (normal mode)
 If Vim is yelling at you, you are probably still in Insert mode. Hit `Esc` first, *then* type the colon command.
 
 A popular variant of the joke is to "exit" by killing the process from another terminal (`killall vim`). That works. It is also how you lose the file you were editing. Prefer `:q!`.
+
+## You can close this tab
+
+You can open nano, and you can leave Vim. That is this visit.
+
+Next: [five minutes in `scratch/`](basic_shell.md#1-five-minutes-in-scratch), through [looking at files](basic_shell.md#4-looking-at-files). Stop when that page says the light path ends.
+
+Everything under this line is for the day you pick an editor and stay: a slightly bigger Vim kit, then Neovim, Emacs, Helix, and the keys coding agents use.
 
 ### Modes, in one minute
 
@@ -412,4 +420,4 @@ Courses that pair well with this chapter
 
 Happy editing. May your `:q!` be intentional.
 
-[← Back: Getting Started](getting_started.md) | [Next: Bash Shell & Scripting Basics →](basic_shell.md)
+[← Two-hour path](../README.md#if-you-are-new) | [Next: five minutes in scratch/ →](basic_shell.md#1-five-minutes-in-scratch)
