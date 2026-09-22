@@ -1,11 +1,26 @@
 # learning-shell
 
-A collection of practical shell exercises, scripts, and cheatsheets for learning Linux command-line tools. The goal is not to memorize flags. It is to read, check, and finish the command a coding agent just wrote.
+A collection of practical shell exercises, scripts, and cheatsheets for learning Linux command-line tools. The goal is to type the commands until they are yours, and to read a command — yours or a coding agent's — before you press Enter.
 
 [Start Here: Getting Started with Shell Scripting →](scripts/getting_started.md)
 
+### If you are new
+
+A first weekend:
+
+1. [Getting started](scripts/getting_started.md) — open a terminal, write `hello.sh` inside `scratch/`.
+2. [Text editors](scripts/text_editors.md) — nano is enough to live; learn how to leave Vim before a `git commit` traps you there.
+3. [Bash basics](scripts/basic_shell.md) — `ls`, `cd`, `rm`, pipes, permissions, in `scratch/`.
+4. [Shell customization](scripts/shell_customization.md) — what an alias is, where `~/.bashrc` fits, a prompt you can read.
+5. Setting up Linux Mint from the companion tutorial? [Users and groups](scripts/users_groups.md) is the chapter that setup uses next.
+6. [Modern tools](scripts/modern_tools.md) when the prompt should feel better. Install three (`fzf`, `rg`, `bat`), then read [aliases](scripts/modern_tools.md#3-aliases-for-these-tools) before pasting them into `~/.bashrc`. `delta` is the git pager. `sd` is find-and-replace, and it rewrites files.
+7. [sed](scripts/tools_sed.md), [awk](scripts/tools_awk.md), [HTTP](scripts/tools_http.md), and [Make](scripts/build_systems.md) when a course hands you a CSV, a log, a URL, or a compile.
+
+The "In the age of AI" notes are for the day a model writes the command. The commands themselves are the lesson either way.
+
 ## Table of Contents
 
+- [If you are new](#if-you-are-new)
 - [Overview](#overview)
 - [Why the shell still matters (especially with AI)](#why-the-shell-still-matters-especially-with-ai)
 - [Getting Started](#getting-started)
@@ -34,7 +49,7 @@ Hands-on exercises, sample data (`banklist.csv`, `nginx.log`), and cheatsheets f
 - Processing CSV and log files with `sed`, `awk`, `sort`, and `uniq`
 - HTTP from the prompt (`curl`, `wget`) instead of a GUI
 - Build files you can read (`make`, `ninja`)
-- Modern CLI replacements for classic Unix utilities (`bat`, `eza`, `ripgrep`, `fd`, `zoxide`)
+- Modern CLI replacements for classic Unix utilities (`bat`, `eza`, `ripgrep`, `fd`, `sd`, `zoxide`, `delta`) and the aliases that keep them out of scripts
 
 Each chapter has a short **In the age of AI** note: not "skip this, the model knows," but "here is what you still have to check after the model types it."
 
@@ -119,8 +134,8 @@ You do not need to out-type autocomplete. You need to know when `$9` is the HTTP
 ### Modern Replacements for Unix Utilities
 
 - Interactive upgrades for a workstation prompt in [scripts/modern_tools.md](scripts/modern_tools.md)
-- `bat`, `eza`, `ripgrep`, `fd`, `zoxide`, `delta` — nicer defaults at the glass; POSIX in scripts
-- Safe aliasing, Debian `batcat`/`fdfind` traps, and why Dockerfiles still need `cat`/`grep`/`find`
+- Start with `fzf`, `ripgrep`, and `bat`. Add `delta` for git diffs and `sd` for find-and-replace
+- [Alias list](scripts/modern_tools.md#3-aliases-for-these-tools): Debian `batcat`/`fdfind` traps, and why Dockerfiles still need `cat`/`grep`/`find`/`sed`
 
 ### Useful Resources
 
@@ -143,6 +158,8 @@ You do not need to out-type autocomplete. You need to know when `$9` is the HTTP
 - [fd: A simple, fast and user-friendly alternative to find](https://github.com/sharkdp/fd)
 - [zoxide: A smarter cd command](https://github.com/ajeetdsouza/zoxide)
 - [fzf: General-purpose command-line fuzzy finder](https://github.com/junegunn/fzf)
+- [sd: Intuitive find & replace](https://github.com/chmln/sd)
+- [delta: A syntax-highlighting pager for git and diff](https://github.com/dandavison/delta)
 
 ---
 

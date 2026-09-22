@@ -6,6 +6,8 @@ UID 0 is root. Treat it like a live wire. This chapter is `/etc/passwd`, `/etc/g
 
 [← Back: HTTP Tools](tools_http.md) | [Next: Build Systems →](build_systems.md)
 
+Setting up the Mint workstation in [linux-setup](https://github.com/amitsk/learning-linux/blob/main/docs/05-dev-workstation.md#57-users-and-groups)? Read this chapter right after [Bash basics](basic_shell.md). The sed, awk, and HTTP chapters can wait until a course hands you a file.
+
 ---
 
 ## 1. Key System Files

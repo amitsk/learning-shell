@@ -155,7 +155,7 @@ Interactive settings (aliases, prompt, `set -o vi`) go in the `*rc` file. Login-
 
 ### Aliases
 
-Shortcuts for *your* fingers. Put them in `~/.bashrc` or `~/.zshrc`. The `-i` flag is a seatbelt on `mv` / `rm` / `cp`: they ask before clobbering. That saves interactive you. It will hang a script waiting for a prompt nobody will type.
+An alias is a nickname. You type a short word; the interactive shell swaps in a longer command before it runs. Put aliases in `~/.bashrc` or `~/.zshrc`. They are for fingers on a keyboard. A script with `#!/bin/bash` does not load that file, so it will not see them — unless something runs the script as a login shell (`bash -lc`), in which case it will. Write scripts as if the nicknames do not exist.
 
 ```sh
 alias ll='ls -lFh'
@@ -164,6 +164,44 @@ alias mv='mv -i'
 alias rm='rm -i'
 alias cp='cp -i'
 ```
+
+The `-i` flag is a seatbelt on `mv` / `rm` / `cp`: they ask before clobbering. That saves interactive you. It will hang a script waiting for a prompt nobody will type.
+
+`gs` is a shell nickname for `git status`. The shell only expands it when `gs` is the command itself. `git gs` asks git for a *git* alias named `gs`, which is a different list (`git config --global alias.st status`, then you type `git st`). [Modern tools](modern_tools.md#3-aliases-for-these-tools) has the nicknames for `eza`, `bat`, and `fd`, and it repeats this trap so it stays a trap you have met twice.
+
+#### See them, drop one, bypass one
+
+```sh
+alias                 # every alias in this shell
+alias ll              # just that one
+unalias ll            # gone until you source the rc file again
+\ls                   # skip the alias, run the real ls
+command ls            # same idea, and it works when the name is a function too
+type ll               # alias, function, or real program?
+```
+
+`\ls` is the one to remember the day `ls` has become `eza` and a homework checker wanted GNU `ls`.
+
+#### Quoting
+
+Single quotes on the right-hand side mean "store this text, do not expand it now."
+
+```sh
+alias today='date +%F'          # %F is for date, later
+alias home="echo $HOME"         # $HOME is expanded once, when the alias is defined
+```
+
+Prefer single quotes unless you have a reason to bake in today's value.
+
+#### Alias or function
+
+An alias does not take arguments of its own. Everything you type after the nickname is stuck on the end. With the `ll` above, `ll /tmp` becomes `ls -lFh /tmp`, which is what you want. The moment the extra words need to go in the *middle* of the command, or you need an `if`, write a function. `mkcd` below is a function because `mkdir` and `cd` are two commands and `$1` has to land in both.
+
+Reload after editing: [section 6](#6-reloading-your-config).
+
+#### What not to alias
+
+Leave `sed`, `grep`, `find`, and `diff` pointing at the classic tools. `sd` rewrites files in place, `rg` skips gitignored paths, `fd` does not speak `find`'s flag language, and `delta` is a pager git should call from `~/.gitconfig`. The reasoned list, with a copy-paste block, is [Modern tools: Aliases](modern_tools.md#3-aliases-for-these-tools).
 
 ### Functions
 

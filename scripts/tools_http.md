@@ -6,6 +6,8 @@ The browser is a fine client until you need a header, a POST body, or a file on 
 
 [← Back: AWK Tutorial](tools_awk.md) | [Next: User and Group Management →](users_groups.md)
 
+No HTTP assignment yet? The workstation chapter's REST-client section links back here when you need it. [Users and groups](users_groups.md) is the page the Mint setup uses next.
+
 ---
 
 ## wget Basics

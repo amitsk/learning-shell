@@ -6,6 +6,8 @@ Typing `gcc` by hand is a personality. Doing it the same way tomorrow is a build
 
 [← Back: User and Group Management](users_groups.md) | [Next: Modern Replacements for Unix Utilities →](modern_tools.md)
 
+First week on a new Linux install, and nobody has asked you to compile C? Skip to [Modern tools](modern_tools.md) — read the [install-three section](modern_tools.md#0-if-you-are-new-install-three-tools) and the [alias list](modern_tools.md#3-aliases-for-these-tools) before you paste anything into `~/.bashrc`. Come back when a course says `make`.
+
 ---
 
 ## What are Build Systems?

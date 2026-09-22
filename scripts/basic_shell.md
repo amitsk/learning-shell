@@ -28,10 +28,10 @@ Variables, loops, and functions live in the next chapter: [Bash scripting basics
 
 ## 1. Five minutes in `scratch/`
 
-Reading about `mkdir` is how you stay bad at `mkdir`. Type this from the **repository root**. `scratch/` is gitignored; that is the point.
+Reading about `mkdir` is how you stay bad at `mkdir`. Type this from the **repository root** (the directory that contains `scripts/` and `scratch/`). `scratch/` is gitignored; that is the point.
 
 ```sh
-cd scratch                         # from scripts/, it is ../scratch
+cd scratch                         # already inside scripts/? use: cd ../scratch
 mkdir -p playground/{notes,data}
 cd playground
 printf '%s\n' "hello from scratch" > notes/hello.txt
@@ -97,17 +97,19 @@ If nothing matches, Bash (by default) hands you the literal `*.txt`. That surpri
 [`eza`](https://eza.rocks/) is `ls` with colors, git status, and a tree view. Install if you want (`brew install eza`, `sudo apt install eza`). Then:
 
 ```sh
-eza -l --git --icons
+eza -l --git
 eza --tree --level=2
 ```
 
-Aliases some people put in `~/.bashrc` — see [Shell customization](shell_customization.md) before you surprise a script with them:
+`--icons` draws file glyphs once a [Nerd Font](https://github.com/amitsk/learning-linux/blob/main/docs/05-dev-workstation.md#coding-fonts-nerd-fonts-banishing-the-tofu) is the terminal font. Until then it draws empty boxes.
+
+The alias block that matches the rest of this tutorial — including the Debian `batcat` / `fdfind` names, and the ones to leave alone — is [Modern tools: Aliases](modern_tools.md#3-aliases-for-these-tools). A short version, after you have read [what an alias is](shell_customization.md#aliases):
 
 ```sh
 alias ls='eza'
-alias l='eza -l'
-alias la='eza -la'
-alias lt='eza --tree'
+alias ll='eza -l --git'
+alias la='eza -la --git'
+alias lt='eza --tree --level=2'
 ```
 
 ---

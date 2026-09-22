@@ -105,27 +105,34 @@ Open Terminal (`Cmd+Space`, type "Terminal"). You will land in **zsh**. Install 
 A script is a text file the shell agrees to treat as a program. The first line (`#!/bin/bash`) is a shebang: it names the interpreter. Without it, you are hoping today's default shell is in a generous mood. Agents forget the shebang and `chmod +x` with some regularity. The error messages (`Permission denied`, or the script running under `sh` and choking on `[[`) are how you notice.
 
 1. Open your terminal.
-2. Create a new file:
+2. Work in a `scratch/` directory. If you cloned this tutorial, that directory is already gitignored, so `hello.sh` stays off the homework you meant to commit.
+
+   ```sh
+   mkdir -p scratch
+   cd scratch
+   ```
+
+3. Create a new file. The next chapter is editors. For this one file, nano is enough: type the two lines, then `Ctrl+O`, Enter, `Ctrl+X`.
 
    ```sh
    nano hello.sh
    ```
 
-3. Add the following lines:
+4. Add the following lines:
 
    ```sh
    #!/bin/bash
    echo "Hello, world!"
    ```
 
-4. Save and exit (Ctrl+O, Enter, Ctrl+X in nano).
-5. Make it executable:
+5. Save and exit (`Ctrl+O`, Enter, `Ctrl+X` in nano).
+6. Make it executable:
 
    ```sh
    chmod +x hello.sh
    ```
 
-6. Run your script:
+7. Run your script:
 
    ```sh
    ./hello.sh

@@ -4,6 +4,8 @@ AWK is the "I have a log file and twenty minutes" language. It is not pretty. Lo
 
 The file `nginx.log` is in this folder. Print a line first. Count the fields. Then write the one-liner.
 
+Here from the workstation tutorial with no log file in the assignment yet? Skip to [Users and groups](users_groups.md) and come back when you have one. The sample `nginx.log` next to this page is enough if you want the twenty minutes now.
+
 > **In the age of AI:** Models guess `$9` because they have seen Combined Log Format. They also guess wrong when the log is slightly different, quoted, or behind a proxy that stuffed an extra field in. Ask the agent for a draft; `awk '{print $9}'` on *this* file is the review. Incident work is the same loop: narrow with AWK, paste the summary into the chat, not the entire access log.
 
 [← Back: sed, sort, uniq](tools_sed.md) | [Next: HTTP Tools →](tools_http.md)

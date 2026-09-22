@@ -60,7 +60,9 @@ The file `banklist.csv` sits in this folder. It is real FDIC failure data, which
 
 ## Removing Lines with Leading Quotes Using `sed`
 
-`sed` is a stream editor. It reads a line, maybe changes it, prints it. It does not open nano and hope. Some rows in this CSV start with a stray `"`. Those are junk. The scrubbed file is the one you sort.
+`sed` is a stream editor. It reads a line, maybe changes it, prints it. The file on disk stays put unless you pass `-i`. Some rows in this CSV start with a stray `"`. Those are junk. The scrubbed file is the one you sort.
+
+On your own laptop, find-and-replace is often easier with [`sd`](modern_tools.md#sd-find-and-replace): `sd -p 'old' 'new' file` previews, and a later run without `-p` rewrites the file. Keep using `sed` for this chapter. It is the tool on the server, in the script, and in the pipeline below. Leave `sed` itself unaliased.
 
 - [sed one-liners reference](http://sed.sourceforge.net/sed1line.txt)
 - **Print only lines which do NOT match regexp (emulates `grep -v`):**
