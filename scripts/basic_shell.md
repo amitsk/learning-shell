@@ -205,13 +205,16 @@ cat > notes/quick.txt
 
 ### Optional upgrade: `bat`
 
-[`bat`](https://github.com/sharkdp/bat) is `cat` with syntax highlighting, git markers, and a pager. On Debian/Ubuntu the binary is often `batcat`.
+[`bat`](https://github.com/sharkdp/bat) is `cat` with syntax highlighting, git markers, and a pager. On Debian/Ubuntu the package is `bat` but the binary is often `batcat`, because someone else already owns the name.
 
 ```sh
 sudo apt install bat     # or: brew install bat
-bat scripts/getting_started.md
-bat -n notes/hello.txt
+
+bat notes/hello.txt          # on Debian/Ubuntu: batcat notes/hello.txt
+bat -n notes/hello.txt       # line numbers, no decorations
 ```
+
+If `bat: command not found` and `batcat` works, you are on Debian. The tool is installed; the name is just wearing a disguise.
 
 ---
 
@@ -290,11 +293,13 @@ From the repo root (`cd ../..` if you are still in `scratch/playground`), on rea
 ```sh
 grep ',AZ,' scripts/banklist.csv
 grep -n -i chicago scripts/banklist.csv
-grep -c ',AZ,' scripts/banklist.csv          # matching lines, not "occurrences"
+grep -c ',AZ,' scripts/banklist.csv          # 16 matching lines, not "occurrences"
 grep -w GET scripts/nginx.log                # GET, not GETTING
 grep -C 2 ' 404 ' scripts/nginx.log          # 2 lines of context around 404s
 grep -r TODO .                               # recursive (noisy in a git repo)
 ```
+
+Eleven of those Arizona lines look normal. Five start with a quote because the bank name contains a comma, and that is the thread the [sed chapter](tools_sed.md#quoted-fields-and-why-cut-lies) pulls until the CSV confesses.
 
 Common flags:
 
@@ -316,6 +321,8 @@ grep '^217' scripts/nginx.log            # starts with
 grep 'product_2' scripts/nginx.log
 grep -E ' 404 | 500 ' scripts/nginx.log  # extended regex; -E lets you write |
 ```
+
+On your own laptop, [`rg`](modern_tools.md) is `grep -r` with better defaults: it respects `.gitignore`, skips binaries, and prints line numbers without being asked. Use it at the keyboard. Keep `grep` in scripts, because the server has `grep` and may not have your hobbies.
 
 Pipes make `grep` a filter, not just a file search:
 
@@ -516,19 +523,22 @@ grep H hello.txt
 head -5 < ../../scripts/banklist.csv
 ```
 
-A real pipeline, on this repo's bank list (from `scratch/playground`):
+A real pipeline, on this repo's bank list. Start from the repo root so the paths stay short:
 
 ```sh
-cut -d, -f3 ../../scripts/banklist.csv | sort | uniq | head
+cd ../..    # if you are still in scratch/playground
+cut -d, -f3 scripts/banklist.csv | sort | uniq | head
 ```
 
-That is "column 3 (state), sorted, unique, first few." `uniq` only collapses *adjacent* duplicates, which is why `sort` sits in front. Forget `sort` and `uniq` will lie to you with a straight face. Models forget it too.
+That is "column 3, sorted, unique, first few." It prints values, and some of them are cities — this CSV has quoted fields, so a comma inside a bank name moves the columns. `cut` is not a CSV parser; it is a comma counter. The [sed chapter](tools_sed.md#quoted-fields-and-why-cut-lies) makes that the lesson.
+
+`uniq` only collapses *adjacent* duplicates, which is why `sort` sits in front. Forget `sort` and `uniq` will lie to you with a straight face. Models forget it too.
 
 ```sh
-grep ',AZ,' ../../scripts/banklist.csv | wc -l
+grep -c ',AZ,' scripts/banklist.csv    # 16
 ```
 
-Compare that number with whatever a chat window just claimed. When they disagree, `wc -l` is not the one hallucinating. (Check whether the header row got counted. It is not a state.)
+Compare that number with whatever a chat window just claimed. When they disagree, `wc -l` is not the one hallucinating. The header is not in that sixteen; it is not a state and never will be.
 
 `echo` into a file is how a lot of scripts start. Quotes still matter:
 

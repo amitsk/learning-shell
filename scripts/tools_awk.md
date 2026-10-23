@@ -43,7 +43,7 @@ awk '{print $1}' nginx.log | sort | uniq | wc -l
 - `sort | uniq` finds unique IPs.
 - `wc -l` counts them.
 
-`uniq` only collapses *adjacent* duplicates. Without `sort` first, it will lie to you with a straight face. Same joke as in the sed chapter; it is worth repeating.
+**24** in this file. `uniq` only collapses *adjacent* duplicates. Without `sort` first, it will lie to you with a straight face. Same joke as in the sed chapter; it is worth repeating.
 
 ---
 
@@ -57,6 +57,8 @@ awk '{print $9}' nginx.log
 
 If you see URLs or dashes where you expected `200`, you counted wrong. Go back to section 2.
 
+Field numbers are a property of the file, not of AWK. `$9` is the status here because this log has nine whitespace-separated fields. On a CSV with quoted bank names, `$3` can be a city, because a comma inside a name is still a comma to `-F,`. Print one line, count the fields, then write the pipeline. The tool is not psychic; it is just numbered.
+
 ---
 
 ## 5. Count Requests by Status Code
@@ -65,6 +67,8 @@ If you see URLs or dashes where you expected `200`, you counted wrong. Go back t
 awk '{print $9}' nginx.log | sort | uniq -c | sort -nr
 ```
 `uniq -c` counts; `sort -nr` puts the popular codes on top. This is the classic "how was today?" histogram.
+
+On this log: **304 × 60**, **404 × 29**, **200 × 11**. A hundred requests, and most of them are the browser asking "has this changed?" That is the shape of a quiet site, not a broken one.
 
 ---
 
@@ -86,6 +90,8 @@ awk '$9 == 404' nginx.log | wc -l
 ```
 
 Same filter, then count. If the number is huge, you have a missing page. If it is zero, either the site is fine or `$9` is not the status.
+
+Here the number is **29**. Nearly a third of the requests in this sample are looking for something that is not there. The 404s-by-URL section below tells you what.
 
 ---
 

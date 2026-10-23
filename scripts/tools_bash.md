@@ -52,11 +52,20 @@ echo "Today is $current_date"
 A variable is a secret the current shell keeps to itself until you `export` it. Child processes only hear the exported ones.
 
 ```sh
-# Local variable
-local_var="I am local"
+# A shell variable: this shell only
+greeting="I am local"
 
-# Environment variable
+# An environment variable: this shell and the programs it starts
 export ENV_VAR="I am available everywhere"
+```
+
+`local` is a different word, and it only means something inside a function. `local name="Alice"` makes the variable disappear when the function returns. At the top level of a script, it is a syntax error. A variable called `local_var` is just a variable with an optimistic name.
+
+```sh
+greet() {
+  local name="Alice"      # scoped to this function
+  echo "Hello, $name"
+}
 ```
 
 ---
@@ -161,6 +170,40 @@ while [ "$counter" -le 5 ]; do
 done
 ```
 
+### Reading a file line by line
+
+`for line in $(cat file)` looks reasonable and is wrong: it splits on spaces and expands globs. The loop that survives a line with a space in it is `while IFS= read -r`:
+
+```sh
+printf 'first line\nsecond line\n' > notes.txt
+while IFS= read -r line; do
+  printf '%s\n' "$line"
+done < notes.txt
+```
+
+`IFS=` keeps leading whitespace. `-r` keeps backslashes. The redirect at the end feeds the loop without a pipe, so variables set inside it survive after the loop. That matters the moment you count something.
+
+```sh
+lines=0
+while IFS= read -r line; do
+  lines=$((lines + 1))
+done < notes.txt
+echo "$lines"
+```
+
+### The `set -e` arithmetic trap
+
+`set -e` exits when a command fails. `((count++))` is a command, and it returns status 1 when the *result* is zero. So the first increment of a counter kills the script, silently, before the interesting part:
+
+```sh
+set -e
+count=0
+((count++))        # exits here: the result was 0, which counts as failure
+echo "unreachable"
+```
+
+Use `count=$((count + 1))`, or `((count++)) || true` when you know why you are doing it. The `|| true` is a bandage; the arithmetic expansion is the fix.
+
 ---
 
 ## 5. Functions
@@ -238,6 +281,30 @@ echo "Hello, $user_name!"
 ```
 
 `-p` prints the prompt on the same line. Practice in the terminal; a script that `read`s with no prompt looks hung.
+
+---
+
+## 8. Before you run it: `shellcheck`
+
+[`shellcheck`](https://www.shellcheck.net/) reads your script the way a compiler reads C. It catches unquoted variables, `[` versus `[[`, useless `cat`, and the `rm` that expands to nothing when a variable is empty. That last one is worth the install by itself.
+
+```sh
+# Debian/Ubuntu/Mint
+sudo apt install shellcheck
+
+# Fedora
+sudo dnf install shellcheck
+
+# macOS
+brew install shellcheck
+
+# then
+shellcheck linecount
+```
+
+A clean run prints nothing. A dirty run prints a line number, a severity, and a link to the explanation. Fix the error, read the warning, and ignore `SC1090` only when you know what it is.
+
+Run it on anything an agent wrote before you run the thing itself. The linter does not care who typed it.
 
 ---
 [← Two-hour path](../README.md#if-you-are-new) | [Aliases, if you want them →](shell_customization.md#aliases)

@@ -115,7 +115,7 @@ project/
 ```makefile
 # Compiler and flags
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c99 -O2
+CFLAGS = -Wall -Wextra -std=c99 -O2 -MMD -MP
 LDFLAGS = 
 SRCDIR = src
 BUILDDIR = build
@@ -123,6 +123,7 @@ BUILDDIR = build
 # Source files
 SOURCES = $(wildcard $(SRCDIR)/*.c)
 OBJECTS = $(SOURCES:$(SRCDIR)/%.c=$(BUILDDIR)/%.o)
+DEPS = $(OBJECTS:.o=.d)
 TARGET = $(BUILDDIR)/myprogram
 
 # Default target
@@ -133,6 +134,7 @@ $(TARGET): $(OBJECTS) | $(BUILDDIR)
 	$(CC) $(OBJECTS) -o $@ $(LDFLAGS)
 
 # Compile source files to object files
+# -MMD -MP writes a .d file listing the headers each .o needs
 $(BUILDDIR)/%.o: $(SRCDIR)/%.c | $(BUILDDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
@@ -164,7 +166,12 @@ install: $(TARGET)
 
 # Phony targets (not files)
 .PHONY: all compile link lint run clean install
+
+# Pull in the header dependencies the compiler wrote
+-include $(DEPS)
 ```
+
+`-MMD -MP` is the part beginners leave out. Without it, editing `utils.h` does not rebuild `main.o`, and you spend twenty minutes debugging a binary that is older than your code. With it, the compiler writes `build/main.d` on every compile, and `-include` reads those files back as Make dependencies. Touch a header, and everything that includes it rebuilds. That is the whole trick.
 
 ### Usage Examples
 
@@ -354,15 +361,18 @@ ninja -t graph | dot -Tpng > build.png
 This is the usual path: CMake writes the Ninja file, Ninja does the compile. You edit `CMakeLists.txt`, not `build.ninja`.
 
 ```sh
-# Generate Ninja build files with CMake
-cmake -G Ninja .
+# Configure: write the build files into build/, not into the source tree
+cmake -G Ninja -S . -B build
 
-# Build with Ninja
+# Build (CMake drives Ninja for you)
+cmake --build build
+
+# Or step into the build directory and call Ninja directly
+cd build
 ninja
-
-# Or use CMake to drive Ninja
-cmake --build .
 ```
+
+`-S .` is "source tree is here." `-B build` is "put the generated files there." That second flag is the out-of-source build the Best Practices section asks for, and it means `rm -rf build` is a clean reset instead of an archaeology project. `cmake -G Ninja .` also works, and it litters your source directory with `CMakeCache.txt` and `CMakeFiles/`. Do the version with `-B`.
 
 ---
 

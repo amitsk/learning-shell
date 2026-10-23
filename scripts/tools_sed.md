@@ -1,6 +1,6 @@
 # Linux Shell Practice: sed, sort, uniq, awk, and More
 
-Spreadsheets are for people with a mouse. This chapter is a workout on `banklist.csv`: failed US banks, one row at a time. You will cut columns, drop junk, sort, uniq, and pipe until a number comes out.
+Spreadsheets are for people with a mouse. This chapter is a workout on `banklist.csv`: failed US banks, one row at a time. You will cut columns, find out why commas lie inside quotes, sort, uniq, and pipe until a number comes out.
 
 **About 45 minutes. Open this when you have a CSV.** Done when a pipeline prints a count you can check with your eyes.
 
@@ -19,6 +19,8 @@ You already met these. Today they work as a band.
 ## File exploration with `banklist.csv`
 
 The file `banklist.csv` sits in this folder. It is real FDIC failure data, which is either grim or excellent practice, depending on your relationship with banking. Open it with `head` before you `sed` it; columns lie if you have not looked.
+
+Shape of the thing, so you can check your work: **572 lines**, one header, so 571 banks. Line endings are Windows **CRLF**. Forty-one rows contain quoted fields, because a bank name with a comma needs quotes to stay one column. Those 41 rows are the reason this chapter has a plot.
 
 ---
 
@@ -60,9 +62,29 @@ If a chat window counted the banks, run the same filter here. When the two numbe
 
 ---
 
-## Removing Lines with Leading Quotes Using `sed`
+## Quoted fields, and why `cut` lies
 
-`sed` is a stream editor. It reads a line, maybe changes it, prints it. The file on disk stays put unless you pass `-i`. Some rows in this CSV start with a stray `"`. Those are junk. The scrubbed file is the one you sort.
+`sed` is a stream editor. It reads a line, maybe changes it, prints it. The file on disk stays put unless you pass `-i`.
+
+Before you sed anything, count the distinct values in column 3:
+
+```sh
+cut -d , -f3 banklist.csv | sort -f | uniq | wc -l
+```
+
+You should see **81**. There are not 81 US states. Some of those values are cities, because a CSV field can contain its own delimiter when it is wrapped in quotes: `"Some Bank, N.A."` is one field, not two. Forty-one rows in this file start with a quote for exactly that reason.
+
+Those rows are not junk. They are the file being honest about commas. `cut -d,` counts commas; it does not parse CSV. That is the difference.
+
+Delete the quoted rows anyway, and watch what it costs:
+
+```sh
+grep -c ',AZ,' banklist.csv            # 16 banks in Arizona
+sed -n '/^"/!p' < banklist.csv > banklist-scrubbed.csv
+grep -c ',AZ,' banklist-scrubbed.csv   # 11. You just deleted five real banks.
+```
+
+The scrub is how you meet `sed -n '/pat/!p'`, not a cleaning step. Keep the original. Use the scrubbed file for the column exercises below, and remember that column 3 is the state only there.
 
 On your own laptop, find-and-replace is often easier with [`sd`](modern_tools.md#sd-find-and-replace): `sd -p 'old' 'new' file` previews, and a later run without `-p` rewrites the file. Keep using `sed` for this chapter. It is the tool on the server, in the script, and in the pipeline below. Leave `sed` itself unaliased.
 
@@ -88,7 +110,7 @@ On your own laptop, find-and-replace is often easier with [`sd`](modern_tools.md
   sed -n '/^"/!p' < banklist.csv > banklist-scrubbed.csv
   ```
 
-  `^` means start of line. The output file is new; the original stays. Look at both with `head` before you trust the scrub.
+  `^` means start of line. The output file is new; the original stays. This drops 41 rows: 572 lines become 531. Look at both with `head` before you trust the scrub, then ask whether you wanted to lose those rows at all.
 
 ---
 
@@ -124,7 +146,7 @@ On your own laptop, find-and-replace is often easier with [`sd`](modern_tools.md
   wc -l banklist.csv
   ```
 
-  That count includes the header. The header is not a bank. Subtract one in your head, or notice it on purpose.
+  **572**. That count includes the header. The header is not a bank. Subtract one in your head, or notice it on purpose.
 
 - **Remove duplicates and count:**
 
@@ -132,6 +154,8 @@ On your own laptop, find-and-replace is often easier with [`sd`](modern_tools.md
   uniq banklist-scrubbed.csv | wc -l
   wc -l banklist-scrubbed.csv
   ```
+
+  Both print **531**. No two lines are byte-for-byte identical. That is the least alarming fact in this file.
 
 - **Why are counts the same?**
 
@@ -141,7 +165,7 @@ On your own laptop, find-and-replace is often easier with [`sd`](modern_tools.md
 
 ## States List and Sorting
 
-Column 3 is the state — on *this* CSV. Count the commas with `head -1` if you do not believe me.
+Column 3 is the state — on `banklist-scrubbed.csv`. On the original, quoted fields push the columns around. Count the commas with `head -1` if you do not believe me.
 
 - **Print out the list of all States (unique, sorted):**
 
@@ -149,11 +173,13 @@ Column 3 is the state — on *this* CSV. Count the commas with `head -1` if you 
   cut -d , -f3 banklist-scrubbed.csv | sort -f | uniq
   ```
 
+  You should get **45 lines**: 44 states plus the header sitting at the top like it pays rent. Drop it with `tail -n +2` if you want the honest number.
+
 ---
 
 ## Filtering and Counting by State
 
-The commas around `AZ` keep you from matching a bank in BLAZING-whatever. CSV is not a database; it is a polite agreement about commas.
+The commas around `AZ` keep you from matching a bank in BLAZING-whatever. CSV is not a database; it is a polite agreement about commas. On the scrubbed file, this should print **11** rows.
 
 - **Get the list of all banks in AZ:**
 
@@ -167,6 +193,8 @@ The commas around `AZ` keep you from matching a bank in BLAZING-whatever. CSV is
   grep ',AZ,' banklist-scrubbed.csv | wc -l
   ```
 
+  Eleven. The original file has sixteen. The five you are missing were wearing quotes, which is the whole lesson of this chapter.
+
 ---
 
 ## Combining Tools (Pipes)
@@ -179,17 +207,37 @@ This is the whole chapter in one line: cut a column, sort it, collapse duplicate
   cut -d , -f3 banklist-scrubbed.csv | sort | uniq | wc -l
   ```
 
+  Forty-five, header included. Subtracting the header in your head is a skill; `tail -n +2` is the command.
+
 - **Find banks with a specific pattern and count:**
 
   ```sh
-  grep 'SAVINGS' banklist-scrubbed.csv | wc -l
+  grep -i 'savings' banklist-scrubbed.csv | wc -l
   ```
+
+  Thirty-four. Leave off `-i` and you get zero, because the file says `Savings`, not `SAVINGS`. Case is not a detail; it is the whole match.
+
+---
+
+## What an LLM does with these tools
+
+Ask an agent "how many Arizona banks failed?" and it does not read the file. It writes a pipeline — usually something like this — runs it, and reports the number:
+
+```sh
+cut -d, -f3 banklist.csv | grep AZ | wc -l
+```
+
+That line is wrong, for the reason this chapter has already shown you: `cut` splits quoted bank names, so five Arizona banks never reach `grep`. It prints **11**. The real count is **16**. (`grep AZ` is a second hazard — it matches those letters anywhere — which is why the chapter uses `',AZ,'`.) The model will still sound certain. The number is the tell.
+
+It will also generate `sed -n '/^"/!p'` to "clean" a CSV, because deleting the awkward rows makes the next command work. Ask what it deleted before you accept the clean file. The pipeline is the receipt; the chat transcript is a rumor.
+
+Your job is not to type the pipeline faster. It is to run the same one and look at the file when the answers disagree. An agent's command is a hypothesis. `wc -l` is the experiment.
 
 ---
 
 ## AWK Basics (for CSV and Logs)
 
-A preview of the next chapter. `-F,` tells AWK the comma is the field separator, not whitespace. `$1` is the bank, `$3` is the state — same columns you just `cut`.
+A preview of the next chapter. `-F,` tells AWK the comma is the field separator, not whitespace. `$1` is the bank, `$3` is the state — same columns you just `cut`, with the same caveat. This works on the scrubbed file. On the original, a quoted bank name still contains the comma AWK is splitting on, and `$3` becomes a city.
 
 - **Print the first column (bank name):**
 
@@ -203,19 +251,41 @@ A preview of the next chapter. `-F,` tells AWK the comma is the field separator,
   awk -F, '$3=="AZ" {print $1}' banklist-scrubbed.csv
   ```
 
+  Eleven rows. Same number as `grep`. That is the point of checking.
+
 - **Count banks per state:**
 
   ```sh
   awk -F, '{count[$3]++} END {for (s in count) print s, count[s]}' banklist-scrubbed.csv | sort
   ```
 
-  `END` runs once, after the last line. The next chapter lives here.
+  `END` runs once, after the last line. The header shows up as its own "state" with a count of 1. The next chapter lives here.
+
+---
+
+## When not to use the shell for this
+
+Shell pipelines are excellent at line-shaped text and bad at structure. The moment a field can contain the delimiter, quotes can nest, or the file is JSON with commas inside strings, stop and use a parser.
+
+```sh
+# 44 states, no scrubbing, no lies
+python3 -c 'import csv,sys; [print(r[2]) for r in csv.reader(sys.stdin)]' < banklist.csv | sort -u | wc -l
+```
+
+Rules of thumb:
+
+- **Line-oriented text** → `awk`, `sed`, `cut`. This chapter.
+- **Fields that can contain the delimiter** → Python's `csv` module, SQLite, or a dedicated tool. Not `cut`.
+- **JSON** → `jq`.
+- **YAML** → `yq`.
+
+The shell is a glue language, not a CSV parser. Knowing where the line is saves you from debugging a pipeline that works on every file except the real one.
 
 ---
 
 ## Checking File Encoding and Line Endings
 
-Windows leftover `CRLF` makes `$` in a regex miss the end of the line, and makes you question your life choices. `file` tells on it.
+Windows leftover `CRLF` makes `$` in a regex miss the end of the line, and makes you question your life choices. `file` usually tells on it. On this copy, `file` stays quiet, which is why you check the bytes instead of trusting the label.
 
 - **Check file encoding:**
 
@@ -226,14 +296,26 @@ Windows leftover `CRLF` makes `$` in a regex miss the end of the line, and makes
 - **Check for Windows line endings:**
 
   ```sh
-  file banklist.csv | grep CRLF
+  grep -c $'\r$' banklist.csv     # 572 — every line ends CRLF
+  cat -A banklist.csv | head -3   # each line ends in ^M$
   ```
+
+  `$'\r'` is Bash's way of writing a carriage return. `$` anchors it to the end of the line, so this counts lines that actually have one. `cat -A` shows the `^M` so your eyes can confirm what the count claimed.
+
+- **Strip them, if you want the easy regex life:**
+
+  ```sh
+  sed 's/\r$//' banklist.csv > banklist-unix.csv
+  grep -c $'\r$' banklist-unix.csv   # 0
+  ```
+
+  Now `$` in a regex means what you thought it meant. That is one fewer mystery before lunch.
 
 ---
 
 ## Comparing File Line Counts
 
-The scrubbed file should be shorter if you actually dropped lines. If the counts match, either there were no leading quotes or the redirect wrote the same file twice. Look.
+The scrubbed file is shorter because you actually dropped lines. The difference is the number of quoted rows you deleted: **41**. If the counts match, either there were no leading quotes or the redirect wrote the same file twice. Look.
 
 - **Compare the count in the 2 files:**
 
@@ -242,11 +324,13 @@ The scrubbed file should be shorter if you actually dropped lines. If the counts
   wc -l banklist-scrubbed.csv
   ```
 
+  **572** and **531**. Subtract them and you get 41, the number of rows with quoted fields. That is not a coincidence; it is the exercise.
+
 ---
 
 ## Bash Script: Line Count Difference
 
-Create a script that accepts the 2 files as arguments and prints the difference in the line counts. This is the whole job, in miniature: two numbers, a check that you got two arguments, and no AI-generated CSV parser required. Put it in `scratch/` if you like; that folder is gitignored on purpose.
+Create a script that accepts the 2 files as arguments and prints the difference in the line counts. This is the whole job, in miniature: two numbers, a check that you got two arguments, and no AI-generated CSV parser required. Put it in `scratch/` if you like; that folder is gitignored on purpose. A worked answer lives in [`solutions/linecount`](../solutions/linecount).
 
 ### Steps
 
@@ -256,6 +340,14 @@ Create a script that accepts the 2 files as arguments and prints the difference 
 
 - The script should error out if arguments are not 2.
 - Call the script `linecount`.
+
+Run it on the pair from this chapter:
+
+```sh
+./linecount banklist.csv banklist-scrubbed.csv   # 41
+```
+
+If yours says `41`, you can count lines, do arithmetic, and check arguments. That is most of scripting.
 
 ---
 

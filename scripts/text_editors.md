@@ -57,7 +57,11 @@ Classic GNU nano (what most Linux servers still ship):
 | `Ctrl+W` | Search ("Where Is") |
 | `Ctrl+\` | Search and replace |
 
-Newer nano (8+) moved some of those to `Ctrl+S` (save), `Ctrl+F` (find), and `Alt+R` (replace). If a shortcut does nothing, look at the footer — it is labeled on purpose.
+Newer nano (8+) changed the *search* keys, not the save key. `Ctrl+O` still writes out, `Ctrl+X` still exits, and `Ctrl+\` still replaces. You only get `Ctrl+S` to save and `Ctrl+Q` to quit if you launch nano with `--modernbindings` (`nano -/`), which most distros do not enable by default. If a shortcut does nothing, look at the footer. It is labeled on purpose.
+
+```sh
+nano --modernbindings hello.sh   # opt in to Ctrl+S / Ctrl+Q
+```
 
 That is enough coverage. Nano is the editor you use when you want to *finish the task*, not when you want a personality.
 

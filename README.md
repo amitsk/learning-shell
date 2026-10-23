@@ -93,6 +93,7 @@ You do not need to out-type autocomplete. You need to know when `$9` is the HTTP
 1. Clone this repository (or download the files if git is still on tomorrow's list).
 2. Open `scripts/` — exercises, sample data, and cheatsheets live there.
 3. Type the commands. Reading them is how you stay polite to the terminal; running them is how you learn.
+4. When a chapter asks for a number, check [solutions/](solutions/README.md). Comparing your output with the expected one is the exercise.
 
 ---
 
@@ -126,7 +127,8 @@ You do not need to out-type autocomplete. You need to know when `$9` is the HTTP
 ### Text Processing with sed, awk, sort, uniq
 
 - A workout on a real CSV of failed banks in [scripts/tools_sed.md](scripts/tools_sed.md)
-- Cut columns, drop junk, `sort | uniq`, notice when the header got counted
+- Cut columns, find out why quoted fields make `cut` lie, `sort | uniq`, notice when the header got counted
+- Worked answers and expected numbers in [solutions/](solutions/README.md)
 - AWK basics for CSV and log analysis
 
 ### AWK Tutorial: Practical Shell Data Processing
