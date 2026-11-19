@@ -29,7 +29,6 @@ Open that chapter and ignore the rest. Each one tells you how long it is.
 | A CSV | [sed, sort, uniq](scripts/tools_sed.md) | 45 min |
 | A log file | [awk](scripts/tools_awk.md) | 30 min |
 | A URL | [curl and wget](scripts/tools_http.md) | 30 min |
-| JSON | [jq](#json-processing-with-jq) | links |
 | Users on a Linux box | [users and groups](scripts/users_groups.md) | 30 min |
 | `make` | [Make and Ninja](scripts/build_systems.md) | an evening |
 | A prompt or sudo | [the rest of shell customization](scripts/shell_customization.md#1-understanding-sudo-superuser-do) | optional |
@@ -49,7 +48,6 @@ Open that chapter and ignore the rest. Each one tells you how long it is.
   - [Text Processing with sed, awk, sort, uniq](#text-processing-with-sed-awk-sort-uniq)
   - [AWK Tutorial](#awk-tutorial-practical-shell-data-processing)
   - [HTTP Tools: wget & curl](#http-tools-wget--curl-basics)
-  - [JSON Processing with jq](#json-processing-with-jq)
   - [User and Group Management](#user-and-group-management-in-linux)
   - [Build Systems: Make and Ninja](#build-systems-make-and-ninja)
   - [Modern Replacements for Unix Utilities](#modern-replacements-for-unix-utilities)
@@ -141,16 +139,6 @@ You do not need to out-type autocomplete. You need to know when `$9` is the HTTP
 
 - Download a file, POST a form, copy over SSH in [scripts/tools_http.md](scripts/tools_http.md)
 - `wget` is the download button; `curl` is the Swiss Army knife; neither is `curl | sh`
-
-### JSON Processing with jq
-
-`jq` is a lightweight command-line JSON processor—think `sed` and `awk` for structured JSON, commonly piped straight from `curl`.
-
-- [jq Home](https://jqlang.org/) — overview and installation
-- [jq Tutorial](https://jqlang.org/tutorial/) — quick hands-on walkthrough with real API responses
-- [jq Manual](https://jqlang.org/manual/) — full filter, operator, and built-in function reference
-- [jq Play](https://jqplay.org/) — interactive browser playground for testing filters
-- [jq on GitHub](https://github.com/jqlang/jq) — source repository and releases
 
 ### User and Group Management in Linux
 

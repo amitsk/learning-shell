@@ -96,6 +96,18 @@ For scripts, add a timeout such as `--connect-timeout 10 --max-time 60` so a hun
 
 ---
 
+## Reading JSON Responses with jq
+
+Most APIs answer `curl` with a single-line wall of JSON. `jq` is `sed` and `awk` for structured JSON — pipe `curl`'s stdout into it to pretty-print, filter fields, and reshape responses without writing a script.
+
+- [jq Home](https://jqlang.org/) — overview and installation
+- [jq Tutorial](https://jqlang.org/tutorial/) — quick hands-on walkthrough with real API responses
+- [jq Manual](https://jqlang.org/manual/) — full filter, operator, and built-in function reference
+- [jq Play](https://jqplay.org/) — interactive browser playground for testing filters
+- [jq on GitHub](https://github.com/jqlang/jq) — source repository and releases
+
+---
+
 ## scp and sftp: Secure File Transfer
 
 Same job as `wget`/`curl`, but over SSH, to a machine you already have a login on. If you can `ssh` there, you can copy files there.
