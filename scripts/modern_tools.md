@@ -45,7 +45,7 @@ One command each. Upstream docs are a click away when a flag is weird.
 | Disk free | `df` | `duf` | [duf](https://github.com/muesli/duf) |
 | What ate the disk | `du` | `dust` | [dust](https://github.com/bootandy/dust) |
 | Ping as a graph | `ping` | `gping example.com` | [gping](https://github.com/orf/gping) |
-| JSON from an API | — | `curl -s URL \| jq .` | [jq](https://jqlang.github.io/jq/) · [linux-setup](https://github.com/amitsk/learning-linux/blob/main/docs/05-dev-workstation.md#512-jq-and-yq) |
+| JSON from an API | — | `curl -s URL \| jq .` | [jq](https://jqlang.org/) · [linux-setup](https://github.com/amitsk/learning-linux/blob/main/docs/05-dev-workstation.md#512-jq-and-yq) |
 | Friendlier HTTP | `curl` | `xh https://httpbin.org/get` | [xh](https://github.com/ducaale/xh) |
 
 `z` remembers directories only after you have `cd`'d there once. `jq` is the tool for JSON; the sed chapter still owns CSV.
@@ -77,7 +77,7 @@ export PATH="$HOME/.local/bin:$PATH"
 [ -f /usr/share/doc/fzf/examples/completion.bash ] && source /usr/share/doc/fzf/examples/completion.bash
 ```
 
-Homebrew and newer fzf (0.48+) use `eval "$(fzf --bash)"` or `eval "$(fzf --zsh)"` instead. Leave that line commented on Mint 22.
+Ubuntu 26.04+, Fedora, and Homebrew ship fzf 0.48+, where `eval "$(fzf --bash)"` (or `--zsh`) replaces both lines above. Leave that line commented on Mint 22 / Ubuntu 24.04.
 
 ### `sd`: find and replace
 

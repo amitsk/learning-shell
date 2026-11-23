@@ -34,43 +34,6 @@ Open that chapter and ignore the rest. Each one tells you how long it is.
 | A prompt or sudo | [the rest of shell customization](scripts/shell_customization.md#1-understanding-sudo-superuser-do) | optional |
 | An editor you want to live in | [the rest of text editors](scripts/text_editors.md#4-neovim-vims-hyperextensible-cousin) | optional |
 
-## Table of Contents
-
-- [If you are new](#if-you-are-new)
-- [Overview](#overview)
-- [Why the shell still matters (especially with AI)](#why-the-shell-still-matters-especially-with-ai)
-- [Getting Started](#getting-started)
-- [Contents](#contents)
-  - [Getting Started with Shell Scripting](#getting-started-with-shell-scripting)
-  - [Text Editors on the Command Line](#text-editors-on-the-command-line)
-  - [Bash Shell & Scripting Basics](#bash-shell--scripting-basics)
-  - [Shell Customization](#shell-customization-guide)
-  - [Text Processing with sed, awk, sort, uniq](#text-processing-with-sed-awk-sort-uniq)
-  - [AWK Tutorial](#awk-tutorial-practical-shell-data-processing)
-  - [HTTP Tools: wget & curl](#http-tools-wget--curl-basics)
-  - [User and Group Management](#user-and-group-management-in-linux)
-  - [Build Systems: Make and Ninja](#build-systems-make-and-ninja)
-  - [Modern Replacements for Unix Utilities](#modern-replacements-for-unix-utilities)
-  - [Useful Resources](#useful-resources)
-- [Contributing](#contributing)
-
----
-
-## Overview
-
-Hands-on exercises, sample data (`banklist.csv`, `nginx.log`), and cheatsheets for:
-
-- Navigating the filesystem without guessing
-- Permissions, ownership, users, and groups
-- Processing CSV and log files with `sed`, `awk`, `sort`, and `uniq`
-- HTTP from the prompt (`curl`, `wget`) instead of a GUI
-- Build files you can read (`make`, `ninja`)
-- Modern CLI replacements for classic Unix utilities (`bat`, `eza`, `ripgrep`, `fd`, `sd`, `zoxide`, `delta`) and the aliases that keep them out of scripts
-
-A sentence here and there says what to check when a model typed the command. The commands themselves are the lesson.
-
----
-
 ## Why the shell still matters (especially with AI)
 
 The [two-hour path](#if-you-are-new) does not depend on this section. Read it when you want the reason, then go type `hello.sh`.
@@ -91,93 +54,39 @@ You do not need to out-type autocomplete. You need to know when `$9` is the HTTP
 ## Getting Started
 
 1. Clone this repository (or download the files if git is still on tomorrow's list).
-2. Open `scripts/` — exercises, sample data, and cheatsheets live there.
+2. Open `scripts/` — exercises, sample data (`banklist.csv`, `nginx.log`), and cheatsheets live there.
 3. Type the commands. Reading them is how you stay polite to the terminal; running them is how you learn.
 4. When a chapter asks for a number, check [solutions/](solutions/README.md). Comparing your output with the expected one is the exercise.
 
 ---
 
-## Contents
+## Chapters
 
-### Getting Started with Shell Scripting
-
-- Cross-platform setup and tips in [scripts/getting_started.md](scripts/getting_started.md)
-- What a shell is, bash/zsh/ksh/csh/fish in brief, and why these pages use Bash
-- WSL2, Windows Terminal, starship.rs / Oh My Posh, and scratch directory notes
-- SSH to remote servers, including **key-based authentication** (`ssh-keygen`, `ssh-copy-id`, `ssh-agent`)
-
-### Text Editors on the Command Line
-
-- Terminal editors in [scripts/text_editors.md](scripts/text_editors.md)
-- nano/pico, Vim (including how to leave), Neovim, Emacs
-- Newer editors: Helix and Microsoft Edit
-- Vim/Emacs keybindings in the shell, Codex CLI, and Grok Build — same joke, smaller box
-
-### Bash Shell & Scripting Basics
-
-- Walkthrough of the filesystem in [scripts/basic_shell.md](scripts/basic_shell.md): a `scratch/` playground, then `ls`/`rm`/pipes/permissions
-- Scripting (variables, loops, functions) in [scripts/tools_bash.md](scripts/tools_bash.md)
-- Notes on reading agent-generated commands (`rm`, `chmod 777`, `shellcheck`)
-
-### Shell Customization Guide
-
-- rc files, aliases, `PATH`, and a prompt that tells the truth in [scripts/shell_customization.md](scripts/shell_customization.md)
-- `sudo` is not a spicy prefix; starship.rs or Oh My Posh — pick one, they fight if you enable both
-
-### Text Processing with sed, awk, sort, uniq
-
-- A workout on a real CSV of failed banks in [scripts/tools_sed.md](scripts/tools_sed.md)
-- Cut columns, find out why quoted fields make `cut` lie, `sort | uniq`, notice when the header got counted
-- Worked answers and expected numbers in [solutions/](solutions/README.md)
-- AWK basics for CSV and log analysis
-
-### AWK Tutorial: Practical Shell Data Processing
-
-- Twenty minutes with `nginx.log` in [scripts/tools_awk.md](scripts/tools_awk.md): `$9` is the status, until it isn't
-
-### HTTP Tools: wget & curl Basics
-
-- Download a file, POST a form, copy over SSH in [scripts/tools_http.md](scripts/tools_http.md)
-- `wget` is the download button; `curl` is the Swiss Army knife; neither is `curl | sh`
-
-### User and Group Management in Linux
-
-- `/etc/passwd` is a phone book (the passwords moved) in [scripts/users_groups.md](scripts/users_groups.md)
-- `useradd -m`, `usermod -aG`, and the flags that do not wipe `sudo`
-
-### Build Systems: Make and Ninja
-
-- `make` you can read, `ninja` a generator writes, in [scripts/build_systems.md](scripts/build_systems.md)
-- Tabs, not spaces. `.PHONY`. `make -n` before `make`
-- C and Rust examples, then when to let CMake write the Ninja file
-
-### Modern Replacements for Unix Utilities
-
-- A 15-minute page in [scripts/modern_tools.md](scripts/modern_tools.md): one install line, a table, the traps (`batcat`, `sd -p`, delta's git config), and the [alias block](scripts/modern_tools.md#3-aliases-for-these-tools)
+| Chapter | What is inside |
+| --- | --- |
+| [Getting Started](scripts/getting_started.md) | What a shell is, Bash vs. zsh/fish, WSL2/macOS setup, `hello.sh`, and SSH keys (`ssh-keygen`, `ssh-copy-id`) |
+| [Text Editors](scripts/text_editors.md) | `nano`, Vim (including how to escape), Neovim, Emacs, Helix, Edit, and Vim/Emacs keys in Bash, Codex, and Grok Build |
+| [Bash Basics](scripts/basic_shell.md) | `scratch/` playground, navigation, `cp`/`mv`/`rm`, `man`, `find`/`grep`, exit codes, permissions, pipes, processes, debugging |
+| [Bash Scripting](scripts/tools_bash.md) | Shebang, variables, `if`/`case`, loops, functions, arrays, `read`, and `shellcheck` |
+| [Shell Customization](scripts/shell_customization.md) | `sudo`, rc files, aliases, `PATH`, `PS1`, Starship, and Oh My Posh |
+| [sed, sort & uniq](scripts/tools_sed.md) | Workout on `banklist.csv`, why quoted commas make `cut` lie, CRLF traps, and worked [solutions](solutions/README.md) |
+| [AWK Tutorial](scripts/tools_awk.md) | Analyzing `nginx.log` — fields, histograms, 404 hunts, and built-ins (`$9` is the status, until it isn't) |
+| [HTTP & File Transfer](scripts/tools_http.md) | `wget`, `curl`, `jq` pointers, `scp`, and `sftp` |
+| [Users & Groups](scripts/users_groups.md) | `/etc/passwd`, `id`, `useradd -m`, and the `-a` in `usermod -aG` that saves your `sudo` |
+| [Build Systems](scripts/build_systems.md) | Hand-written `Makefile`s (tabs, `.PHONY`, `-MMD -MP`) and generated `ninja` builds via CMake |
+| [Modern CLI Tools](scripts/modern_tools.md) | 15-minute table for `bat`, `eza`, `rg`, `fd`, `sd`, `zoxide`, `fzf`, `delta`, traps, and safe aliases |
 
 ### Useful Resources
 
-- Curated list of Linux and shell learning resources
+Tool-specific links live inside [Modern CLI Tools](scripts/modern_tools.md) and [Text Editors](scripts/text_editors.md). General Linux & shell references:
+
 - [Linux Journey](https://linuxjourney.com/)
-- [The Linux Documentation Project (LDP)](https://tldp.org/guides.html)
-- [Interactive Vim Tutorial](https://openvim.com/)
-- [Digital Ocean Linux series](https://www.digitalocean.com/community/tags/linux-basics)
-- [CSAIL's Missing Semester Series](https://missing.csail.mit.edu/)
-- [Linux Cheatsheets](http://www.nixtutor.com/linux/all-the-best-linux-cheat-sheets/)
-- [Helix: A Modern Text Editor](https://helix-editor.com/)
-- [Microsoft Edit](https://github.com/microsoft/edit)
-- [NeoVim - hyperextensible Vim-based text editor](https://neovim.io/)
-- [starship.rs - X Shell Prompt](https://starship.rs/)
-- [Oh My Posh - Cross-shell Prompt Theme Engine](https://ohmyposh.dev/)
-- [Lots of Fonts](https://www.nerdfonts.com/)
-- [bat: A cat clone with syntax highlighting and Git integration](https://github.com/sharkdp/bat)
-- [eza: A modern, maintained replacement for ls](https://eza.rocks/)
-- [ripgrep: A line-oriented search tool that respects gitignore](https://github.com/BurntSushi/ripgrep)
-- [fd: A simple, fast and user-friendly alternative to find](https://github.com/sharkdp/fd)
-- [zoxide: A smarter cd command](https://github.com/ajeetdsouza/zoxide)
-- [fzf: General-purpose command-line fuzzy finder](https://github.com/junegunn/fzf)
-- [sd: Intuitive find & replace](https://github.com/chmln/sd)
-- [delta: A syntax-highlighting pager for git and diff](https://github.com/dandavison/delta)
+- [MIT Missing Semester](https://missing.csail.mit.edu/)
+- [The Linux Documentation Project](https://tldp.org/guides.html)
+- [DigitalOcean Linux Basics](https://www.digitalocean.com/community/tags/linux-basics)
+- [Devhints: Bash Cheatsheet](https://devhints.io/bash)
+- [Interactive Vim Tutorial (OpenVim)](https://openvim.com/)
+- [ShellCheck](https://www.shellcheck.net/) · [explainshell](https://explainshell.com/)
 
 ---
 

@@ -32,8 +32,6 @@ Look first. Adding a user is easy; noticing you already have one named `newuser`
   cut -d: -f1 /etc/passwd
   ```
 
-Read a drafted `useradd` before you run it. Without `-m` the account has no home. `usermod -aG` without the `-a` replaces their other groups.
-
 - List all groups:
 
   ```sh

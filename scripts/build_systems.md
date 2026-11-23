@@ -196,95 +196,33 @@ sudo make install
 
 ## Rust Programming with Make
 
-Cargo already *is* a build system. A Makefile around it is a habit, a CI entry point, or how you put `make test` next to `make lint` so the C folks and the Rust folks type the same word.
-
-### Rust Project with Make
+[Cargo](https://doc.rust-lang.org/cargo/) already *is* a build system. Wrapping it in a tiny `Makefile` is just muscle memory — or a CI entry point so the C folks and the Rust folks both type `make test`:
 
 ```makefile
-# Rust Makefile
 CARGO = cargo
-TARGET_DIR = target
-BINARY_NAME = myapp
 
-# Default target
-all: build
+.PHONY: build release test lint fmt clean
 
-# Build the project
 build:
 	$(CARGO) build
 
-# Build in release mode
 release:
 	$(CARGO) build --release
 
-# Compile only (check syntax without producing binary)
-compile:
-	$(CARGO) check
-
-# Link is handled by cargo build, but we can alias it
-link: build
-
-# Run linting with clippy
-lint:
-	$(CARGO) clippy -- -D warnings
-
-# Format code
-format:
-	$(CARGO) fmt
-
-# Run tests
 test:
 	$(CARGO) test
 
-# Run the application
-run:
-	$(CARGO) run
+lint:
+	$(CARGO) clippy -- -D warnings
 
-# Run in release mode
-run-release:
-	$(CARGO) run --release
+fmt:
+	$(CARGO) fmt
 
-# Clean build artifacts
 clean:
 	$(CARGO) clean
-
-# Install the binary
-install:
-	$(CARGO) install --path .
-
-# Update the lockfile's dependency selections; this changes project state.
-update:
-	$(CARGO) update
-
-# Generate documentation
-docs:
-	$(CARGO) doc --open
-
-.PHONY: all build release compile link lint format test run run-release clean install update docs
 ```
 
-### Advanced Rust Features
-
-```makefile
-# Cross-compilation example
-build-linux:
-	$(CARGO) build --target x86_64-unknown-linux-gnu
-
-build-windows:
-	$(CARGO) build --target x86_64-pc-windows-gnu
-
-# Benchmarking
-bench:
-	$(CARGO) bench
-
-# Security audit
-audit:
-	$(CARGO) audit
-
-# Code coverage (requires cargo-tarpaulin)
-coverage:
-	$(CARGO) tarpaulin --out Html
-```
+Need cross-compilation, benchmarks, or audits? Call Cargo directly (see [The Cargo Book](https://doc.rust-lang.org/cargo/commands/index.html)) — a Makefile is a front door, not a clone of `cargo --help`.
 
 ---
 
@@ -376,73 +314,21 @@ ninja
 
 ---
 
-## When to Use Which Build System
+## When to Use Which (and Four Rules That Save Time)
 
-If you can read the build file on a bad morning, it is probably Make. If a generator wrote it and the compile is huge, it is probably Ninja.
+If a human reads and edits the build file on a bad morning, use **Make**. If [CMake](https://cmake.org/documentation/) or [Meson](https://mesonbuild.com/) generates it and the project is large, let it output **Ninja** (many teams use Make locally and Ninja in CI).
 
-### Use Make when
+Four habits worth keeping:
 
-- Working on small to medium projects
-- Need human-readable, hand-maintained build files
-- Require complex build logic and scripting
-- Working with legacy codebases
-- Learning build systems (Make is educational)
-
-### Use Ninja when
-
-- Working on large projects with many files
-- Build speed is critical
-- Using a meta-build system (CMake, Meson, etc.)
-- Need maximum parallelism
-- Generated build files are acceptable
-
-### Hybrid Approach
-
-Many projects use both:
-
-1. **Development**: Use Make for flexibility and ease of modification
-2. **CI/Production**: Generate Ninja files for speed
-3. **Meta-build systems**: Use CMake/Meson to generate either Make or Ninja files
-
----
-
-## Best Practices
-
-`.PHONY` means "this target is a verb, not a file." Without it, a file named `clean` makes `make clean` a no-op — a prank the filesystem will play for free.
-
-### Make Best Practices
-
-1. **Use variables** for compiler flags and paths
-2. **Use .PHONY** for non-file targets
-3. **Include dependency tracking** for header files
-4. **Separate compilation and linking** steps
-5. **Use automatic variables** ($@, $<, $^)
+- **Mark non-file targets `.PHONY`.** Without it, a file named `clean` turns `make clean` into a silent no-op — a free prank from the filesystem.
+- **Build out-of-source (`-B build/`).** Keeping generated files in `build/` means `rm -rf build` is a clean reset instead of an excavation.
+- **Track header deps (`-MMD -MP`)** and use automatic variables (`$@` target, `$<` first prerequisite, `$^` all prerequisites) instead of repeating filenames.
+- **Use parallel builds** (`make -j$(nproc)`; Ninja parallelizes automatically) and dry-run unfamiliar targets with `make -n`.
 
 ```makefile
-# Example of automatic variables
-$(BUILDDIR)/%.o: $(SRCDIR)/%.c
-	$(CC) $(CFLAGS) -c $< -o $@
-	# $< = first dependency (source file)
-	# $@ = target (object file)
-	# $^ = all dependencies
-```
-
-### General Build System Tips
-
-1. **Keep builds deterministic** - same input should produce same output
-2. **Use out-of-source builds** - don't pollute source directory
-3. **Implement clean targets** - allow easy cleanup
-4. **Add help/info targets** - document available commands
-5. **Use parallel builds** - leverage multiple CPU cores
-
-```makefile
-# Help target
+# Handy self-documenting target
 help:
-	@echo "Available targets:"
-	@echo "  all     - Build everything"
-	@echo "  clean   - Remove build artifacts"
-	@echo "  test    - Run tests"
-	@echo "  lint    - Run static analysis"
+	@echo "Targets: all | clean | test | lint"
 ```
 
 ---
@@ -473,7 +359,7 @@ help:
 
 After `make` stops feeling like a spell:
 
-- **Package managers** (apt, yum, cargo, npm)
+- **Package managers** (`apt`, `dnf`, `cargo`, `npm`)
 - **Continuous Integration** (GitHub Actions, Jenkins)
 - **Container builds** (Docker, Podman)
 - **Cross-compilation** techniques

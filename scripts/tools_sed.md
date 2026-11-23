@@ -84,33 +84,9 @@ sed -n '/^"/!p' < banklist.csv > banklist-scrubbed.csv
 grep -c ',AZ,' banklist-scrubbed.csv   # 11. You just deleted five real banks.
 ```
 
-The scrub is how you meet `sed -n '/pat/!p'`, not a cleaning step. Keep the original. Use the scrubbed file for the column exercises below, and remember that column 3 is the state only there.
+`^` anchors to start of line, and `!p` means "print if it does *not* match" (shorter equivalent: `sed '/^"/d'`, which deletes matching lines from the stream without touching the input file unless you pass `-i`). That drops 41 rows: 572 lines become 531. Keep the original; use `banklist-scrubbed.csv` for the column exercises below so column 3 is actually the state.
 
-On your own laptop, find-and-replace is often easier with [`sd`](modern_tools.md#sd-find-and-replace): `sd -p 'old' 'new' file` previews, and a later run without `-p` rewrites the file. Keep using `sed` for this chapter. It is the tool on the server, in the script, and in the pipeline below. Leave `sed` itself unaliased.
-
-- [sed one-liners reference](http://sed.sourceforge.net/sed1line.txt)
-- **Print only lines which do NOT match regexp (emulates `grep -v`):**
-  - Method 1:
-
-    ```sh
-    sed -n '/regexp/!p'
-    ```
-
-  - Method 2 (simpler syntax):
-
-    ```sh
-    sed '/regexp/d'
-    ```
-
-  `!p` is "print if it does *not* match." `d` is "delete that line from the stream" (the file on disk is fine unless you used `-i`).
-
-- **Remove all lines with leading quotes (`^"`):**
-
-  ```sh
-  sed -n '/^"/!p' < banklist.csv > banklist-scrubbed.csv
-  ```
-
-  `^` means start of line. The output file is new; the original stays. This drops 41 rows: 572 lines become 531. Look at both with `head` before you trust the scrub, then ask whether you wanted to lose those rows at all.
+On your own laptop, interactive find-and-replace is nicer with [`sd`](modern_tools.md#sd-find-and-replace) (`sd -p 'old' 'new' file` previews first). Keep `sed` for scripts, servers, and this chapter, and leave `sed` unaliased. Reference: [sed one-liners](https://sed.sourceforge.io/sed1line.txt).
 
 ---
 
@@ -131,91 +107,36 @@ On your own laptop, find-and-replace is often easier with [`sd`](modern_tools.md
 
 ---
 
-## Other Useful Commands
+## Counting Lines and Duplicates
 
-- **Print the last 5 and the first 5 lines:**
-
-  ```sh
-  head -5 banklist.csv
-  tail -5 banklist.csv
-  ```
-
-- **Count the number of banks (lines):**
+- **Count lines (banks + header):**
 
   ```sh
-  wc -l banklist.csv
+  wc -l banklist.csv                    # 572 (includes the header — not a bank)
+  uniq banklist-scrubbed.csv | wc -l    # 531
+  wc -l banklist-scrubbed.csv           # 531
   ```
 
-  **572**. That count includes the header. The header is not a bank. Subtract one in your head, or notice it on purpose.
-
-- **Remove duplicates and count:**
-
-  ```sh
-  uniq banklist-scrubbed.csv | wc -l
-  wc -l banklist-scrubbed.csv
-  ```
-
-  Both print **531**. No two lines are byte-for-byte identical. That is the least alarming fact in this file.
-
-- **Why are counts the same?**
-
-  > If there are no duplicate lines, both counts will match. Also: `uniq` only collapses *adjacent* duplicates. Without `sort` first, it will lie to you with a straight face. Models forget that too.
+  Both scrubbed counts match because no two rows are byte-for-byte identical. Remember: `uniq` only collapses *adjacent* duplicates, so without `sort` in front it will miss repeats without a hint of remorse.
 
 ---
 
-## States List and Sorting
+## States, Filtering, and Pipes
 
-Column 3 is the state — on `banklist-scrubbed.csv`. On the original, quoted fields push the columns around. Count the commas with `head -1` if you do not believe me.
+On `banklist-scrubbed.csv`, column 3 is the state (commas around `,AZ,` keep `grep` from matching `BLAZING`):
 
-- **Print out the list of all States (unique, sorted):**
+```sh
+# Unique sorted states (45 lines: 44 states/territories + the header)
+cut -d , -f3 banklist-scrubbed.csv | sort -f | uniq
+cut -d , -f3 banklist-scrubbed.csv | sort -f | uniq | wc -l   # 45; add `tail -n +2` first to drop the header
 
-  ```sh
-  cut -d , -f3 banklist-scrubbed.csv | sort -f | uniq
-  ```
+# Banks in Arizona (11 in scrubbed vs. 16 in the original)
+grep ',AZ,' banklist-scrubbed.csv
+grep -c ',AZ,' banklist-scrubbed.csv
 
-  You should get **45 lines**: 44 states plus the header sitting at the top like it pays rent. Drop it with `tail -n +2` if you want the honest number.
-
----
-
-## Filtering and Counting by State
-
-The commas around `AZ` keep you from matching a bank in BLAZING-whatever. CSV is not a database; it is a polite agreement about commas. On the scrubbed file, this should print **11** rows.
-
-- **Get the list of all banks in AZ:**
-
-  ```sh
-  grep ',AZ,' banklist-scrubbed.csv
-  ```
-
-- **Count of all banks in AZ:**
-
-  ```sh
-  grep ',AZ,' banklist-scrubbed.csv | wc -l
-  ```
-
-  Eleven. The original file has sixteen. The five you are missing were wearing quotes, which is the whole lesson of this chapter.
-
----
-
-## Combining Tools (Pipes)
-
-This is the whole chapter in one line: cut a column, sort it, collapse duplicates, count.
-
-- **Count unique states:**
-
-  ```sh
-  cut -d , -f3 banklist-scrubbed.csv | sort | uniq | wc -l
-  ```
-
-  Forty-five, header included. Subtracting the header in your head is a skill; `tail -n +2` is the command.
-
-- **Find banks with a specific pattern and count:**
-
-  ```sh
-  grep -i 'savings' banklist-scrubbed.csv | wc -l
-  ```
-
-  Thirty-four. Leave off `-i` and you get zero, because the file says `Savings`, not `SAVINGS`. Case is not a detail; it is the whole match.
+# Case-insensitive match (34; drop -i and you get 0 because the file says `Savings`, not `savings`)
+grep -ic 'savings' banklist-scrubbed.csv
+```
 
 ---
 
@@ -268,8 +189,8 @@ A preview of the next chapter. `-F,` tells AWK the comma is the field separator,
 Shell pipelines are excellent at line-shaped text and bad at structure. The moment a field can contain the delimiter, quotes can nest, or the file is JSON with commas inside strings, stop and use a parser.
 
 ```sh
-# 44 states, no scrubbing, no lies
-python3 -c 'import csv,sys; [print(r[2]) for r in csv.reader(sys.stdin)]' < banklist.csv | sort -u | wc -l
+# 44 (43 states + PR), skipping the header, no scrubbing, no lies
+python3 -c 'import csv,sys; r=csv.reader(sys.stdin); next(r); [print(row[2]) for row in r]' < banklist.csv | sort -u | wc -l
 ```
 
 Rules of thumb:

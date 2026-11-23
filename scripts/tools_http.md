@@ -18,9 +18,7 @@
 wget https://example.com/file.txt
 ```
 
-Read the URL before you run it. A token in `-H "Authorization: ..."` does not belong in a repo, and `curl | sh` is an installer you have not opened yet.
-
-The filename is whatever the URL's last component is. Sometimes that is `file.txt`. Sometimes it is `download.php?id=12` and your directory looks haunted.
+Read the URL before you fetch it. The saved filename is whatever the URL ends with — sometimes `file.txt`, sometimes `download.php?id=12`, which makes your folder look haunted.
 
 ### Download and Save with a Custom Name
 
@@ -90,9 +88,9 @@ curl --fail --location --data 'name=amit&age=30' https://example.com/api
 curl --fail --header "Authorization: Bearer TOKEN" https://example.com/protected
 ```
 
-`TOKEN` is a placeholder. A real token does not belong in the tutorial, the shell history, or the repo.
+`TOKEN` is a placeholder — a real token never belongs in shell history or a Git repo, and `curl | sh` is an installer you haven't read yet.
 
-For scripts, add a timeout such as `--connect-timeout 10 --max-time 60` so a hung server is not a hung terminal. `curl` does not treat an HTTP 4xx or 5xx as a command failure unless you use `--fail` or `--fail-with-body`.
+For scripts, add timeouts (`--connect-timeout 10 --max-time 60`) so a hung server doesn't hang your terminal. `curl` treats HTTP 4xx/5xx as exit code 0 unless you pass `--fail` or `--fail-with-body`.
 
 ---
 

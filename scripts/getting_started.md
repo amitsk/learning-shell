@@ -112,7 +112,7 @@ A script is a text file the shell agrees to treat as a program. The first line (
    cd scratch
    ```
 
-3. Create a new file. The next chapter is editors. For this one file, nano is enough: type the two lines, then `Ctrl+O`, Enter, `Ctrl+X`.
+3. Open a new file in nano (the next chapter covers editors):
 
    ```sh
    nano hello.sh
@@ -125,7 +125,7 @@ A script is a text file the shell agrees to treat as a program. The first line (
    echo "Hello, world!"
    ```
 
-5. Save and exit (`Ctrl+O`, Enter, `Ctrl+X` in nano).
+5. Save and exit (`Ctrl+O`, Enter, `Ctrl+X`).
 6. Make it executable:
 
    ```sh
@@ -258,7 +258,7 @@ scp username@remote_host:/path/to/file.txt ./
 - [WSL2 Documentation](https://learn.microsoft.com/en-us/windows/wsl/)
 - [SSH Tutorial for Beginners](https://www.ssh.com/academy/ssh/command)
 - [OpenSSH keys](https://www.ssh.com/academy/ssh/key)
-- [Linux Cheatsheets](http://www.nixtutor.com/linux/all-the-best-linux-cheat-sheets/)
+- [Devhints: Bash Cheatsheet](https://devhints.io/bash)
 - [Text Editors on the Command Line](text_editors.md)
 
 ---

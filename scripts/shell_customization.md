@@ -46,94 +46,23 @@ ps -p $$
 
 Optional page. The 20-minute visit is [aliases](#aliases).
 
-`sudo` is "run this as someone who can break the machine." Prefer it over logging in as root; still read the command.
-
-### What is sudo?
-
-- `sudo` stands for "superuser do" or "substitute user do"
-- It lets permitted users run a command as root (or another user) without staying root
-- Safer than a root login, and it leaves an audit trail — which is cold comfort after `sudo rm`, but better than no trail
-
-### Basic Usage
+[`sudo`](https://www.sudo.ws/docs/man/sudo.man/) ("superuser do") runs *one* command as root (or another user via `sudo -u`) and logs who did it — safer than hanging out in a root shell you forget to exit, though cold comfort after a typoed `sudo rm`.
 
 ```sh
-# Run a command as root
-sudo command
-
-# Install packages (on Ubuntu/Debian)
-sudo apt update
-sudo apt install package-name
-
-# Edit system files
-sudo nano /etc/hosts
-
-# View root's files
-sudo ls -la /root
-
-# Run a command as a specific user
-sudo -u username command
+sudo apt update && sudo apt install htop   # install a package (then run `htop` without sudo)
+sudo nano /etc/hosts                       # edit a system config
+sudo systemctl restart nginx               # manage a service
+sudo -u postgres psql                      # run as a specific user, not root
+sudo -l                                    # what are you actually allowed to run?
+sudo -k                                    # drop the ~15-minute password cache right now
 ```
 
-`sudo -u` is "do this as them," not "do this as god." Useful, less exciting.
+Rules to live by:
 
-### Common sudo Tasks
-
-**File operations requiring elevated privileges:**
-```sh
-# Copy files to system directories
-sudo cp file.conf /etc/
-
-# Change ownership of files
-sudo chown user:group filename
-
-# Modify file permissions
-sudo chmod 644 /etc/somefile
-
-# Create directories in system locations
-sudo mkdir /opt/myapp
-```
-
-**System management:**
-```sh
-# Restart services
-sudo systemctl restart nginx
-sudo service apache2 restart
-
-# View system logs
-sudo tail -f /var/log/syslog
-
-# Mount filesystems
-sudo mount /dev/sdb1 /mnt/usb
-```
-
-`tail -f` is a live tail. `Ctrl+C` when you have seen enough drama.
-
-### Best Practices
-
-- **Use sudo instead of su**: `su` is a root shell you then have to remember to leave. `sudo` is one command and done.
-- **Be specific**: Only `sudo` the command that needs it. `htop` does not.
-- **Read it twice**: especially anything with `rm`, `chmod`, or a path starting at `/`
-- **Use visudo**: Edit `/etc/sudoers` only with `sudo visudo`. It checks syntax before it lets you lock yourself out.
-
-### Security Tips
-
-- Your password is cached for about 15 minutes. That is convenience, not magic.
-- `sudo -k` forgets the cache now.
-- `sudo -l` lists what you are actually allowed to run.
-- Never run an untrusted script with sudo, including one a model wrote and you only skimmed.
-
-### Example: Installing Software
-
-```sh
-# Update package lists (requires sudo)
-sudo apt update
-
-# Install a package (requires sudo)
-sudo apt install htop
-
-# Run the installed program (no sudo needed)
-htop
-```
+- **Only `sudo` what needs it.** `htop` and `git status` do not need root privileges.
+- **Read twice** before pressing Enter on `sudo` + `rm`, `chmod`, or any path starting with `/`.
+- **Edit `/etc/sudoers` only with `sudo visudo`** — it checks syntax before letting you lock yourself out.
+- **Never `sudo` an untrusted script**, including one an agent wrote and you only skimmed.
 
 ---
 
@@ -169,11 +98,9 @@ alias rm='rm -i'
 alias cp='cp -i'
 ```
 
-The `-i` flag is a seatbelt on `mv` / `rm` / `cp`: they ask before clobbering. That saves interactive you. It will hang a script waiting for a prompt nobody will type.
+The `-i` flag is a seatbelt on `mv` / `rm` / `cp`: it asks before clobbering. Keep those seatbelts in `~/.bashrc` — a non-interactive script that inherits `rm -i` will hang forever waiting for someone to type `y`.
 
-`gstatus` is a shell nickname for `git status`. The shell expands it when `gstatus` is the command. `git gstatus` asks git for a git alias of that name, which is a different list (`git config --global alias.st status`, then you type `git st`). `gs` is a bad nickname here: on many Linux machines it is Ghostscript, and the alias hides it. [Modern tools](modern_tools.md#3-aliases-for-these-tools) has the nicknames for `eza`, `bat`, and `fd`.
-
-An alias a script inherits can surprise it. `alias rm='rm -i'` waits for a `y` that a non-interactive run will never type. Keep the seatbelts in `~/.bashrc`. Keep generated scripts boring.
+`gstatus` is a shell nickname for `git status` (git has its own alias list via `git config --global alias.st status`, so `git gstatus` won't work). Avoid aliasing `gs` — on many Linux boxes that hides Ghostscript. [Modern tools](modern_tools.md#3-aliases-for-these-tools) has the nicknames for `eza`, `bat`, and `fd`.
 
 #### See them, drop one, bypass one
 
@@ -221,67 +148,29 @@ mkcd() {
 
 ### Environment Variables
 
-Key-value pairs that child processes can see — once you `export` them. `PATH` is a scavenger hunt: first match wins. Put `~/bin` at the front if you want *your* `hello` to beat `/usr/bin/hello`.
+Key-value pairs that child processes inherit once you `export` them (`env` lists all of them; `echo "$VAR"` prints one). `PATH` is a scavenger hunt where first match wins — put `~/bin` at the front if you want *your* `hello` to beat `/usr/bin/hello`.
 
 ```sh
-export EDITOR=vim
+export EDITOR=nano
 export PATH="$HOME/bin:$PATH"
 export HISTSIZE=10000
 export HISTFILESIZE=20000
 ```
 
-**Common environment variables:**
-- `EDITOR`: Default text editor for command-line programs
-- `PATH`: Directories where the shell looks for executable files
-- `HISTSIZE`: Number of commands to remember in current session
-- `HISTFILESIZE`: Number of commands to save in history file
-- `LANG`: System language and locale settings
-
-**Tips:**
-- `export` makes the variable available to child processes
-- `env` or `printenv` lists them all
-- `echo $VARIABLE_NAME` prints one
-
 ### Personal Bin Directory
 
-Your scripts, your `PATH`, no `sudo` required. This is the grown-up version of "I keep a file on the Desktop named `run this.sh`."
+Your scripts, your `PATH`, no `sudo` required — the grown-up upgrade from keeping `run this.sh` on your Desktop:
 
 ```sh
-# Create the directory
 mkdir -p ~/bin
-
-# Add it to your PATH (add this to ~/.bashrc or ~/.zshrc)
-export PATH="$HOME/bin:$PATH"
-```
-
-**Benefits:**
-
-- Keep your custom scripts organized in one place
-- Make scripts executable from anywhere without typing full paths
-- Separate your scripts from system binaries
-- Easy to backup and sync across machines
-
-**Example usage:**
-```sh
-# Create a script
-echo '#!/bin/bash\necho "Hello from my script!"' > ~/bin/myscript
+printf '%s\n' '#!/bin/bash' 'echo "Hello from my script!"' > ~/bin/myscript
 chmod +x ~/bin/myscript
-
-# Run it from anywhere
-myscript
+myscript   # runs from anywhere once ~/bin is on PATH
 ```
 
 ### Vi Mode
 
-Same joke as Vim, smaller box. `Esc` then `hjkl` on the command line. Full tour is in [Text editors](text_editors.md#7-vim-and-emacs-modes-in-the-shell-and-in-coding-agents).
-
-```sh
-set -o vi
-```
-
-- Press `Esc` for command mode, then `h` `j` `k` `l` to move
-- `i` returns to insert mode
-- Add this to `~/.bashrc` or `~/.zshrc` to keep it
+`Esc` then `hjkl` right on the command line (`set -o vi` in `~/.bashrc`). Full tour in [Text editors](text_editors.md#7-vim-and-emacs-modes-in-the-shell-and-in-coding-agents).
 
 ---
 
@@ -321,87 +210,32 @@ When the hieroglyphs stop being fun, skip to starship or Oh My Posh below.
 
 ## 5. Advanced Prompt: starship.rs and Oh My Posh
 
-`PS1` is enough until you want git branch, language version, and command duration without writing a novel of escape codes. [starship.rs](https://starship.rs/) and [Oh My Posh](https://ohmyposh.dev/) are both fast, cross-shell prompt engines. Pick **one**. Putting both `eval` lines in the same rc file means they fight over the prompt.
+`PS1` is fine until you want Git branch, language versions, and command duration without writing a novel of escape codes. **[starship.rs](https://starship.rs/)** (minimal, Rust) and **[Oh My Posh](https://ohmyposh.dev/)** (colorful Powerline themes, Go) both work across Bash, Zsh, Fish, and PowerShell. **Pick one** — enabling both makes them fight over every keypress.
 
-Both look best with a [Nerd Font](https://www.nerdfonts.com/) set in the terminal. Both ship installers that people `curl | sh` without reading. Don't.
+Both want a [Nerd Font](https://github.com/amitsk/learning-linux/blob/main/docs/05-dev-workstation.md#coding-fonts-nerd-fonts-banishing-the-tofu) in your terminal so icons don't render as empty boxes. Prefer a package manager or read any remote install script before running it.
 
 ### starship.rs
 
-[starship.rs](https://starship.rs/) is a fast, customizable, and minimal prompt for any shell. One TOML file configures every shell you init.
-
-- Prefer your operating system's package manager when available. If you use the installer below, download and review it first rather than piping a remote script directly to a shell:
-
-  ```sh
-  curl -fsSLo /tmp/starship-install.sh https://starship.rs/install.sh
-  less /tmp/starship-install.sh
-  sh /tmp/starship-install.sh
-  ```
-
-- Add to your `~/.bashrc` or `~/.zshrc`:
+- **Install:** Follow the [Starship install guide](https://starship.rs/guide/#%F0%9F%9A%80-installation) (Homebrew, `dnf`/`cargo`, or download-and-review `https://starship.rs/install.sh`).
+- **Activate** (end of `~/.bashrc` or `~/.zshrc`, then `source` it):
 
   ```sh
-  eval "$(starship init bash)"
-  # or for zsh:
-  eval "$(starship init zsh)"
+  eval "$(starship init bash)"   # or: eval "$(starship init zsh)"
   ```
 
-- Configure with `~/.config/starship.toml`
+- **Customize:** Edit `~/.config/starship.toml` or apply a [preset](https://starship.rs/presets/) (e.g., `starship preset nerd-font-symbols -o ~/.config/starship.toml`).
 
 ### Oh My Posh
 
-[Oh My Posh](https://ohmyposh.dev/) is a prompt theme engine for any shell (bash, zsh, PowerShell, fish, and more). It ships a large set of themes and configures in JSON, YAML, or TOML. On WSL, install the Linux binary, not the Windows one.
-
-- Prefer a package manager when you have one:
-
-  ```sh
-  # macOS / Linux (Homebrew)
-  brew install jandedobbeleer/oh-my-posh/oh-my-posh
-
-  # Windows
-  winget install JanDeDobbeleer.OhMyPosh --source winget
-  ```
-
-- On Linux without Homebrew, download and review the installer first. It needs `curl`, `unzip`, `realpath`, and `dirname`. The script installs to `~/bin` or `~/.local/bin` (see [Personal Bin Directory](#personal-bin-directory) — that directory must be on `PATH`):
+- **Install:** Follow the [Oh My Posh install docs](https://ohmyposh.dev/docs/installation/linux) (Homebrew, `winget`, or download-and-review `https://ohmyposh.dev/install.sh` — on WSL, install the Linux binary and ensure `~/.local/bin` or `~/bin` is on `PATH`).
+- **Activate** (last line of `~/.bashrc` or `~/.zshrc`):
 
   ```sh
-  curl -fsSLo /tmp/oh-my-posh-install.sh https://ohmyposh.dev/install.sh
-  less /tmp/oh-my-posh-install.sh
-  bash /tmp/oh-my-posh-install.sh
+  eval "$(oh-my-posh init bash --config ~/.cache/oh-my-posh/themes/jandedobbeleer.omp.json)"
+  # zsh: swap `bash` for `zsh`; PowerShell: oh-my-posh init pwsh | Invoke-Expression
   ```
 
-- Add as the last line of your `~/.bashrc` or `~/.zshrc`:
-
-  ```sh
-  eval "$(oh-my-posh init bash)"
-  # or for zsh:
-  eval "$(oh-my-posh init zsh)"
-  ```
-
-  PowerShell (`$PROFILE`):
-
-  ```powershell
-  oh-my-posh init pwsh | Invoke-Expression
-  ```
-
-  Unsure which shell you are in: `oh-my-posh get shell`.
-
-- Themes: pass `--config` with a theme name, a local file, or a URL. A local file is faster than a name or URL (those download on first use):
-
-  ```sh
-  eval "$(oh-my-posh init bash --config ~/.mytheme.omp.json)"
-  ```
-
-  Export the current theme to tweak it:
-
-  ```sh
-  oh-my-posh config export --output ~/.mytheme.omp.json
-  ```
-
-  Preview without restarting the shell:
-
-  ```sh
-  oh-my-posh print preview
-  ```
+- **Themes:** Browse screenshots in the [theme gallery](https://ohmyposh.dev/docs/themes), preview your active config with `oh-my-posh print preview`, or export a copy to tweak (`oh-my-posh config export --output ~/.mytheme.omp.json`). Passing a local file is faster than fetching a URL on shell startup.
 
 ---
 

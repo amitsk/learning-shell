@@ -41,7 +41,7 @@ cat notes/hello.txt
 
 You just created a tree, wrote a file, copied it, listed it, and read it. Sections 2–4 are those five moves with better manners. If a command in front of you contains `-delete`, read it before you run it.
 
-Sample data for later lives next to this file: `banklist.csv` and `nginx.log`. From `scratch/playground` they are at `../../scripts/banklist.csv`. From the repo root they are `scripts/banklist.csv`. Either works. `cd` with Tab if you get lost — that is how you avoid typoing `Docments` and then wondering why the computer "doesn't work."
+Sample data for later lives next to this file: `banklist.csv` and `nginx.log`. From `scratch/playground` they are at `../../scripts/banklist.csv`; from the repo root they are `scripts/banklist.csv`. Either works.
 
 ---
 
@@ -93,23 +93,7 @@ If nothing matches, Bash (by default) hands you the literal `*.txt`. That surpri
 
 ### Optional upgrade: `eza`
 
-[`eza`](https://eza.rocks/) is `ls` with colors, git status, and a tree view. Install if you want (`brew install eza`, `sudo apt install eza`). Then:
-
-```sh
-eza -l --git
-eza --tree --level=2
-```
-
-`--icons` draws file glyphs once a [Nerd Font](https://github.com/amitsk/learning-linux/blob/main/docs/05-dev-workstation.md#coding-fonts-nerd-fonts-banishing-the-tofu) is the terminal font. Until then it draws empty boxes.
-
-The alias block that matches the rest of this tutorial — including the Debian `batcat` / `fdfind` names, and the ones to leave alone — is [Modern tools: Aliases](modern_tools.md#3-aliases-for-these-tools). A short version, after you have read [what an alias is](shell_customization.md#aliases):
-
-```sh
-alias ls='eza'
-alias ll='eza -l --git'
-alias la='eza -la --git'
-alias lt='eza --tree --level=2'
-```
+Want colors, git status, and a built-in tree view (`eza -l --git`, `eza --tree --level=2`)? Install and alias [`eza`](https://eza.rocks/) via [Modern tools](modern_tools.md#3-aliases-for-these-tools) (add `--icons` once you have a [Nerd Font](https://github.com/amitsk/learning-linux/blob/main/docs/05-dev-workstation.md#coding-fonts-nerd-fonts-banishing-the-tofu)).
 
 ---
 
@@ -205,16 +189,7 @@ cat > notes/quick.txt
 
 ### Optional upgrade: `bat`
 
-[`bat`](https://github.com/sharkdp/bat) is `cat` with syntax highlighting, git markers, and a pager. On Debian/Ubuntu the package is `bat` but the binary is often `batcat`, because someone else already owns the name.
-
-```sh
-sudo apt install bat     # or: brew install bat
-
-bat notes/hello.txt          # on Debian/Ubuntu: batcat notes/hello.txt
-bat -n notes/hello.txt       # line numbers, no decorations
-```
-
-If `bat: command not found` and `batcat` works, you are on Debian. The tool is installed; the name is just wearing a disguise.
+[`bat`](https://github.com/sharkdp/bat) is `cat` with syntax highlighting, git markers, and an automatic pager. See [Modern tools](modern_tools.md#2-traps) for install commands and the Debian/Ubuntu `batcat` name quirk.
 
 ---
 
@@ -281,7 +256,7 @@ find . -type f -name '*.log' -ok rm -- {} \;
 
 ```sh
 # Intentional and privileged. Do not paste this into a directory you like.
-find . -user amit -exec chown root {} \;
+find . -user "$USER" -exec chown root {} \;
 ```
 
 ### `grep`: find the line
@@ -322,8 +297,6 @@ grep 'product_2' scripts/nginx.log
 grep -E ' 404 | 500 ' scripts/nginx.log  # extended regex; -E lets you write |
 ```
 
-On your own laptop, [`rg`](modern_tools.md) is `grep -r` with better defaults: it respects `.gitignore`, skips binaries, and prints line numbers without being asked. Use it at the keyboard. Keep `grep` in scripts, because the server has `grep` and may not have your hobbies.
-
 Pipes make `grep` a filter, not just a file search:
 
 ```sh
@@ -331,35 +304,9 @@ ps aux | grep '[n]ginx'            # see section 10 for the [n] trick
 ls -l | grep '\.py$'
 ```
 
-### Optional upgrade: `ripgrep` (`rg`)
+### Optional upgrades: `ripgrep` (`rg`) and `fzf`
 
-[`rg`](https://github.com/BurntSushi/ripgrep) is recursive by default, respects `.gitignore`, and is fast enough that you stop waiting. This is also how you give a coding agent a file list: search first, paste the matches, not the whole repository.
-
-```sh
-sudo apt install ripgrep           # or: brew install ripgrep
-rg 404 scripts/nginx.log
-rg -g '*.py' TODO
-rg --files-without-match TODO      # files with no match (`rg -v` inverts *lines*)
-```
-
-### Optional upgrade: `fzf`
-
-[`fzf`](https://github.com/junegunn/fzf) is a fuzzy finder. Pipe it a list; type a few letters; get a path. It is how you stop pasting a 400-file tree into a chat window.
-
-```sh
-sudo apt install fzf               # or: brew install fzf
-find . -type f | fzf
-history | fzf
-```
-
-After the keybindings are installed: `Ctrl+R` searches history, `Ctrl+T` pastes a file path, `Alt+C` `cd`s into a directory.
-
-```sh
-selected=$(find . -type f -print0 | fzf --read0)
-if [ -n "$selected" ]; then
-  "${EDITOR:-vim}" -- "$selected"
-fi
-```
+At your own keyboard, [`ripgrep`](https://github.com/BurntSushi/ripgrep) (`rg`) is `grep -r` with sane defaults (respects `.gitignore`, skips binaries, prints line numbers), and [`fzf`](https://github.com/junegunn/fzf) fuzzy-filters filenames or `Ctrl+R` history so you don't paste a 400-file tree into a chat window. Keep `grep` in scripts (servers always have it); grab install commands and `fzf` keybindings in [Modern tools](modern_tools.md).
 
 ---
 
@@ -532,13 +479,13 @@ cut -d, -f3 scripts/banklist.csv | sort | uniq | head
 
 That is "column 3, sorted, unique, first few." It prints values, and some of them are cities — this CSV has quoted fields, so a comma inside a bank name moves the columns. `cut` is not a CSV parser; it is a comma counter. The [sed chapter](tools_sed.md#quoted-fields-and-why-cut-lies) makes that the lesson.
 
-`uniq` only collapses *adjacent* duplicates, which is why `sort` sits in front. Forget `sort` and `uniq` will lie to you with a straight face. Models forget it too.
+`uniq` only collapses *adjacent* duplicates, which is why `sort` sits in front — skip `sort` and `uniq` will quietly undercount with total confidence (and watch out for the CSV header row sneaking into `cut | sort | uniq`). Models forget both too.
 
 ```sh
 grep -c ',AZ,' scripts/banklist.csv    # 16
 ```
 
-Compare that number with whatever a chat window just claimed. When they disagree, `wc -l` is not the one hallucinating. The header is not in that sixteen; it is not a state and never will be.
+Compare that number with whatever a chat window just claimed. When they disagree, `grep -c` is not the one hallucinating.
 
 `echo` into a file is how a lot of scripts start. Quotes still matter:
 
@@ -659,32 +606,11 @@ ls /nonexistent-directory
 echo "This will not be printed."
 ```
 
-A stricter baseline some people start from: `set -Eeuo pipefail`. `-u` errors on unset variables; `pipefail` makes a pipeline fail if any command in it fails, not just the last. Test those options on *your* script before treating them as a personality.
+A stricter baseline some people start from: `set -Eeuo pipefail`. `-u` errors on unset variables; `pipefail` makes a pipeline fail if any command in it fails, not just the last. Test those options on *your* script before copying them blindly into every header.
 
 ### `shellcheck`
 
-Install with `sudo apt install shellcheck` (or `brew install shellcheck`). Then run it on anything an agent — or you — just wrote.
-
-```sh
-# script.sh
-name="Amit"
-echo Hello, $name
-```
-
-```sh
-shellcheck script.sh
-```
-
-```text
-In script.sh line 2:
-echo Hello, $name
-     ^-- SC2086: Double quote to prevent globbing and word splitting.
-
-Did you mean:
-echo "Hello, $name"
-```
-
-It will also catch a `cd` that never checked whether it succeeded, a missing shebang, and most of the other ways Bash scripts join a support channel. Models repeat those mistakes because the internet repeats those mistakes.
+[`shellcheck`](https://www.shellcheck.net/) catches unquoted variables (`echo Hello, $name`), missing shebangs, and unchecked `cd` commands before they ruin your afternoon — whether you or an agent wrote the script. Install commands and examples live in [Bash scripting: `shellcheck`](tools_bash.md#8-before-you-run-it-shellcheck).
 
 ---
 

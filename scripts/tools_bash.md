@@ -299,7 +299,7 @@ sudo dnf install shellcheck
 brew install shellcheck
 
 # then
-shellcheck linecount
+shellcheck ../solutions/linecount   # or: shellcheck your_script.sh
 ```
 
 A clean run prints nothing. A dirty run prints a line number, a severity, and a link to the explanation. Fix the error, read the warning, and ignore `SC1090` only when you know what it is.

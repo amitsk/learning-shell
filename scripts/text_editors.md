@@ -63,20 +63,9 @@ Newer nano (8+) changed the *search* keys, not the save key. `Ctrl+O` still writ
 nano --modernbindings hello.sh   # opt in to Ctrl+S / Ctrl+Q
 ```
 
-That is enough coverage. Nano is the editor you use when you want to *finish the task*, not when you want a personality.
+That is enough coverage. Nano is the editor you use when you want to *finish the task* without picking a lifelong hobby.
 
-```sh
-# Debian/Ubuntu
-sudo apt install nano
-
-# Fedora
-sudo dnf install nano
-
-# macOS (often already present; Homebrew has a newer build)
-brew install nano
-```
-
-**Further reading:** [GNU nano manual](https://www.nano-editor.org/dist/latest/nano.html) · [nano cheatsheet](https://www.nano-editor.org/dist/latest/cheatsheet.html)
+Install via your package manager (`apt`/`dnf`/`brew install nano`) if it is not already there. **Further reading:** [GNU nano manual](https://www.nano-editor.org/dist/latest/nano.html) · [nano cheatsheet](https://www.nano-editor.org/dist/latest/cheatsheet.html)
 
 ---
 
@@ -166,216 +155,65 @@ brew install vim
 
 ## 4. Neovim: Vim's hyperextensible cousin
 
-[Neovim](https://neovim.io/) is a modern fork of Vim. Same modal muscle memory (`i`, `Esc`, `:wq` still work), different engine: Lua configuration, a built-in terminal, first-class LSP (language server) support, and a plugin ecosystem that looks like 2026 instead of 1996.
+[Neovim](https://neovim.io/) (`nvim filename`) is a modern fork of Vim with the same modal muscle memory (`i`, `Esc`, `:wq`) and a newer engine: Lua config (`~/.config/nvim/init.lua`), built-in [LSP](https://microsoft.github.io/language-server-protocol/) and treesitter support, and a lively plugin ecosystem around [lazy.nvim](https://github.com/folke/lazy.nvim).
 
-```sh
-nvim filename
-```
+Start from scratch or pick a starter kit: [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim) (readable, single-file) or [LazyVim](https://www.lazyvim.org/) (batteries included). `:q` still quits; the memes transfer.
 
-Why people switch:
-
-- configs in Lua (`~/.config/nvim/init.lua`) instead of a growing `.vimrc`
-- [LSP](https://microsoft.github.io/language-server-protocol/) for completion and diagnostics
-- treesitter highlighting
-- a plugin culture built around [lazy.nvim](https://github.com/folke/lazy.nvim)
-
-You can start small (Neovim as "Vim with better defaults") or go nuclear with a distribution:
-
-- [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim) — a readable starter config, not a black box
-- [LazyVim](https://www.lazyvim.org/) — batteries included
-
-```sh
-# Debian/Ubuntu (version may be older than upstream)
-sudo apt install neovim
-
-# Fedora
-sudo dnf install neovim
-
-# macOS
-brew install neovim
-```
-
-`:q` still quits. The memes transfer. The plugins get weirder (in a good way).
-
-**Further reading:** [Neovim](https://neovim.io/) · [Neovim docs](https://neovim.io/doc/) · [From Vim to Neovim](https://neovim.io/doc/user/nvim.html)
+**Install & docs:** [Neovim install guide](https://github.com/neovim/neovim/blob/master/INSTALL.md) (distro packages can lag upstream) · [Neovim docs](https://neovim.io/doc/) · [From Vim to Neovim](https://neovim.io/doc/user/nvim.html)
 
 ---
 
 ## 5. Emacs: the other religion
 
-If Vim is a modal text editor that grew a plugin universe, [GNU Emacs](https://www.gnu.org/software/emacs/) is an operating system that happens to edit text. The classic joke, attributed in various forms to old Usenet:
+If Vim is a modal text editor that grew a plugin universe, [GNU Emacs](https://www.gnu.org/software/emacs/) is an operating system that happens to edit text. The classic Usenet joke:
 
 > Emacs is a great operating system, lacking only a decent editor.
 
-The other classic is the backronym **E**ight **M**egabytes **A**nd **C**onstantly **S**wapping — funny in the 1990s, slightly less fair on a machine with 32 GiB of RAM, still fair if you open Magit, Org, and twelve LSP clients at once.
+Its classic backronym — **E**ight **M**egabytes **A**nd **C**onstantly **S**wapping — is less fair on 32 GiB of RAM, unless you open Magit, Org, and twelve LSP clients at once.
 
-Emacs is *not* modal by default. You hold modifier keys:
+Emacs is *not* modal by default; you hold modifier keys (`C-` = Ctrl, `M-` = Alt/Esc). Launch in a terminal with `emacs -nw filename`.
 
 | Keys | What it does |
 | --- | --- |
-| `C-x C-f` | Open a file (find-file) |
-| `C-x C-s` | Save |
-| `C-x C-c` | Exit Emacs |
+| `C-x C-f` / `C-x C-s` / `C-x C-c` | Open / Save / Exit |
 | `C-g` | Cancel whatever you just started (your new best friend) |
-| `C-h t` | The built-in tutorial. Use it. |
-| `C-h k` then a key | "What does this key do?" |
+| `C-h t` / `C-h k` | Built-in tutorial / "what does this key do?" |
 
-`C-` means Ctrl. `M-` means Meta, which is usually Alt (or Esc then the key).
+People move in permanently for [Org mode](https://orgmode.org/) (notes & literate programming), [Magit](https://magit.vc/) (Git made pleasant), [TRAMP](https://www.gnu.org/software/tramp/) (remote editing over SSH), and [Evil](https://github.com/emacs-evil/evil) (Vim keys inside Emacs, for diplomats) — or batteries-included distros like [Doom Emacs](https://github.com/doomemacs/doomemacs) and [Spacemacs](https://www.spacemacs.org/).
 
-```sh
-emacs filename          # GUI if available
-emacs -nw filename      # terminal ("no window")
-```
-
-People stay in Emacs for the universe around the editor:
-
-- [Org mode](https://orgmode.org/) — notes, todos, literate programming
-- [Magit](https://magit.vc/) — Git, but pleasant
-- [TRAMP](https://www.gnu.org/software/tramp/) — edit remote files over SSH
-- [Evil](https://github.com/emacs-evil/evil) — Vim keybindings inside Emacs, for diplomats
-
-Distributions such as [Doom Emacs](https://github.com/doomemacs/doomemacs) and [Spacemacs](https://www.spacemacs.org/) give you a batteries-included setup (often with Vim keys via Evil).
-
-```sh
-# Debian/Ubuntu
-sudo apt install emacs
-
-# macOS
-brew install emacs
-```
-
-**Further reading:** [GNU Emacs](https://www.gnu.org/software/emacs/) · [Emacs tutorial](https://www.gnu.org/software/emacs/tour/) · [Learn Emacs](https://www.emacswiki.org/emacs/LearningEmacs) · [Mastering Emacs](https://www.masteringemacs.org/)
+**Install & docs:** [Download GNU Emacs](https://www.gnu.org/software/emacs/download.html) · [Emacs tour](https://www.gnu.org/software/emacs/tour/) · [Mastering Emacs](https://www.masteringemacs.org/)
 
 ---
 
 ## 6. Newer editors: Helix and Microsoft Edit
 
-The classics still matter. A few newer terminal editors are worth knowing by name.
-
-### Helix
-
-[Helix](https://helix-editor.com/) is a modal editor in the Vim family with a different slogan: **select first, then act**. Multiple cursors and syntax-aware editing are built in. LSP and treesitter come with the editor instead of a weekend of plugin archaeology.
-
-```sh
-hx filename
-```
-
-Helix still has modes, still uses `Esc`, and still has a learning curve — but the curve is "learn Helix," not "learn Helix plus a plugin manager plus a color scheme plus why did my LSP die."
-
-- Site: [https://helix-editor.com/](https://helix-editor.com/)
-- Docs: [https://docs.helix-editor.com/](https://docs.helix-editor.com/)
-- Repo: [https://github.com/helix-editor/helix](https://github.com/helix-editor/helix)
-
-### Microsoft Edit
-
-[Edit](https://github.com/microsoft/edit) is Microsoft's open-source terminal editor: a modern nod to MS-DOS Edit, with input that feels closer to VS Code than to Vim. It is modeless. You type. You save. You leave. No Stack Overflow rescue thread required.
-
-```sh
-# Windows
-winget install Microsoft.Edit
-edit filename
-
-# macOS (Homebrew); Linux builds often use the same name
-brew install msedit
-msedit filename
-```
-
-On Linux, `edit` is frequently a *different* program. Prefer `msedit` unless you know the `edit` on your `$PATH` is Microsoft Edit. Install notes for every OS: [microsoft/edit](https://github.com/microsoft/edit). Microsoft's docs: [Edit command-line editor](https://learn.microsoft.com/en-us/windows/edit/).
-
-If nano is "please just let me edit this file" for Unix, Edit is that same energy for Windows terminals — and a nice option anywhere you want VS Code muscle memory without starting VS Code.
+- **[Helix](https://helix-editor.com/)** (`hx filename`) — Modal like Vim, except **select first, then act**, with multiple cursors, treesitter, and LSP built in so you spend the weekend editing code instead of debugging a plugin manager. [Install](https://docs.helix-editor.com/install.html) · [Docs](https://docs.helix-editor.com/)
+- **[Microsoft Edit](https://github.com/microsoft/edit)** (`edit` on Windows; `msedit` via Homebrew/Linux so it doesn't collide with an existing `edit`) — Modeless, VS Code-ish terminal editor. You type, save, and leave — no Stack Overflow rescue thread required. [Install & docs](https://learn.microsoft.com/en-us/windows/edit/)
 
 ---
 
 ## 7. Vim and Emacs modes in the shell (and in coding agents)
 
-Here is the plot twist: you can use Vim or Emacs keys *without opening Vim or Emacs*. Readline (Bash), Zsh, and several coding TUIs all speak those dialects.
+Plot twist: you can use Vim or Emacs keys *without opening Vim or Emacs*. Bash (Readline), Zsh, and terminal coding agents speak those dialects too.
 
-### Bash: `set -o vi` and `set -o emacs`
+### Shell line editing
 
-Bash line editing defaults to Emacs-style keys. That is why `Ctrl+A` jumps to the start of the line and `Ctrl+E` to the end, even if you have never started Emacs in your life.
+Bash defaults to Emacs-style keys (`Ctrl+A` / `Ctrl+E` for start/end of line). Switch with `set -o vi` (put it in `~/.bashrc` to keep it) or `set -o emacs`, and check with `set -o | grep -E 'emacs|vi'`. In vi mode, `Esc` enters command mode (`k`/`j` walk history, `0`/`$` jump to ends, `i`/`a` resume typing) — tiny Vim, right at the prompt.
 
-```sh
-set -o emacs    # default: Ctrl+A / Ctrl+E / Ctrl+K / Ctrl+Y ...
-set -o vi       # Esc then hjkl, 0, $, dd — Vim on the command line
-```
-
-Check which one you are in:
-
-```sh
-set -o | grep -E 'emacs|vi'
-```
-
-Make it permanent in `~/.bashrc`:
-
-```sh
-set -o vi
-```
-
-In vi mode, the prompt starts in insert-style editing. Hit `Esc` to go to command mode, then `k` / `j` to walk history, `0` / `$` for start / end of line, `cw` to change a word. `i` or `a` to type again. Same joke, smaller editor.
-
-Zsh uses `bindkey`:
-
-```sh
-bindkey -e    # Emacs (Zsh default)
-bindkey -v    # Vim
-```
-
-Fish has `fish_vi_key_bindings` / `fish_default_key_bindings`.
+Zsh uses `bindkey -e` / `bindkey -v`; Fish uses `fish_vi_key_bindings`. See [Bash Command-Line Editing](https://www.gnu.org/software/bash/manual/html_node/Command-Line-Editing.html) and [Zsh Line Editor](https://zsh.sourceforge.io/Doc/Release/Zsh-Line-Editor.html).
 
 ### `$EDITOR` is how tools call you back
 
-Anything that needs a full-screen editor (Git, `fc`, `crontab -e`, `visudo`) looks at `$VISUAL` then `$EDITOR`. Keep those pointed at something you can exit.
+Git, `fc`, `crontab -e`, and `visudo` look at `$VISUAL` then `$EDITOR` (keep them pointed at an editor you know how to exit; `sudo visudo` may still fall back to `vi` or `nano` on purpose).
 
-```sh
-export EDITOR=nvim
-export VISUAL=nvim
-git config --global core.editor nvim
-```
+### Coding agents: Codex CLI and Grok Build
 
-`sudo visudo` and similar "please do not brick the machine" tools often ignore your alias and launch `vi` or `nano` on purpose. Know both.
+Terminal coding agents follow the same convention — **readline/Emacs keys by default, Vim keys opt-in**:
 
-### OpenAI Codex CLI
+- **[OpenAI Codex CLI](https://github.com/openai/codex):** Toggle with `/vim` in a session, or set `vim_mode_default = true` under `[tui]` in `~/.codex/config.toml` (starts in Normal mode — hit `i` to type before blaming your keyboard). [Slash commands](https://developers.openai.com/codex/cli/slash-commands) · [Config reference](https://developers.openai.com/codex/config-reference)
+- **[Grok Build](https://docs.x.ai/build/overview):** Splits prompt Vim editing (`[ui] simple_mode = false`, toggled in `/settings`) from scrollback Vim navigation (`[ui] vim_mode = true`, toggled with `/vim-mode`) in `~/.grok/config.toml`. [Keyboard shortcuts](https://docs.x.ai/build/keyboard-shortcuts) · [Modes & commands](https://docs.x.ai/build/modes-and-commands)
 
-[Codex](https://github.com/openai/codex) is OpenAI's terminal coding agent. The TUI composer understands **Vim modal editing**.
-
-- In a session, type `/vim` to toggle Vim mode for the prompt.
-- To make it the default, in `~/.codex/config.toml`:
-
-```toml
-[tui]
-vim_mode_default = true
-```
-
-With that set, the composer **starts in Normal mode**, not Insert. Hit `i` to type a prompt, `Esc` for commands. If keys seem to "do nothing" or eat characters, you are in Normal mode — same joke as Vim, smaller box.
-
-Docs: [Codex slash commands](https://developers.openai.com/codex/cli/slash-commands) (`/vim`) · [Codex config](https://developers.openai.com/codex/config-reference)
-
-The default composer is closer to ordinary (Emacs/readline-style) text editing. `/vim` is for people who want `Esc` / `hjkl` while writing prompts.
-
-### Grok Build
-
-[Grok Build](https://docs.x.ai/build/overview) (the `grok` TUI) splits the idea in two, which is easy to mix up. The names do not help. The table does:
-
-| Setting | Where it lives | What it changes |
-| --- | --- | --- |
-| `[ui] simple_mode` | prompt (the composer) | `true` (default) = readline-style editing; `false` = **experimental** Vim modal editing in the prompt |
-| `[ui] vim_mode` | scrollback | `false` (default) = arrows to move; `true` = `j`/`k`/`h`/`l`/`g`/`G` in the log |
-
-```toml
-# ~/.grok/config.toml
-[ui]
-simple_mode = false   # Vim keys while typing a prompt
-vim_mode = true       # Vim keys while browsing the conversation
-```
-
-In the TUI:
-
-- `/vim-mode` toggles scrollback Vim keys
-- `/settings` can flip prompt Vim editing ("Disable vim input mode" / the simple-mode toggle)
-
-Docs: [Grok Build keyboard shortcuts](https://docs.x.ai/build/keyboard-shortcuts) · [Modes and commands](https://docs.x.ai/build/modes-and-commands) (`/vim-mode`)
-
-The pattern is the same everywhere: **Emacs/readline keys are the default for "just type," Vim keys are opt-in for people who already have that muscle memory.** Learn one well; the bindings will follow you from Bash to Git to agents.
+Learn one keybinding family well and it follows you from Bash to Git to agents.
 
 ---
 
