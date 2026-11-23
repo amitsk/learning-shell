@@ -185,9 +185,10 @@ People move in permanently for [Org mode](https://orgmode.org/) (notes & literat
 
 ---
 
-## 6. Newer editors: Helix and Microsoft Edit
+## 6. Newer editors: Helix, micro, and Microsoft Edit
 
 - **[Helix](https://helix-editor.com/)** (`hx filename`) — Modal like Vim, except **select first, then act**, with multiple cursors, treesitter, and LSP built in so you spend the weekend editing code instead of debugging a plugin manager. [Install](https://docs.helix-editor.com/install.html) · [Docs](https://docs.helix-editor.com/)
+- **[micro](https://micro-editor.github.io/)** (`micro filename`) — Modeless terminal editor that behaves like a GUI editor: `Ctrl-S` saves, `Ctrl-Q` quits, `Ctrl-C`/`Ctrl-V` copy and paste, and the mouse works. Pros: a single static binary with no dependencies (easy to drop on a server), sane defaults, syntax highlighting, multiple cursors, and a plugin system, all without learning modes. [Install](https://github.com/zyedidia/micro#installation) · [Docs](https://github.com/zyedidia/micro/tree/master/runtime/help)
 - **[Microsoft Edit](https://github.com/microsoft/edit)** (`edit` on Windows; `msedit` via Homebrew/Linux so it doesn't collide with an existing `edit`) — Modeless, VS Code-ish terminal editor. You type, save, and leave — no Stack Overflow rescue thread required. [Install & docs](https://learn.microsoft.com/en-us/windows/edit/)
 
 ---
@@ -221,7 +222,7 @@ Learn one keybinding family well and it follows you from Bash to Git to agents.
 
 | If you... | Try |
 | --- | --- |
-| want to edit a file and leave, today | **nano** or **Edit** |
+| want to edit a file and leave, today | **nano**, **micro**, or **Edit** |
 | live on remote servers and like modal editing | **Vim**, then maybe **Neovim** |
 | want an OS that edits text | **Emacs** |
 | want modal editing with batteries included | **Helix** |
@@ -244,6 +245,7 @@ Editors
 - [Neovim](https://neovim.io/)
 - [GNU Emacs](https://www.gnu.org/software/emacs/) · [Emacs tour](https://www.gnu.org/software/emacs/tour/)
 - [Helix](https://helix-editor.com/)
+- [micro](https://micro-editor.github.io/)
 - [Microsoft Edit](https://github.com/microsoft/edit) · [Microsoft Learn: Edit](https://learn.microsoft.com/en-us/windows/edit/)
 
 Shell and agents
